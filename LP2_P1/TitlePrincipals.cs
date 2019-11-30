@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace LP2_P1
+{
+    public struct TitlePrincipals
+    {
+        public string Tconst { get; }
+        public int Ordering { get; }
+        public string Nconst { get; }
+        public string Category { get; }
+        public string Job { get; }
+        public string Characters { get; }
+
+        public TitlePrincipals(string tconst, int ordering, string nconst, 
+            string category, string job, string characters)
+        {
+            Tconst = tconst;
+            Ordering = ordering;
+            Nconst = nconst;
+            Category = category;
+            Job = job;
+            Characters = characters;
+        }
+    }
+}
