@@ -9,13 +9,13 @@
         public bool IsAdult { get; }
         public int StartYear { get; }
         public int? EndYear { get; }
-        public int RuntimeMinutes { get; }
+        public int? RuntimeMinutes { get; }
         public string[] Genres { get; }
 
         public TitleBasics(string tConst, string titleType,
             string primaryTitle, string originalTitle, bool isAdult, 
-            int startYear, int runtimeMinutes, string[] genres,
-            int? endYear = null)
+            int startYear, string[] genres, int? endYear = null,
+            int? runtimeMinutes = null)
         {
             TConst = tConst;
             TitleType = titleType;
