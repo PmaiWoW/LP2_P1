@@ -14,7 +14,7 @@
 
         public TitleBasics(string tConst, string titleType,
             string primaryTitle, string originalTitle, bool isAdult, 
-            int startYear, int? endEYear, int runtimeMinutes, string[] genres,
+            int startYear, int runtimeMinutes, string[] genres,
             int? endYear = null)
         {
             TConst = tConst;
@@ -23,7 +23,7 @@
             OriginalTitle = originalTitle;
             IsAdult = isAdult;
             StartYear = startYear;
-            EndYear = endEYear;
+            EndYear = endYear;
             RuntimeMinutes = runtimeMinutes;
             Genres = genres;
         }
