@@ -68,20 +68,21 @@ namespace LP2_P1
         
         public static IEnumerable<TitleRatings> LoadTitleRatings()
         {
-        // Full path to folder with data files
+            // Full path to folder with data files
             string folderWithFiles = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.LocalApplicationData), appName);
-            // Full path to data files
+            // Full path to data file
             string fileTitleRatingsFull = Path.Combine(folderWithFiles,
                 fileTitleRatings);
 
             // Define local variables
             string line;
 
-            // 
+            // Opens the data file with read permissions
             using (FileStream fs = new FileStream(fileTitleRatingsFull,
                 FileMode.Open, FileAccess.Read))
             {
+                // Decompresses the data file
                 using (GZipStream gzs = new GZipStream(fs,
                                 CompressionMode.Decompress))
                 {
@@ -89,7 +90,6 @@ namespace LP2_P1
                     {
                         int numVotes;
                         float averageRating;
-
 
                         string[] elements;
 
@@ -102,9 +102,8 @@ namespace LP2_P1
                                 float.TryParse(elements[1], out averageRating);
                                 int.TryParse(elements[2], out numVotes);
 
-
-                                yield return new TitleRatings(elements[0], averageRating,
-                                    numVotes);
+                                yield return new TitleRatings(elements[0],
+                                    averageRating, numVotes);
                             }
                         }
                     }
