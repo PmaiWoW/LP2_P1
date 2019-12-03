@@ -22,50 +22,50 @@ namespace LP2_P1
 
             // Define local variables
             string line;
-
-            // 
+             
             using (FileStream fs = new FileStream(fileTitleBasicsFull,
                 FileMode.Open))
             {
-                using (StreamReader sr = new StreamReader(fs))
+                using (GZipStream gzs = new GZipStream(fs,
+                    CompressionMode.Decompress))
                 {
-                    int startYear;
-                    int endYear;
-                    int runtimeMins;
-                    int? endYearNul;
-                    int? runtimeMinsNul;
-                    string[] genres;
-                    bool isAdult;
-
-                    string[] elements;
-
-                    while ((line = sr.ReadLine()) != null)
+                    using (StreamReader sr = new StreamReader(gzs))
                     {
-                        if (line[0] == 't' && line[1] == 't')
+                        int? endYearNul;
+                        int? runtimeMinsNul;
+                        string[] genres;
+                        bool isAdult;
+
+                        string[] elements;
+
+                        while ((line = sr.ReadLine()) != null)
                         {
                             elements = line.Split("\t");
 
-                            if (elements[4] == "1") isAdult = true;
-                            else isAdult = false;
-                            int.TryParse(elements[5], out startYear);
-                            if (int.TryParse(elements[6], out endYear))
-                                endYearNul = endYear;
-                            else endYearNul = null;
-                            if (int.TryParse(elements[7], out runtimeMins))
-                                runtimeMinsNul = runtimeMins;
-                            else runtimeMinsNul = null;
-                            genres = elements[8].Split(",");
+                            if (elements[0] != "tconst")
+                            {
+                                if (elements[4] == "1") isAdult = true;
+                                else isAdult = false;
+                                int.TryParse(elements[5], out int startYear);
+                                if (int.TryParse(elements[6], out int endYear))
+                                    endYearNul = endYear;
+                                else endYearNul = null;
+                                if (int.TryParse(elements[7], out int runtimeMins))
+                                    runtimeMinsNul = runtimeMins;
+                                else runtimeMinsNul = null;
+                                genres = elements[8].Split(",");
 
-                            yield return new TitleBasics(elements[0], elements[1],
-                                elements[2], elements[3], isAdult, startYear,
-                                genres, endYearNul, runtimeMinsNul);
+                                yield return new TitleBasics(elements[0], elements[1],
+                                    elements[2], elements[3], isAdult, startYear,
+                                    genres, endYearNul, runtimeMinsNul);
+                            }
                         }
                     }
                 }
             }
         }
 
-        
+
         public static IEnumerable<TitleRatings> LoadTitleRatings()
         {
             // Full path to folder with data files
@@ -108,7 +108,7 @@ namespace LP2_P1
                         }
                     }
                 }
-            }            
+            }
         }
     }
 }
