@@ -13,9 +13,15 @@
         public string[] Genres { get; }
 
         public TitleBasics(string tConst, string titleType,
+<<<<<<< HEAD
+            string primaryTitle, string originalTitle, bool isAdult,
+            int startYear, int? endEYear, int runtimeMinutes, string[] genres,
+            int? endYear = null)
+=======
             string primaryTitle, string originalTitle, bool isAdult, 
             int startYear, string[] genres, int? endYear = null,
             int? runtimeMinutes = null)
+>>>>>>> a391ebe79743e6641756fe1fbbcf2711691af29a
         {
             TConst = tConst;
             TitleType = titleType;
