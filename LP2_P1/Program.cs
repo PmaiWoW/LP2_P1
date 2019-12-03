@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LP2_P1
 {
@@ -6,7 +8,8 @@ namespace LP2_P1
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            TitleSearch a = new TitleSearch();
+            a.SearchTitle();
         }
     }
 }
