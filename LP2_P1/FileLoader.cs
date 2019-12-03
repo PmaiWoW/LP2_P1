@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 
 namespace LP2_P1
 {
@@ -8,6 +9,7 @@ namespace LP2_P1
     {
         private const string appName = "MyIMDBSearcher";
         private const string fileTitleBasics = "title.basics.tsv.gz";
+        private const string fileTitleRatings = "title.ratings.tsv.gz";
 
         public static IEnumerable<TitleBasics> LoadTitleBasics()
         {
@@ -61,6 +63,53 @@ namespace LP2_P1
                     }
                 }
             }
+        }
+
+        
+        public static IEnumerable<TitleRatings> LoadTitleRatings()
+        {
+        // Full path to folder with data files
+            string folderWithFiles = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData), appName);
+            // Full path to data files
+            string fileTitleRatingsFull = Path.Combine(folderWithFiles,
+                fileTitleRatings);
+
+            // Define local variables
+            string line;
+
+            // 
+            using (FileStream fs = new FileStream(fileTitleRatingsFull,
+                FileMode.Open, FileAccess.Read))
+            {
+                using (GZipStream gzs = new GZipStream(fs,
+                                CompressionMode.Decompress))
+                {
+                    using (StreamReader sr = new StreamReader(gzs))
+                    {
+                        int numVotes;
+                        float averageRating;
+
+
+                        string[] elements;
+
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            if (line[0] == 't' && line[1] == 't')
+                            {
+                                elements = line.Split("\t");
+
+                                float.TryParse(elements[1], out averageRating);
+                                int.TryParse(elements[2], out numVotes);
+
+
+                                yield return new TitleRatings(elements[0], averageRating,
+                                    numVotes);
+                            }
+                        }
+                    }
+                }
+            }            
         }
     }
 }
