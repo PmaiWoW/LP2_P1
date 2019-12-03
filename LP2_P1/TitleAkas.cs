@@ -12,7 +12,7 @@
         public bool IsOriginalTitle { get; }
 
         public TitleAkas(string titleID, int ordering, string title,
-            string region, string language, string[] types, 
+            string region, string language, string[] types,
             string[] attributes, bool isOriginalTitle)
         {
             TitleID = titleID;
