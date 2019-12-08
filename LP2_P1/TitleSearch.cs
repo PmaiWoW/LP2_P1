@@ -42,6 +42,8 @@ namespace LP2_P1
                             skipNumber -= 30;
                             UpdatePage();
                         }
+                        break;
+
                     case ConsoleKey.O:
                         Sort(out key);
                         break;
@@ -72,10 +74,6 @@ namespace LP2_P1
                         }
                         break;
 
-                    case ConsoleKey.O:
-                        SortByTitle();
-                        break;
-
                     case ConsoleKey.R:
                         ReverseOrder();
                         break;
@@ -92,6 +90,10 @@ namespace LP2_P1
 
         private void Sort(out ConsoleKey key)
         {
+            Console.Clear();
+            Console.CursorLeft = 0;
+            Console.CursorTop = 0;
+
             // Display Order Options
             Console.WriteLine("\n '1' to order by type" +
                 "\n '2' to order by title" +
@@ -110,69 +112,80 @@ namespace LP2_P1
                 case ConsoleKey.D1:
                     SortByType();
                     break;
+
                 case ConsoleKey.D2:
                     SortByTitle();
                     break;
+
                 case ConsoleKey.D3:
                     SortByIsAdult();
                     break;
+
                 case ConsoleKey.D4:
                     SortByRelease();
                     break;
+
                 case ConsoleKey.D5:
                     SortByEnd();
                     break;
+
                 case ConsoleKey.D6:
                     SortByGenre();
                     break;
             }
+            UpdatePage();
         }
+
+        #region --- Utilities---
 
         // Sorts searched items by Type
         private void SortByType()
         {
             listState = State.Descending;
-            SearchSelected(namedTitles.OrderBy(c => c.Type));
+            namedTitles = namedTitles.OrderBy(c => c.Type);
+            UpdatePage();
         }
 
         // Sorts searched items by PrimaryTitle
         private void SortByTitle()
         {
             listState = State.Descending;
-            namedTitles = namedTitles.OrderBy(c => c.TitleType);
+            namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
             UpdatePage();
-        }
-
-            listState = State.Descending;
-            SearchSelected(namedTitles.OrderBy(c => c.IsAdult));
         }
 
         // Sorts searched items by StartYear
         private void SortByRelease()
         {
             listState = State.Descending;
-            SearchSelected(namedTitles.OrderBy(c => c.StartYear));
+            namedTitles = namedTitles.OrderBy(c => c.StartYear);
+            UpdatePage();
         }
 
         // Sorts searched items by EndYear
         private void SortByEnd()
         {
             listState = State.Descending;
-            SearchSelected(namedTitles.OrderBy(c => c.EndYear));
+            namedTitles = namedTitles.OrderBy(c => c.EndYear);
+            UpdatePage();
         }
 
         // Sorts searched items by Genres
         private void SortByGenre()
         {
             listState = State.Descending;
-            SearchSelected(namedTitles.OrderBy(c => c.Genres[0]));
+            namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
+            UpdatePage();
         }
 
-        private void ReverseOrder(IEnumerable<TitleBasics> titles)
         // Sorts searched items by IsAdult
         private void SortByIsAdult()
         {
-        #region --- Utilities---
+            listState = State.Descending;
+            namedTitles = namedTitles.OrderBy(c => c.IsAdult);
+            UpdatePage();
+        }
+
         private void UpdatePage()
         {
             PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
@@ -193,7 +206,7 @@ namespace LP2_P1
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
             Console.Clear();
-            
+
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Black;
 
@@ -223,14 +236,15 @@ namespace LP2_P1
 
             Console.WriteLine("\n 'O' to order " +
                 "\n 'R' to reverse the order " +
-                "\n 'N' to leave " +
-                "\n 'T' to reset to unordered " +
+                "\n 'ESC' to leave " +
                 "\n '->' for previous page" +
                 "\n '<-' for next page \n");
 
             Console.CursorTop = 1;
         }
-        #endregion
+
+        #endregion --- Utilities---
+
         private enum State { Ascending, Descending, Unordered };
     }
 }

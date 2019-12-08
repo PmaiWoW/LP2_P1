@@ -16,7 +16,7 @@ namespace LP2_P1
             Console.WriteLine($"   {title.IsAdult}");
             Console.WriteLine($"   {title.RuntimeMinutes}");
             Console.WriteLine($"   {title.StartYear} / {title.EndYear}");
-            Console.WriteLine($"   {title.TitleType}");
+            Console.WriteLine($"   >To be changed<");
             for (int a = 0; a < title.Genres.Length; a++)
                 if (title.Genres[a] != null)
                 {
