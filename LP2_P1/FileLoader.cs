@@ -10,6 +10,7 @@ namespace LP2_P1
         private const string appName = "MyIMDBSearcher";
         private const string fileTitleBasics = "title.basics.tsv.gz";
         private const string fileTitleRatings = "title.ratings.tsv.gz";
+        private const string fileTitleEpisode = "title.ratings.tsv.gz";
 
         public static IEnumerable<TitleBasics> LoadTitleBasics()
         {
@@ -103,8 +104,51 @@ namespace LP2_P1
                 {
                     using (StreamReader sr = new StreamReader(gzs))
                     {
-                        int numVotes;
-                        float averageRating;
+                        string[] elements;
+
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            elements = line.Split("\t");
+
+                            if (elements[0] != "tconst")
+                            {
+                                float.TryParse(elements[1], out float averageRating);
+                                int.TryParse(elements[2], out int numVotes);
+
+                                yield return new TitleRatings(elements[0],
+                                    averageRating, numVotes);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        public static IEnumerable<TitleEpisode> LoadTitleEpisode()
+        {
+            // Full path to folder with data files
+            string folderWithFiles = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData), appName);
+            // Full path to data file
+            string fileTitleEpisodeFull = Path.Combine(folderWithFiles,
+                fileTitleEpisode);
+
+            // Define local variables
+            string line;
+
+            // Opens the data file with read permissions
+            using (FileStream fs = new FileStream(fileTitleEpisodeFull,
+                FileMode.Open, FileAccess.Read))
+            {
+                // Decompresses the data file
+                using (GZipStream gzs = new GZipStream(fs,
+                                CompressionMode.Decompress))
+                {
+                    using (StreamReader sr = new StreamReader(gzs))
+                    {
+                        int? seasonNumberNul;
+                        int? episodeNumberNul;
 
                         string[] elements;
 
@@ -114,11 +158,19 @@ namespace LP2_P1
                             {
                                 elements = line.Split("\t");
 
-                                float.TryParse(elements[1], out averageRating);
-                                int.TryParse(elements[2], out numVotes);
+                                if (int.TryParse(elements[2],
+                                    out int seasonNumber))
+                                    seasonNumberNul = seasonNumber;
+                                else seasonNumberNul = null;
 
-                                yield return new TitleRatings(elements[0],
-                                    averageRating, numVotes);
+                                if (int.TryParse(elements[3],
+                                    out int episodeNumber))
+                                    episodeNumberNul = episodeNumber;
+                                else episodeNumberNul = null;
+
+                                yield return new TitleEpisode(elements[0],
+                                    elements[1], seasonNumberNul,
+                                    episodeNumberNul);
                             }
                         }
                     }
