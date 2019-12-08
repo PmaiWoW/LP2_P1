@@ -34,9 +34,14 @@ namespace LP2_P1
                 {
                     using (StreamReader sr = new StreamReader(gzs))
                     {
+                        // Declare Nullable variables
                         int? endYearNul;
                         int? runtimeMinsNul;
+                        TitleType? typeNul;
+
+                        // Declare non-nullable variables
                         string[] genres;
+                        TitleGenre[] genresTypes = new TitleGenre[3];
                         bool isAdult;
 
                         string[] elements;
@@ -56,22 +61,38 @@ namespace LP2_P1
 
                             if (elements[0] != "tconst")
                             {
+                                if (Enum.TryParse(elements[1],
+                                    out TitleType type)) typeNul = type;
+                                else typeNul = null;
+
                                 if (elements[4] == "1") isAdult = true;
                                 else isAdult = false;
+
                                 int.TryParse(elements[5], out int startYear);
+
                                 if (int.TryParse(elements[6], out int endYear))
                                     endYearNul = endYear;
                                 else endYearNul = null;
+
                                 if (int.TryParse(elements[7], 
                                     out int runtimeMins))
                                     runtimeMinsNul = runtimeMins;
                                 else runtimeMinsNul = null;
+
                                 genres = elements[8].Split(",");
+                                for(int i = 0; i < genres.Length; i++)
+                                {
+                                    if (Enum.TryParse(genres[i], out TitleGenre
+                                        genre))
+                                    {
+                                        genresTypes[i] = genre;
+                                    }
+                                }
 
                                 yield return new TitleBasics(elements[0], 
-                                    elements[1], elements[2], elements[3], 
-                                    isAdult, startYear, genres, endYearNul, 
-                                    runtimeMinsNul);
+                                    typeNul, elements[2], elements[3], 
+                                    isAdult, startYear, genresTypes, 
+                                    endYearNul,  runtimeMinsNul);
                             }
                             previous = progress;
                         }
