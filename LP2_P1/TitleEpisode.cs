@@ -7,11 +7,11 @@
         public int? SeasonNumber { get; }
         public int? EpisodeNumber { get; }
 
-        public TitleEpisode(string tconst, string parentTconst,
+        public TitleEpisode(string tConst, string parentTConst,
             int? seasonNumber = null, int? episodeNumber = null)
         {
-            TConst = tconst;
-            ParentTconst = parentTconst;
+            TConst = tConst;
+            ParentTconst = parentTConst;
             SeasonNumber = seasonNumber;
             EpisodeNumber = episodeNumber;
         }

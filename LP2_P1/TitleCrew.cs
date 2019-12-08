@@ -6,9 +6,9 @@
         public string[] Directors { get; }
         public string[] Writers { get; }
 
-        public TitleCrew(string tconst, string[] directors, string[] writers)
+        public TitleCrew(string tConst, string[] directors, string[] writers)
         {
-            TConst = tconst;
+            TConst = tConst;
             Directors = directors;
             Writers = writers;
         }
