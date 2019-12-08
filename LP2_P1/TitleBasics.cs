@@ -3,7 +3,7 @@
     public struct TitleBasics
     {
         public string TConst { get; }
-        public string TitleType { get; }
+        public string Type { get; }
         public string PrimaryTitle { get; }
         public string OriginalTitle { get; }
         public bool IsAdult { get; }
@@ -12,13 +12,13 @@
         public int? RuntimeMinutes { get; }
         public string[] Genres { get; }
 
-        public TitleBasics(string tConst, string titleType,
+        public TitleBasics(string tConst, string type,
             string primaryTitle, string originalTitle, bool isAdult, 
             int startYear, string[] genres, int? endYear = null,
             int? runtimeMinutes = null)
         {
             TConst = tConst;
-            TitleType = titleType;
+            Type = type;
             PrimaryTitle = primaryTitle;
             OriginalTitle = originalTitle;
             IsAdult = isAdult;
@@ -37,7 +37,7 @@
                 EndYear.HasValue ? EndYear.ToString() : @"\N";
             string isAdult = IsAdult ? "Adult Only" : "For Everyone";
 
-            string s = $"Title Name: {PrimaryTitle}, Type: {TitleType}, " +
+            string s = $"Title Name: {PrimaryTitle}, Type: {Type}, " +
                $"Is Adult Only? {isAdult}, " +
                $"Release Year: {StartYear}, " +
                $"Ending Year: {endYearPrint} " +
@@ -45,6 +45,5 @@
                $"Genres: {Genres[0]}, {Genres[1]}, {Genres[2]}";
             return s;
         }
-            
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LP2_P1
 {
-    internal class TitleSearch
+    public class TitleSearch
     {
         // ############### Everything here is still subject to change, it is still not to my liking #################
         // (Menu barely works, especially if the list is empty)
@@ -18,7 +18,7 @@ namespace LP2_P1
         public void SearchTitle(string wantedTitle)
         {
             namedTitles = FileLoader.LoadTitleBasics()
-                .Where(c => c.OriginalTitle.ToLower()
+                .Where(c => c.PrimaryTitle.ToLower()
                 .Contains(wantedTitle.Trim().ToLower()))
                 .Select(c => c).ToList();
 
@@ -53,7 +53,7 @@ namespace LP2_P1
                 switch (key)
                 {
                     case ConsoleKey.O:
-                        SortByTitle();
+                        Sort(out key);
                         break;
 
                     case ConsoleKey.R:
@@ -86,10 +86,84 @@ namespace LP2_P1
             }
         }
 
+        private void Sort(out ConsoleKey key)
+        {
+            // Display Order Options
+            Console.WriteLine("\n '1' to order by type" +
+                "\n '2' to order by title" +
+                "\n '3' to order by adult rating" +
+                "\n '4' to order by year of release" +
+                "\n '5' to order by year of end" +
+                "\n '6' to order by genre" +
+                "\n 'B' to go back \n");
+
+            // Read user's input
+            key = Console.ReadKey().Key;
+
+            // Switch case between the possible options selected
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    SortByType();
+                    break;
+                case ConsoleKey.D2:
+                    SortByTitle();
+                    break;
+                case ConsoleKey.D3:
+                    SortByIsAdult();
+                    break;
+                case ConsoleKey.D4:
+                    SortByRelease();
+                    break;
+                case ConsoleKey.D5:
+                    SortByEnd();
+                    break;
+                case ConsoleKey.D6:
+                    SortByGenre();
+                    break;
+            }
+        }
+
+        // Sorts searched items by Type
+        private void SortByType()
+        {
+            listState = State.Descending;
+            SearchSelected(namedTitles.OrderBy(c => c.Type));
+        }
+
+        // Sorts searched items by PrimaryTitle
         private void SortByTitle()
         {
             listState = State.Descending;
-            SearchSelected(namedTitles.OrderBy(c => c.TitleType));
+            SearchSelected(namedTitles.OrderBy(c => c.PrimaryTitle));
+        }
+
+        // Sorts searched items by IsAdult
+        private void SortByIsAdult()
+        {
+            listState = State.Descending;
+            SearchSelected(namedTitles.OrderBy(c => c.IsAdult));
+        }
+
+        // Sorts searched items by StartYear
+        private void SortByRelease()
+        {
+            listState = State.Descending;
+            SearchSelected(namedTitles.OrderBy(c => c.StartYear));
+        }
+
+        // Sorts searched items by EndYear
+        private void SortByEnd()
+        {
+            listState = State.Descending;
+            SearchSelected(namedTitles.OrderBy(c => c.EndYear));
+        }
+
+        // Sorts searched items by Genres
+        private void SortByGenre()
+        {
+            listState = State.Descending;
+            SearchSelected(namedTitles.OrderBy(c => c.Genres[0]));
         }
 
         private void ReverseOrder(IEnumerable<TitleBasics> titles)
@@ -125,9 +199,9 @@ namespace LP2_P1
             for (int i = 0; i < titlesToDisplay.Count(); i++)
             {
                 Console.CursorLeft = 0;
-                Console.Write($"   {titlesToDisplay.ElementAt(i).OriginalTitle}");
+                Console.Write($"   {titlesToDisplay.ElementAt(i).PrimaryTitle}");
                 Console.CursorLeft = 100;
-                Console.WriteLine($"| {titlesToDisplay.ElementAt(i).TitleType}");
+                Console.WriteLine($"| {titlesToDisplay.ElementAt(i).Type}");
             }
         }
 

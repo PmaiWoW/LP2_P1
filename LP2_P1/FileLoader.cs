@@ -62,14 +62,16 @@ namespace LP2_P1
                                 if (int.TryParse(elements[6], out int endYear))
                                     endYearNul = endYear;
                                 else endYearNul = null;
-                                if (int.TryParse(elements[7], out int runtimeMins))
+                                if (int.TryParse(elements[7], 
+                                    out int runtimeMins))
                                     runtimeMinsNul = runtimeMins;
                                 else runtimeMinsNul = null;
                                 genres = elements[8].Split(",");
 
-                                yield return new TitleBasics(elements[0], elements[1],
-                                    elements[2], elements[3], isAdult, startYear,
-                                    genres, endYearNul, runtimeMinsNul);
+                                yield return new TitleBasics(elements[0], 
+                                    elements[1], elements[2], elements[3], 
+                                    isAdult, startYear, genres, endYearNul, 
+                                    runtimeMinsNul);
                             }
                             previous = progress;
                         }
