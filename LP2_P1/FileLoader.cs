@@ -124,19 +124,16 @@ namespace LP2_P1
                 {
                     using (StreamReader sr = new StreamReader(gzs))
                     {
-                        int numVotes;
-                        float averageRating;
-
                         string[] elements;
 
                         while ((line = sr.ReadLine()) != null)
                         {
-                            if (line[0] == 't' && line[1] == 't')
-                            {
-                                elements = line.Split("\t");
+                            elements = line.Split("\t");
 
-                                float.TryParse(elements[1], out averageRating);
-                                int.TryParse(elements[2], out numVotes);
+                            if (elements[0] != "tconst")
+                            {
+                                float.TryParse(elements[1], out float averageRating);
+                                int.TryParse(elements[2], out int numVotes);
 
                                 yield return new TitleRatings(elements[0],
                                     averageRating, numVotes);
