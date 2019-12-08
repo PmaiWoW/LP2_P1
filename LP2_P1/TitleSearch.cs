@@ -4,24 +4,19 @@ using System.Linq;
 
 namespace LP2_P1
 {
-    class TitleSearch
+    internal class TitleSearch
     {
         // ############### Everything here is still subject to change, it is still not to my liking #################
         // (Menu barely works, especially if the list is empty)
 
+        // If there's no results it closes automatically
         private IEnumerable<TitleBasics> namedTitles;
 
-        public void SearchTitle()
+        private State listState = State.Unordered;
+        private int skipNumber = 30;
+
+        public void SearchTitle(string wantedTitle)
         {
-            Console.WriteLine("Write the title of what you're looking for.\n");
-            Console.BackgroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine("                                             ");
-            Console.CursorTop -= 1;
-
-            Console.ForegroundColor = ConsoleColor.Black;
-            string wantedTitle = Console.ReadLine();
-            Console.ResetColor();
-
             namedTitles = FileLoader.LoadTitleBasics()
                 .Where(c => c.OriginalTitle.ToLower()
                 .Contains(wantedTitle.Trim().ToLower()))
@@ -32,56 +27,110 @@ namespace LP2_P1
 
         private void SearchSelected(IEnumerable<TitleBasics> titles)
         {
-            int skipNumber = -30;
-            string input = "n";
+            string input = "l";
 
-            IEnumerable<TitleBasics> n2;
+            IEnumerable<TitleBasics> titleBasics;
 
-            while (input.Trim().ToLower() == "n")
+            ConsoleKey key = ConsoleKey.L;
+
+            while (key != ConsoleKey.N)
             {
-                skipNumber += 30;
+                titleBasics = titles.SkipLast(titles.Count() - skipNumber)
+                .Skip(skipNumber - 30).Select(c => c)
+                .ToList();
 
-                n2 = titles.SkipLast((titles.Count() > 30) ? titles.Count() - (skipNumber + 30) : 0).Skip(skipNumber).Select(c => c).ToList();
+                PrintResults(titleBasics);
 
-                if (n2.Count() > 0)
-                    PrintResults(n2);
-                else
-                    break;
+                Console.WriteLine("\n 'O' to order " +
+                    "\n 'R' to reverse the order " +
+                    "\n 'N' to leave " +
+                    "\n 'T' to reset to unordered " +
+                    "\n 'W' for previous page" +
+                    "\n 'S' for next page \n");
 
-                Console.WriteLine("\n press 'O' to order \n press 'B' to go back \n press 'N' for the next page \n");
-                input = Console.ReadLine();
+                key = Console.ReadKey().Key;
 
-                switch (input.Trim().ToLower())
+                switch (key)
                 {
-                    case "o":
-                        OrderTitles();
+                    case ConsoleKey.O:
+                        SortByTitle();
                         break;
 
-                    case "n":
+                    case ConsoleKey.R:
+                        ReverseOrder(titles);
                         break;
 
-                    case "b":
-                        SearchTitle();
+                    case ConsoleKey.W:
+                        if (skipNumber > 30)
+                            skipNumber -= 30;
+                        break;
+
+                    case ConsoleKey.S:
+                        if (titles.Count() / skipNumber > 0)
+                            skipNumber += 30;
+                        break;
+
+                    case ConsoleKey.T:
+                        listState = State.Unordered;
+                        SearchSelected(namedTitles);
+                        break;
+
+                    case ConsoleKey.UpArrow:
+                        Console.WriteLine("Up pressed");
+                        break;
+
+                    case ConsoleKey.DownArrow:
+                        Console.WriteLine("Down Pressed");
                         break;
                 }
             }
         }
 
+        private void SortByTitle()
+        {
+            listState = State.Descending;
+            SearchSelected(namedTitles.OrderBy(c => c.TitleType));
+        }
+
+        private void ReverseOrder(IEnumerable<TitleBasics> titles)
+        {
+            if (listState != State.Unordered)
+                listState = listState == State.Descending ?
+                    State.Ascending : State.Descending;
+
+            SearchSelected(titles.Reverse());
+        }
+
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
             Console.Clear();
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+
+            for (int i = 0; i < Console.WindowWidth; i++)
+                Console.Write(" ");
+
+            Console.CursorLeft = 0;
+            Console.Write("    Name");
+            Console.CursorLeft = 100;
+            Console.Write("Type");
+            Console.CursorLeft = 150;
+            Console.Write($"State : {listState}");
+
+            Console.ResetColor();
+
+            Console.WriteLine("");
+
             for (int i = 0; i < titlesToDisplay.Count(); i++)
             {
                 Console.CursorLeft = 0;
-                Console.Write($"{titlesToDisplay.ElementAt(i).OriginalTitle}");
+                Console.Write($"   {titlesToDisplay.ElementAt(i).OriginalTitle}");
                 Console.CursorLeft = 100;
-                Console.WriteLine($"|  {titlesToDisplay.ElementAt(i).TitleType}");
+                Console.WriteLine($"| {titlesToDisplay.ElementAt(i).TitleType}");
             }
         }
 
-        private void OrderTitles()
-        {
-            SearchSelected(namedTitles.OrderBy(c => c.TitleType).ToList());
-        }
+        private enum State { Ascending, Descending, Unordered };
     }
 }

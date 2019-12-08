@@ -22,7 +22,10 @@ namespace LP2_P1
 
             // Define local variables
             string line;
-             
+
+            int currentObject = 0;
+            int previous = 0;
+
             using (FileStream fs = new FileStream(fileTitleBasicsFull,
                 FileMode.Open))
             {
@@ -38,9 +41,18 @@ namespace LP2_P1
 
                         string[] elements;
 
+                        Console.WriteLine("");
+                        Console.WriteLine("Loading...");
+                        CreateLoadingBar();
+
                         while ((line = sr.ReadLine()) != null)
                         {
                             elements = line.Split("\t");
+
+                            int progress = (currentObject++ / (6350607 / 100));
+
+                            if (progress != previous)
+                                FillLoadingBar();
 
                             if (elements[0] != "tconst")
                             {
@@ -59,12 +71,13 @@ namespace LP2_P1
                                     elements[2], elements[3], isAdult, startYear,
                                     genres, endYearNul, runtimeMinsNul);
                             }
+                            previous = progress;
                         }
+                        Console.CursorVisible = true;
                     }
                 }
             }
         }
-
 
         public static IEnumerable<TitleRatings> LoadTitleRatings()
         {
@@ -109,6 +122,23 @@ namespace LP2_P1
                     }
                 }
             }
+        }
+
+        private static void CreateLoadingBar()
+        {
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            for (int i = 0; i < 100; i++)
+                Console.Write(" ");
+            Console.CursorLeft = 0;
+            Console.ResetColor();
+        }
+
+        private static void FillLoadingBar()
+        {
+            Console.CursorVisible = false;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Write(" ");
+            Console.ResetColor();
         }
     }
 }
