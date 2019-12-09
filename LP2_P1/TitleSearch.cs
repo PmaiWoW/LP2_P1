@@ -18,10 +18,10 @@ namespace LP2_P1
                 .Contains(wantedTitle.Trim().ToLower()))
                 .Select(c => c).ToList();
 
-            SearchSelected();
+            SearchMenu();
         }
 
-        private void SearchSelected()
+        private void SearchMenu()
         {
             ConsoleKey key = ConsoleKey.L;
 
@@ -45,6 +45,7 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.O:
+                        Console.Clear();
                         Sort(out key);
                         break;
 
@@ -110,82 +111,33 @@ namespace LP2_P1
             switch (key)
             {
                 case ConsoleKey.D1:
-                    SortByType();
+                    namedTitles = Sorter.SortByType(namedTitles);
                     break;
 
                 case ConsoleKey.D2:
-                    SortByTitle();
+                    namedTitles = Sorter.SortByTitle(namedTitles);
                     break;
 
                 case ConsoleKey.D3:
-                    SortByIsAdult();
+                    namedTitles = Sorter.SortByIsAdult(namedTitles);
                     break;
 
                 case ConsoleKey.D4:
-                    SortByRelease();
+                    namedTitles = Sorter.SortByRelease(namedTitles);
                     break;
 
                 case ConsoleKey.D5:
-                    SortByEnd();
+                    namedTitles = Sorter.SortByEnd(namedTitles);
                     break;
 
                 case ConsoleKey.D6:
-                    SortByGenre();
+                    namedTitles = Sorter.SortByGenre(namedTitles);
                     break;
             }
             UpdatePage();
         }
 
-        #region --- Utilities---
-
         // Sorts searched items by Type
-        private void SortByType()
-        {
-            listState = State.Descending;
-            namedTitles = namedTitles.OrderBy(c => c.Type);
-            UpdatePage();
-        }
-
-        // Sorts searched items by PrimaryTitle
-        private void SortByTitle()
-        {
-            listState = State.Descending;
-            namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
-            UpdatePage();
-        }
-
-        // Sorts searched items by StartYear
-        private void SortByRelease()
-        {
-            listState = State.Descending;
-            namedTitles = namedTitles.OrderBy(c => c.StartYear);
-            UpdatePage();
-        }
-
-        // Sorts searched items by EndYear
-        private void SortByEnd()
-        {
-            listState = State.Descending;
-            namedTitles = namedTitles.OrderBy(c => c.EndYear);
-            UpdatePage();
-        }
-
-        // Sorts searched items by Genres
-        private void SortByGenre()
-        {
-            listState = State.Descending;
-            namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
-            UpdatePage();
-        }
-
-        // Sorts searched items by IsAdult
-        private void SortByIsAdult()
-        {
-            listState = State.Descending;
-            namedTitles = namedTitles.OrderBy(c => c.IsAdult);
-            UpdatePage();
-        }
-
         private void UpdatePage()
         {
             PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
@@ -202,7 +154,6 @@ namespace LP2_P1
             namedTitles = namedTitles.Reverse();
             UpdatePage();
         }
-
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
             Console.Clear();
@@ -242,8 +193,6 @@ namespace LP2_P1
 
             Console.CursorTop = 1;
         }
-
-        #endregion --- Utilities---
 
         private enum State { Ascending, Descending, Unordered };
     }
