@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LP2_P1
+﻿namespace LP2_P1
 {
     public enum TitleGenre
     {
@@ -26,7 +22,6 @@ namespace LP2_P1
         Adventure,
         History,
         Mystery,
-        N,
         SciFi,
         Thriller,
         Musical,
