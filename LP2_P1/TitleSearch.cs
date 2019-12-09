@@ -28,7 +28,7 @@ namespace LP2_P1
             if(!namedTitles.Any(c => c.TConst != null))
             {
                 Console.Clear();
-                Console.WriteLine("No titles found, returning to search " +
+                Console.WriteLine("No titles found, returning to main " +
                     "menu...");
                 return;
             }
@@ -36,6 +36,7 @@ namespace LP2_P1
 
             while (key != ConsoleKey.B)
             {
+                key = ConsoleKey.D0;
                 Console.CursorLeft = 1;
                 Console.Write(">");
 
@@ -78,7 +79,8 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.O:
-                        Sort(out key);
+                        Sorter.Sort(ref namedTitles);
+                        UpdatePage();
                         break;
 
                     case ConsoleKey.R:
@@ -109,54 +111,6 @@ namespace LP2_P1
                 }
             }
             Console.Clear();
-        }
-
-        private void Sort(out ConsoleKey key)
-        {
-            Console.Clear();
-            Console.CursorLeft = 0;
-            Console.CursorTop = 0;
-
-            // Display Order Options
-            Console.WriteLine("\n '1' to order by type" +
-                "\n '2' to order by title" +
-                "\n '3' to order by adult rating" +
-                "\n '4' to order by year of release" +
-                "\n '5' to order by year of end" +
-                "\n '6' to order by genre" +
-                "\n 'B' to go back \n");
-
-            // Read user's input
-            key = Console.ReadKey().Key;
-
-            // Switch case between the possible options selected
-            switch (key)
-            {
-                case ConsoleKey.D1:
-                    namedTitles = Sorter.SortByType(namedTitles);
-                    break;
-
-                case ConsoleKey.D2:
-                    namedTitles = Sorter.SortByTitle(namedTitles);
-                    break;
-
-                case ConsoleKey.D3:
-                    namedTitles = Sorter.SortByIsAdult(namedTitles);
-                    break;
-
-                case ConsoleKey.D4:
-                    namedTitles = Sorter.SortByRelease(namedTitles);
-                    break;
-
-                case ConsoleKey.D5:
-                    namedTitles = Sorter.SortByEnd(namedTitles);
-                    break;
-
-                case ConsoleKey.D6:
-                    namedTitles = Sorter.SortByGenre(namedTitles);
-                    break;
-            }
-            UpdatePage();
         }
 
         // Sorts searched items by Type
@@ -209,7 +163,8 @@ namespace LP2_P1
 
             Console.WriteLine("\n 'O' to order " +
                 "\n 'R' to reverse the order " +
-                "\n 'ESC' to leave " +
+                "\n 'B' to go back to previous menu" +
+                "\n 'ENTER' to select title" +
                 "\n '->' for previous page" +
                 "\n '<-' for next page \n");
 

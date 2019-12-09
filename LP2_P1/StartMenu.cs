@@ -6,20 +6,20 @@ namespace LP2_P1
     {
         public static void MenuLoop()
         {
+            ConsoleKey key = ConsoleKey.D0;
             TitleSearch searcher = new TitleSearch();
-            ConsoleKey answer = ConsoleKey.L;
             string wantedTitle;
 
-            while (answer != ConsoleKey.Q)
+            while (key != ConsoleKey.Q)
             {
                 Console.Clear();
                 Console.WriteLine("1. Search Title\n" +
                                   "2. Search People\n" +
                                   "Q. Quit\n");
 
-                answer = Console.ReadKey().Key;
+                key = Console.ReadKey().Key;
 
-                switch (answer)
+                switch (key)
                 {
                     case ConsoleKey.D1:
                         PrintSearchBar();
@@ -31,8 +31,8 @@ namespace LP2_P1
                     case ConsoleKey.D2:
                         Console.Clear();
                         Console.WriteLine("This search functionality has not" +
-                            "been implemented yet.\nPress any key to return" +
-                            "to selection.");
+                            " been implemented yet.\nPress any key to return" +
+                            " to selection.");
                         Console.ReadKey();
                         break;
 

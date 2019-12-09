@@ -30,9 +30,9 @@ namespace LP2_P1
 
         private static void Menu(int nonNullGenres, TitleBasics title)
         {
-            ConsoleKey key = ConsoleKey.L;
+            ConsoleKey key = ConsoleKey.D0;
 
-            while (key != ConsoleKey.Escape)
+            while (key != ConsoleKey.B)
             {
                 Console.CursorLeft = 1;
                 Console.Write(">");
@@ -56,6 +56,12 @@ namespace LP2_P1
                             Console.Write(" ");
                             Console.CursorTop += 1;
                         }
+                        break;
+                    case ConsoleKey.B:
+                        Console.Clear();
+                        Console.WriteLine("Going back to the previous menu." +
+                            "\nPress any key to continue.");
+                        Console.ReadKey();
                         break;
                 }
             }
