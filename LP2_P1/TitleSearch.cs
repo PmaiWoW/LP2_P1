@@ -25,6 +25,13 @@ namespace LP2_P1
         {
             ConsoleKey key = ConsoleKey.L;
 
+            if(!namedTitles.Any(c => c.TConst != null))
+            {
+                Console.Clear();
+                Console.WriteLine("No titles found, returning to search " +
+                    "menu...");
+                return;
+            }
             UpdatePage();
 
             while (key != ConsoleKey.Escape)

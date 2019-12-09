@@ -35,9 +35,10 @@ namespace LP2_P1
                     using (StreamReader sr = new StreamReader(gzs))
                     {
                         // Declare Nullable variables
-                        int? endYearNul;
-                        int? runtimeMinsNul;
-                        TitleType? typeNul;
+                        int? startYearNul = default;
+                        int? endYearNul = default;
+                        int? runtimeMinsNul = default;
+                        TitleType? typeNul = default;
 
                         // Declare non-nullable variables
                         string[] genres;
@@ -63,21 +64,19 @@ namespace LP2_P1
                             {
                                 if (Enum.TryParse(elements[1],
                                     out TitleType type)) typeNul = type;
-                                else typeNul = null;
 
                                 if (elements[4] == "1") isAdult = true;
                                 else isAdult = false;
 
-                                int.TryParse(elements[5], out int startYear);
+                                if (int.TryParse(elements[5], out int
+                                    startYear)) startYearNul = startYear;
 
                                 if (int.TryParse(elements[6], out int endYear))
                                     endYearNul = endYear;
-                                else endYearNul = null;
 
                                 if (int.TryParse(elements[7], 
                                     out int runtimeMins))
                                     runtimeMinsNul = runtimeMins;
-                                else runtimeMinsNul = null;
 
                                 genres = elements[8].Split(",");
                                 for(int i = 0; i < genres.Length; i++)
