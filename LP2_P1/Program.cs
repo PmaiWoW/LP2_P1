@@ -12,18 +12,7 @@ namespace LP2_P1
 
             Console.SetWindowPosition(0, 0);
 
-            TitleSearch a = new TitleSearch();
-
-            Console.WriteLine("Write the title of what you're looking for.\n");
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.Write("                                                  ");
-            Console.CursorLeft = 0;
-
-            Console.ForegroundColor = ConsoleColor.Black;
-            string wantedTitle = Console.ReadLine();
-            Console.ResetColor();
-
-            a.SearchTitle(wantedTitle);
+            StartMenu.MenuLoop();
         }
     }
 }

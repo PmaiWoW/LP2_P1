@@ -34,7 +34,7 @@ namespace LP2_P1
             }
             UpdatePage();
 
-            while (key != ConsoleKey.Escape)
+            while (key != ConsoleKey.B)
             {
                 Console.CursorLeft = 1;
                 Console.Write(">");
@@ -44,21 +44,17 @@ namespace LP2_P1
                 switch (key)
                 {
                     case ConsoleKey.RightArrow:
-                        if (skipNumber > 30)
+                        if (namedTitles.Count() / skipNumber > 0)
                         {
-                            skipNumber -= 30;
+                            skipNumber += 30;
                             UpdatePage();
                         }
                         break;
 
-                    case ConsoleKey.O:
-                        Sort(out key);
-                        break;
-
                     case ConsoleKey.LeftArrow:
-                        if (namedTitles.Count() / skipNumber > 0)
+                        if (skipNumber > 30)
                         {
-                            skipNumber += 30;
+                            skipNumber -= 30;
                             UpdatePage();
                         }
                         break;
@@ -81,6 +77,10 @@ namespace LP2_P1
                         }
                         break;
 
+                    case ConsoleKey.O:
+                        Sort(out key);
+                        break;
+
                     case ConsoleKey.R:
                         ReverseOrder();
                         break;
@@ -91,8 +91,24 @@ namespace LP2_P1
                         UpdatePage();
                         UpdatePage();
                         break;
+
+                    case ConsoleKey.B:
+                        Console.Clear();
+                        Console.WriteLine("Going back to the previous menu." +
+                            "\nPress any key to continue.");
+                        Console.ReadKey();
+                        break;
+
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Invalid option. Press any key to " +
+                            "return to selection.");
+                        Console.ReadKey();
+                        UpdatePage();
+                        break;
                 }
             }
+            Console.Clear();
         }
 
         private void Sort(out ConsoleKey key)
