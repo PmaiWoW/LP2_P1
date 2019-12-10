@@ -14,10 +14,10 @@ namespace LP2_P1
             Console.WriteLine(title);
 
             Console.CursorTop = 0;
-            Menu(nonNullGenres, title);
+            Menu(nonNullGenres);
         }
 
-        private static void Menu(int nonNullGenres, TitleBasics title)
+        private static void Menu(int nonNullGenres)
         {
             ConsoleKey key = ConsoleKey.D0;
 
@@ -47,6 +47,16 @@ namespace LP2_P1
                         }
                         break;
                     case ConsoleKey.B:
+                        Console.Clear();
+                        Console.WriteLine("Going back to the previous menu." +
+                            "\nPress any key to continue.");
+                        Console.ReadKey();
+                        break;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Invalid option. Press any key to " +
+                                "return to previous menu.");
+                        Console.ReadKey();
                         break;
                 }
             }

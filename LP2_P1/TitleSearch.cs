@@ -26,12 +26,11 @@ namespace LP2_P1
         {
             namedTitles = originalNamedTitles;
 
-            ConsoleKey key = ConsoleKey.L;
+            ConsoleKey key = ConsoleKey.D0;
             UpdatePage();
 
             while (key != ConsoleKey.B)
             {
-                key = ConsoleKey.D0;
                 Console.CursorLeft = 1;
                 Console.Write(">");
 
