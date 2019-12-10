@@ -11,18 +11,7 @@ namespace LP2_P1
             int nonNullGenres = 0;
             Console.Clear();
 
-            Console.WriteLine($"   {title.OriginalTitle}");
-            Console.WriteLine($"   {title.PrimaryTitle}");
-            Console.WriteLine($"   {title.IsAdult}");
-            Console.WriteLine($"   {title.RuntimeMinutes}");
-            Console.WriteLine($"   {title.StartYear} / {title.EndYear}");
-            Console.WriteLine($"   >To be changed<");
-            for (int a = 0; a < title.Genres.Length; a++)
-                if (title.Genres[a] != null)
-                {
-                    nonNullGenres++;
-                    Console.WriteLine($"   {title.Genres[a]}");
-                }
+            Console.WriteLine(title);
 
             Console.CursorTop = 0;
             Menu(nonNullGenres, title);
