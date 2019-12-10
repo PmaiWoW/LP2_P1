@@ -175,7 +175,8 @@ namespace LP2_P1
                         "\nInsert the desired type:");
 
                     input = Console.ReadLine();
-                    if (Enum.TryParse(input.ToUpper(), out TitleType type))
+                    if (Enum.TryParse(input.Trim().ToUpper(), 
+                        out TitleType type))
                     {
                         namedTitles =
                             (from title in namedTitles
