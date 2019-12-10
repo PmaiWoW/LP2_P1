@@ -81,8 +81,8 @@ namespace LP2_P1
                                 genres = elements[8].Split(",");
                                 for(int i = 0; i < genres.Length; i++)
                                 {
-                                    if (Enum.TryParse(genres[i], out TitleGenre
-                                        genre))
+                                    if (Enum.TryParse(genres[i].ToUpper(),
+                                        out TitleGenre genre))
                                     {
                                         genresTypes[i] = genre;
                                     }
@@ -90,7 +90,7 @@ namespace LP2_P1
 
                                 yield return new TitleBasics(elements[0], 
                                     typeNul, elements[2], elements[3], 
-                                    isAdult, startYear, genresTypes, 
+                                    isAdult, genresTypes, startYearNul,
                                     endYearNul,  runtimeMinsNul);
                             }
                             previous = progress;

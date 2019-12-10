@@ -181,10 +181,29 @@ namespace LP2_P1
                         namedTitles =
                             (from title in namedTitles
                              where title.Type == type
-                             select title
-                             ).ToArray();
+                             select title).ToList();
                     }
                     break;
+                case ConsoleKey.D5:
+                    Console.Clear();
+                    Console.WriteLine("Documentary - Short - Animation - " +
+                        "Comedy - Romance - Sport - Action - News - Drama" +
+                        "\nFantasy - Horror - Biography - Music - War - " +
+                        "Crime - Western - Family - Adventure - History - " +
+                        "Mystery - 0SciFi - Thriller - Musical - FilmNoir - " +
+                        "\nGameShow - TalkShow - RealityTV - Adult");
+
+                    input = Console.ReadLine();
+                    if (Enum.TryParse(input.Trim().ToUpper(), 
+                        out TitleGenre genre))
+                    {
+                        namedTitles =
+                            (from title in namedTitles
+                            where title.Genres.Contains(genre)
+                            select title).ToList();
+                    }
+                    break;
+
                 case ConsoleKey.B:
                     Console.Clear();
                     Console.WriteLine("Going back to the previous menu." +
