@@ -44,15 +44,15 @@
                     Genres[i].ToString() : @"\N";
 
             string s = $"   Title Name:      {PrimaryTitle}" +
-                     $"\n   Original Title:  {PrimaryTitle}" +
-                     $"\n   Type:            {typePrint}" +
-                     $"\n   Age Restriction: {isAdult}" +
-                     $"\n   Release Year:    {startYearPrint}" +
-                     $"\n   Ending Year:     {endYearPrint}" +
-                     $"\n   Runtime (Mins):  {RuntimeMinutes} " +
-                     $"\n   Genres:          {genresPrint[0]}" +
-                     $"\n                    {genresPrint[1]}" +
-                     $"\n                    {genresPrint[2]}";
+                $"\n   Original Title:  {PrimaryTitle}" +
+                $"\n   Type:            {typePrint}" +
+                $"\n   Age Restriction: {isAdult}" +
+                $"\n   Release Year:    {startYearPrint}" +
+                $"\n   Ending Year:     {endYearPrint}" +
+                $"\n   Runtime (Mins):  {RuntimeMinutes} " +
+                $"\n   Genres:          {genresPrint[0]}" +
+                $"\n                    {genresPrint[1]}" +
+                $"\n                    {genresPrint[2]}";
             return s;
         }
     }
