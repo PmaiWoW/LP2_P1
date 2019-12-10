@@ -87,6 +87,10 @@ namespace LP2_P1
                         ReverseOrder();
                         break;
 
+                    case ConsoleKey.F:
+                        Filter();
+                        break;
+
                     case ConsoleKey.Enter:
                         TitleDetails.DisplayInfo(
                             namedTitles.ElementAt(Console.CursorTop - 1));
@@ -130,6 +134,26 @@ namespace LP2_P1
             namedTitles = namedTitles.Reverse();
             UpdatePage();
         }
+
+        private void Filter()
+        {
+            ConsoleKey key = ConsoleKey.D0;
+            Console.WriteLine("Select what the pretended filter:\n" +
+                "\n'1' to filter by a type" +
+                "\n'2' to filter by adult rating" +
+                "\n'3' to filter by a release year" +
+                "\n'4' to filter by a end year" +
+                "\n'5' to filter by a genre");
+
+            key = Console.ReadKey().Key;
+
+            switch (key)
+            {
+
+            }
+
+        }
+
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
             Console.Clear();
