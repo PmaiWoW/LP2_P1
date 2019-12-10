@@ -83,7 +83,7 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.O:
-                        Sorter.Sort(ref namedTitles);
+                        Sort(namedTitles);
                         UpdatePage();
                         break;
 
@@ -113,17 +113,11 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.B:
-                        Console.Clear();
-                        Console.WriteLine("Going back to the previous menu." +
-                            "\nPress any key to continue.");
-                        Console.ReadKey();
+                        PrintBackToMenu();
                         break;
 
                     default:
-                        Console.Clear();
-                        Console.WriteLine("Invalid option. Press any key to " +
-                            "return to selection.");
-                        Console.ReadKey();
+                        PrintInvalidChoice();
                         UpdatePage();
                         break;
                 }
@@ -199,12 +193,13 @@ namespace LP2_P1
 
                 case ConsoleKey.D5:
                     Console.Clear();
-                    Console.WriteLine("Documentary - Short - Animation - " +
+                    Console.WriteLine("Available genres are:" +
+                        "\nDocumentary - Short - Animation - " +
                         "Comedy - Romance - Sport - Action - News - Drama" +
                         "\nFantasy - Horror - Biography - Music - War - " +
-                        "Crime - Western - Family - Adventure - History - " +
-                        "Mystery - 0SciFi - Thriller - Musical - FilmNoir - " +
-                        "\nGameShow - TalkShow - RealityTV - Adult");
+                        "Crime - Western - Family - Adventure - History" +
+                        "\nMystery - 0SciFi - Thriller - Musical - FilmNoir - " +
+                        "GameShow - TalkShow - RealityTV - Adult");
 
                     input = Console.ReadLine();
                     if (Enum.TryParse(input.Trim().ToUpper(), 
@@ -218,9 +213,65 @@ namespace LP2_P1
                     break;
 
                 case ConsoleKey.B:
-                    Console.Clear();
-                    Console.WriteLine("Going back to the previous menu." +
-                        "\nPress any key to continue.");
+                    PrintBackToMenu();
+                    break;
+            }
+
+        }
+
+        public void Sort(IEnumerable<TitleBasics> namedTitles)
+        {
+            ConsoleKey key;
+
+            Console.Clear();
+            Console.CursorLeft = 0;
+            Console.CursorTop = 0;
+
+
+            // Display Order Options
+            Console.WriteLine("\n '1' to order by type" +
+                "\n '2' to order by title" +
+                "\n '3' to order by adult rating" +
+                "\n '4' to order by year of release" +
+                "\n '5' to order by year of end" +
+                "\n '6' to order by genre" +
+                "\n 'B' to go back \n");
+
+            // Read user's input
+            key = Console.ReadKey().Key;
+
+            // Switch case between the possible options selected
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    namedTitles = namedTitles.OrderBy(c => c.Type);
+                    break;
+
+                case ConsoleKey.D2:
+                    namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
+                    break;
+
+                case ConsoleKey.D3:
+                    namedTitles = namedTitles.OrderBy(c => c.IsAdult);
+                    break;
+
+                case ConsoleKey.D4:
+                    namedTitles = namedTitles.OrderBy(c => c.StartYear);
+                    break;
+
+                case ConsoleKey.D5:
+                    namedTitles = namedTitles.OrderBy(c => c.EndYear);
+                    break;
+
+                case ConsoleKey.D6:
+                    namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
+                    break;
+
+                case ConsoleKey.B:
+                    PrintBackToMenu();
+                    break;
+                default:
+                    PrintInvalidChoice();
                     break;
             }
 
@@ -249,9 +300,7 @@ namespace LP2_P1
                     adultsOnly = false;
                     break;
                 default:
-                    Console.Clear();
-                    Console.WriteLine("Invalid option. Press any key to " +
-                        "return to selection.");
+                    PrintInvalidChoice();
                     return;
             }
             namedTitles = namedTitles
@@ -272,9 +321,7 @@ namespace LP2_P1
 
             if (!int.TryParse(yearString, out startYear))
             {
-                Console.Clear();
-                Console.WriteLine("Invalid option. Press any key to " +
-                    "return to selection.");
+                PrintInvalidChoice();
                 return;
             }
             else int.TryParse(yearString, out startYear);
@@ -297,9 +344,7 @@ namespace LP2_P1
 
             if (!int.TryParse(yearString, out endYear))
             {
-                Console.Clear();
-                Console.WriteLine("Invalid option. Press any key to " +
-                    "return to selection.");
+                PrintInvalidChoice();
                 return;
 
             }
@@ -353,6 +398,22 @@ namespace LP2_P1
                 "\n '<-' for next page \n");
 
             Console.CursorTop = 1;
+        }
+
+        private void PrintInvalidChoice()
+        {
+            Console.Clear();
+            Console.WriteLine("Invalid option. Press any key to " +
+                    "return to previous menu.");
+            Console.ReadKey();
+        }
+
+        private void PrintBackToMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Going back to the previous menu." +
+                "\nPress any key to continue.");
+            Console.ReadKey();
         }
 
         private enum State { Ascending, Descending, Unordered };

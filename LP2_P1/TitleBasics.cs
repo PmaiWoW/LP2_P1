@@ -14,7 +14,7 @@
 
         public TitleBasics(string tConst, TitleType? type,
             string primaryTitle, string originalTitle, bool isAdult,
-            TitleGenre[]? genres, int? startYear = null, int? endYear = null,
+            TitleGenre[] genres, int? startYear = null, int? endYear = null,
             int? runtimeMinutes = null)
         {
             TConst = tConst;
