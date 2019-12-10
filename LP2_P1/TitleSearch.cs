@@ -214,6 +214,7 @@ namespace LP2_P1
                             where title.Genres.Contains(genre)
                             select title).ToList();
                     }
+                    break;
 
                 case ConsoleKey.B:
                     Console.Clear();
