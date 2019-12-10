@@ -62,7 +62,7 @@ namespace LP2_P1
 
                             if (elements[0] != "tconst")
                             {
-                                if (Enum.TryParse(elements[1],
+                                if (Enum.TryParse(elements[1].ToUpper(),
                                     out TitleType type)) typeNul = type;
 
                                 if (elements[4] == "1") isAdult = true;

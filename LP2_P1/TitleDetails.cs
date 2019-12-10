@@ -10,7 +10,9 @@ namespace LP2_P1
         {
             int nonNullGenres = 0;
             Console.Clear();
+
             Console.WriteLine(title);
+
             Console.CursorTop = 0;
             Menu(nonNullGenres, title);
         }
