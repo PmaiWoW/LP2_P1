@@ -45,10 +45,6 @@ namespace LP2_P1
                         }
                         break;
                     case ConsoleKey.B:
-                        Console.Clear();
-                        Console.WriteLine("Going back to the previous menu." +
-                            "\nPress any key to continue.");
-                        Console.ReadKey();
                         break;
                 }
             }

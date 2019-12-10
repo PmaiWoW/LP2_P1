@@ -28,8 +28,9 @@ namespace LP2_P1
             if(!namedTitles.Any(c => c.TConst != null))
             {
                 Console.Clear();
-                Console.WriteLine("No titles found, returning to main " +
-                    "menu...");
+                Console.WriteLine("No titles found, press any key to return" +
+                    "to the main menu...");
+                Console.Read();
                 return;
             }
             UpdatePage();
@@ -137,10 +138,11 @@ namespace LP2_P1
 
         private void Filter()
         {
+            Console.Clear();
             ConsoleKey key = ConsoleKey.D0;
-            Console.WriteLine("Select what the pretended filter:\n" +
+            Console.WriteLine("Select the intended filter:\n" +
                 "\n'1' to filter by a type" +
-                "\n'2' to filter by adult rating" +
+                "\n'2' to filter by age restriction" +
                 "\n'3' to filter by a release year" +
                 "\n'4' to filter by a end year" +
                 "\n'5' to filter by a genre");
@@ -149,9 +151,105 @@ namespace LP2_P1
 
             switch (key)
             {
-
+                case ConsoleKey.D2:
+                    IsAdultFilter();
+                    break;
+                
+                case ConsoleKey.D3:
+                    StartYearFilter();
+                    break;
+                
+                case ConsoleKey.D4:
+                    EndYearFilter();
+                    break;
             }
 
+        }
+
+        private void IsAdultFilter()
+        {
+            bool? adultsOnly = null;
+
+            ConsoleKey key;
+
+            Console.Clear();
+            Console.WriteLine("Select the age restriction:\n" +
+                "\n'1' Adults Only" +
+                "\n'2' For Everyone");
+
+            key = Console.ReadKey().Key;
+
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    adultsOnly = true;
+                    break;
+                
+                case ConsoleKey.D2:
+                    adultsOnly = false;
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Invalid option. Press any key to " +
+                        "return to selection.");
+                    return;
+            }
+            namedTitles = namedTitles
+                .Where(c => c.IsAdult == adultsOnly)
+                .Select(c => c).ToList();
+
+            UpdatePage();
+        }
+        
+        private void StartYearFilter()
+        {
+            int startYear;
+            string yearString;
+            Console.Clear();
+            Console.WriteLine("Type the release year:\n");
+
+            yearString = Console.ReadLine();
+
+            if (!int.TryParse(yearString, out startYear))
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid option. Press any key to " +
+                    "return to selection.");
+                return;
+            }
+            else int.TryParse(yearString, out startYear);
+
+            namedTitles = namedTitles
+                .Where(c => c.StartYear == startYear)
+                .Select(c => c).ToList();
+
+            UpdatePage();
+        }
+        
+        private void EndYearFilter()
+        {
+            int endYear;
+            string yearString;
+            Console.Clear();
+            Console.WriteLine("Type the end year:\n");
+
+            yearString = Console.ReadLine();
+
+            if (!int.TryParse(yearString, out endYear))
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid option. Press any key to " +
+                    "return to selection.");
+                return;
+            }
+            else int.TryParse(yearString, out endYear);
+
+
+            namedTitles = namedTitles
+                .Where(c => c.EndYear == endYear)
+                .Select(c => c).ToList();
+
+            UpdatePage();
         }
 
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
