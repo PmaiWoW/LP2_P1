@@ -6,6 +6,7 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
+        private IEnumerable<TitleBasics> originalNamedTitles;
         private IEnumerable<TitleBasics> namedTitles;
         private State listState = State.Unordered;
         private int skipNumber = 30;
@@ -13,7 +14,7 @@ namespace LP2_P1
 
         public void SearchTitle(string wantedTitle)
         {
-            namedTitles = FileLoader.LoadTitleBasics()
+            originalNamedTitles = FileLoader.LoadTitleBasics()
                 .Where(c => c.PrimaryTitle.ToLower()
                 .Contains(wantedTitle.Trim().ToLower()))
                 .Select(c => c).ToList();
@@ -23,15 +24,9 @@ namespace LP2_P1
 
         private void SearchMenu()
         {
-            ConsoleKey key = ConsoleKey.L;
+            namedTitles = originalNamedTitles;
 
-            if(!namedTitles.Any(c => c.TConst != null))
-            {
-                Console.Clear();
-                Console.WriteLine("No titles found, returning to main " +
-                    "menu...");
-                return;
-            }
+            ConsoleKey key = ConsoleKey.L;
             UpdatePage();
 
             while (key != ConsoleKey.B)
@@ -39,6 +34,15 @@ namespace LP2_P1
                 key = ConsoleKey.D0;
                 Console.CursorLeft = 1;
                 Console.Write(">");
+
+                if (!namedTitles.Any())
+                {
+                    Console.Clear();
+                    Console.WriteLine("No titles found, returning to main " +
+                        "menu...");
+                    Console.ReadKey();
+                    return;
+                }
 
                 key = Console.ReadKey().Key;
 
@@ -89,6 +93,16 @@ namespace LP2_P1
 
                     case ConsoleKey.F:
                         Filter();
+                        UpdatePage();
+                        break;
+
+                    case ConsoleKey.T:
+                        Console.Clear();
+                        namedTitles = originalNamedTitles;
+                        Console.WriteLine("Search results have been reset to" +
+                            " name only.\nPress any key to continue.");
+                        Console.ReadKey();
+                        UpdatePage();
                         break;
 
                     case ConsoleKey.Enter:
@@ -138,18 +152,44 @@ namespace LP2_P1
         private void Filter()
         {
             ConsoleKey key = ConsoleKey.D0;
+
+            Console.Clear();
             Console.WriteLine("Select what the pretended filter:\n" +
                 "\n'1' to filter by a type" +
                 "\n'2' to filter by adult rating" +
                 "\n'3' to filter by a release year" +
                 "\n'4' to filter by a end year" +
-                "\n'5' to filter by a genre");
+                "\n'5' to filter by a genre" +
+                "\n'B' to go back to previous menu");
 
             key = Console.ReadKey().Key;
+            string input;
 
             switch (key)
             {
+                case ConsoleKey.D1:
+                    Console.Clear();
+                    Console.WriteLine("Available types are:" +
+                        "\nShort - Movie - tvMovie - tvSeries - tvEpisode - " +
+                        "tvShort - tvMiniSeries - tvSpecial - Video - " +
+                        "Videogame" +
+                        "\nInsert the desired type:");
 
+                    input = Console.ReadLine();
+                    if (Enum.TryParse(input.ToUpper(), out TitleType type))
+                    {
+                        namedTitles =
+                            (from title in namedTitles
+                             where title.Type == type
+                             select title
+                             ).ToArray();
+                    }
+                    break;
+                case ConsoleKey.B:
+                    Console.Clear();
+                    Console.WriteLine("Going back to the previous menu." +
+                        "\nPress any key to continue.");
+                    break;
             }
 
         }
@@ -186,7 +226,9 @@ namespace LP2_P1
             }
 
             Console.WriteLine("\n 'O' to order " +
+                "\n 'F' to filter " +
                 "\n 'R' to reverse the order " +
+                "\n 'T' to reset search list" +
                 "\n 'B' to go back to previous menu" +
                 "\n 'ENTER' to select title" +
                 "\n '->' for previous page" +
