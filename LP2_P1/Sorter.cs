@@ -41,5 +41,19 @@ namespace LP2_P1
         {
             return namedTitles.OrderBy(c => c.IsAdult);
         }
+
+        public static IEnumerable<TitleBasics> SortByRating(IEnumerable<TitleBasics> namedTitles)
+        {
+            IEnumerable<string> named = namedTitles.Select(c => c.TConst).ToList();
+
+            IEnumerable<string> ratings = FileLoader.LoadTitleRatings()
+                .Where(p => named.Contains(p.Tconst))
+                .OrderBy(o => o.AverageRating).Select(c => c.Tconst).ToList();
+
+            return namedTitles.Where(p => ratings
+                .Contains(p.TConst)).OrderBy(b => ratings.ToList()
+                .FindIndex(a => a == b.TConst)).Reverse().Concat(namedTitles
+                .Where(p => !ratings.Contains(p.TConst))).ToList();
+        }
     }
 }

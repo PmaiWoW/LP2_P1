@@ -87,7 +87,7 @@ namespace LP2_P1
 
                     case ConsoleKey.Enter:
                         TitleDetails.DisplayInfo(
-                            namedTitles.ElementAt(Console.CursorTop - 1));
+                            namedTitles.ElementAt((Console.CursorTop - 1) + skipNumber - 30));
                         UpdatePage();
                         UpdatePage();
                         break;
@@ -124,6 +124,7 @@ namespace LP2_P1
                 "\n '4' to order by year of release" +
                 "\n '5' to order by year of end" +
                 "\n '6' to order by genre" +
+                "\n '7' to order by rating" +
                 "\n 'B' to go back \n");
 
             // Read user's input
@@ -155,6 +156,10 @@ namespace LP2_P1
                 case ConsoleKey.D6:
                     namedTitles = Sorter.SortByGenre(namedTitles);
                     break;
+
+                case ConsoleKey.D7:
+                    namedTitles = Sorter.SortByRating(namedTitles);
+                    break;
             }
             UpdatePage();
         }
@@ -163,8 +168,7 @@ namespace LP2_P1
         private void UpdatePage()
         {
             PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
-                .Skip(skipNumber - 30).Select(c => c)
-                .ToList());
+                .Skip(skipNumber - 30).Select(c => c));
         }
 
         private void ReverseOrder()

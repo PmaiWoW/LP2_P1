@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace LP2_P1
 {
@@ -13,6 +15,9 @@ namespace LP2_P1
             Console.SetWindowPosition(0, 0);
 
             StartMenu.MenuLoop();
+
+            string wantedTitle = Console.ReadLine();
+            Console.ResetColor();
         }
     }
 }

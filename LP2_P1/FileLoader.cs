@@ -113,6 +113,9 @@ namespace LP2_P1
             // Define local variables
             string line;
 
+            int currentObject = 0;
+            int previous = 0;
+
             // Opens the data file with read permissions
             using (FileStream fs = new FileStream(fileTitleRatingsFull,
                 FileMode.Open, FileAccess.Read))
@@ -125,9 +128,18 @@ namespace LP2_P1
                     {
                         string[] elements;
 
+                        Console.WriteLine("");
+                        Console.WriteLine("Loading...");
+                        CreateLoadingBar();
+
                         while ((line = sr.ReadLine()) != null)
                         {
                             elements = line.Split("\t");
+
+                            int progress = (currentObject++ / (997018 / 100));
+
+                            if (progress != previous)
+                                FillLoadingBar();
 
                             if (elements[0] != "tconst")
                             {
@@ -137,6 +149,7 @@ namespace LP2_P1
                                 yield return new TitleRatings(elements[0],
                                     averageRating, numVotes);
                             }
+                            previous = progress;
                         }
                     }
                 }
