@@ -11,28 +11,17 @@ namespace LP2_P1
             int nonNullGenres = 0;
             Console.Clear();
 
-            Console.WriteLine($"   {title.OriginalTitle}");
-            Console.WriteLine($"   {title.PrimaryTitle}");
-            Console.WriteLine($"   {title.IsAdult}");
-            Console.WriteLine($"   {title.RuntimeMinutes}");
-            Console.WriteLine($"   {title.StartYear} / {title.EndYear}");
-            Console.WriteLine($"   >To be changed<");
-            for (int a = 0; a < title.Genres.Length; a++)
-                if (title.Genres[a] != null)
-                {
-                    nonNullGenres++;
-                    Console.WriteLine($"   {title.Genres[a]}");
-                }
+            Console.WriteLine(title);
 
             Console.CursorTop = 0;
-            Menu(nonNullGenres, title);
+            Menu(nonNullGenres);
         }
 
-        private static void Menu(int nonNullGenres, TitleBasics title)
+        private static void Menu(int nonNullGenres)
         {
-            ConsoleKey key = ConsoleKey.L;
+            ConsoleKey key = ConsoleKey.D0;
 
-            while (key != ConsoleKey.Escape)
+            while (key != ConsoleKey.B)
             {
                 Console.CursorLeft = 1;
                 Console.Write(">");
@@ -56,6 +45,18 @@ namespace LP2_P1
                             Console.Write(" ");
                             Console.CursorTop += 1;
                         }
+                        break;
+                    case ConsoleKey.B:
+                        Console.Clear();
+                        Console.WriteLine("Going back to the previous menu." +
+                            "\nPress any key to continue.");
+                        Console.ReadKey();
+                        break;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("Invalid option. Press any key to " +
+                                "return to previous menu.");
+                        Console.ReadKey();
                         break;
                 }
             }

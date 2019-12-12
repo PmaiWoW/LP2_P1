@@ -2,15 +2,15 @@
 {
     public enum TitleType
     {
-        @short,
-        movie,
-        tvMovie,
-        tvSeries,
-        tvEpisode,
-        tvShort,
-        tvMiniSeries,
-        tvSpecial,
-        video,
-        videoGame
+        SHORT,
+        MOVIE,
+        TVMOVIE,
+        TVSERIES,
+        TVEPISODE,
+        TVSHORT,
+        TVMINISERIES,
+        TVSPECIAL,
+        VIDEO,
+        VIDEOGAME
     }
 }

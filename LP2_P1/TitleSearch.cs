@@ -6,38 +6,44 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
+        private IEnumerable<TitleBasics> originalNamedTitles;
         private IEnumerable<TitleBasics> namedTitles;
         private State listState = State.Unordered;
         private int skipNumber = 30;
         private int displayedAmount = 0;
 
-        public void SearchTitle(string wantedTitle)
+        public void SearchTitle(IEnumerable<TitleBasics> wantedTitle)
         {
-            namedTitles = FileLoader.LoadTitleBasics()
-                .Where(c => c.PrimaryTitle.ToLower()
-                .Contains(wantedTitle.Trim().ToLower()))
-                .Select(c => c).ToList();
+            originalNamedTitles = wantedTitle.ToList();
+                
+                //FileLoader.LoadTitleBasics()
+                //.Where(c => c.PrimaryTitle.ToLower()
+                //.Contains(wantedTitle.Trim().ToLower()))
+                //.Select(c => c).ToList();
 
             SearchMenu();
         }
 
         private void SearchMenu()
         {
-            ConsoleKey key = ConsoleKey.L;
+            namedTitles = originalNamedTitles;
 
-            if(!namedTitles.Any(c => c.TConst != null))
-            {
-                Console.Clear();
-                Console.WriteLine("No titles found, returning to search " +
-                    "menu...");
-                return;
-            }
+            ConsoleKey key = ConsoleKey.D0;
             UpdatePage();
 
             while (key != ConsoleKey.B)
             {
                 Console.CursorLeft = 1;
                 Console.Write(">");
+
+                if (!namedTitles.Any())
+                {
+                    Console.Clear();
+                    Console.WriteLine("No titles found, returning to main " +
+                        "menu...");
+                    Console.ReadKey();
+                    return;
+                }
 
                 key = Console.ReadKey().Key;
 
@@ -78,11 +84,26 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.O:
-                        Sort(out key);
+                        Sort(namedTitles);
+                        UpdatePage();
                         break;
 
                     case ConsoleKey.R:
                         ReverseOrder();
+                        break;
+
+                    case ConsoleKey.F:
+                        Filter();
+                        UpdatePage();
+                        break;
+
+                    case ConsoleKey.T:
+                        Console.Clear();
+                        namedTitles = originalNamedTitles;
+                        Console.WriteLine("Search results have been reset to" +
+                            " name only.\nPress any key to continue.");
+                        Console.ReadKey();
+                        UpdatePage();
                         break;
 
                     case ConsoleKey.Enter:
@@ -93,17 +114,11 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.B:
-                        Console.Clear();
-                        Console.WriteLine("Going back to the previous menu." +
-                            "\nPress any key to continue.");
-                        Console.ReadKey();
+                        PrintBackToMenu();
                         break;
 
                     default:
-                        Console.Clear();
-                        Console.WriteLine("Invalid option. Press any key to " +
-                            "return to selection.");
-                        Console.ReadKey();
+                        PrintInvalidChoice();
                         UpdatePage();
                         break;
                 }
@@ -111,8 +126,103 @@ namespace LP2_P1
             Console.Clear();
         }
 
-        private void Sort(out ConsoleKey key)
+        // Sorts searched items by Type
+        private void UpdatePage()
         {
+            PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
+                .Skip(skipNumber - 30).Select(c => c)
+                .ToList());
+        }
+
+        private void ReverseOrder()
+        {
+            if (listState != State.Unordered)
+                listState = listState == State.Descending ?
+                    State.Ascending : State.Descending;
+
+            namedTitles = namedTitles.Reverse();
+            UpdatePage();
+        }
+
+        private void Filter()
+        {
+            Console.Clear();
+            ConsoleKey key = ConsoleKey.D0;
+            Console.WriteLine("Select the intended filter:\n" +
+                "\n'1' to filter by a type" +
+                "\n'2' to filter by age restriction" +
+                "\n'3' to filter by a release year" +
+                "\n'4' to filter by a end year" +
+                "\n'5' to filter by a genre" +
+                "\n'B' to go back to previous menu");
+
+            key = Console.ReadKey().Key;
+            string input;
+
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    Console.Clear();
+                    Console.WriteLine("Available types are:" +
+                        "\nShort - Movie - tvMovie - tvSeries - tvEpisode - " +
+                        "tvShort - tvMiniSeries - tvSpecial - Video - " +
+                        "Videogame" +
+                        "\nInsert the desired type:");
+
+                    input = Console.ReadLine();
+                    if (Enum.TryParse(input.Trim().ToUpper(),
+                        out TitleType type))
+                    {
+                        namedTitles =
+                            (from title in namedTitles
+                             where title.Type == type
+                             select title).ToList();
+                    }
+                    break;
+
+                case ConsoleKey.D2:
+                    IsAdultFilter();
+                    break;
+
+                case ConsoleKey.D3:
+                    StartYearFilter();
+                    break;
+
+                case ConsoleKey.D4:
+                    EndYearFilter();
+                    break;
+
+                case ConsoleKey.D5:
+                    Console.Clear();
+                    Console.WriteLine("Available genres are:" +
+                        "\nDocumentary - Short - Animation - " +
+                        "Comedy - Romance - Sport - Action - News - Drama" +
+                        "\nFantasy - Horror - Biography - Music - War - " +
+                        "Crime - Western - Family - Adventure - History" +
+                        "\nMystery - 0SciFi - Thriller - Musical - FilmNoir - " +
+                        "GameShow - TalkShow - RealityTV - Adult");
+
+                    input = Console.ReadLine();
+                    if (Enum.TryParse(input.Trim().ToUpper(),
+                        out TitleGenre genre))
+                    {
+                        namedTitles =
+                            (from title in namedTitles
+                             where title.Genres.Contains(genre)
+                             select title).ToList();
+                    }
+                    break;
+
+                case ConsoleKey.B:
+                    PrintBackToMenu();
+                    break;
+            }
+        }
+
+        public void Sort(IEnumerable<TitleBasics> namedTitles)
+        {
+            ConsoleKey key;
+
             Console.Clear();
             Console.CursorLeft = 0;
             Console.CursorTop = 0;
@@ -134,52 +244,121 @@ namespace LP2_P1
             switch (key)
             {
                 case ConsoleKey.D1:
-                    namedTitles = Sorter.SortByType(namedTitles);
+                    namedTitles = namedTitles.OrderBy(c => c.Type);
                     break;
 
                 case ConsoleKey.D2:
-                    namedTitles = Sorter.SortByTitle(namedTitles);
+                    namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
                     break;
 
                 case ConsoleKey.D3:
-                    namedTitles = Sorter.SortByIsAdult(namedTitles);
+                    namedTitles = namedTitles.OrderBy(c => c.IsAdult);
                     break;
 
                 case ConsoleKey.D4:
-                    namedTitles = Sorter.SortByRelease(namedTitles);
+                    namedTitles = namedTitles.OrderBy(c => c.StartYear);
                     break;
 
                 case ConsoleKey.D5:
-                    namedTitles = Sorter.SortByEnd(namedTitles);
+                    namedTitles = namedTitles.OrderBy(c => c.EndYear);
                     break;
 
                 case ConsoleKey.D6:
-                    namedTitles = Sorter.SortByGenre(namedTitles);
+                    namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
                     break;
 
-                case ConsoleKey.D7:
-                    namedTitles = Sorter.SortByRating(namedTitles);
+                case ConsoleKey.B:
+                    PrintBackToMenu();
+                    break;
+
+                default:
+                    PrintInvalidChoice();
                     break;
             }
-            UpdatePage();
         }
 
-        // Sorts searched items by Type
-        private void UpdatePage()
+        private void IsAdultFilter()
         {
             PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
                 .Skip(skipNumber - 30).Select(c => c));
-        }
+            bool? adultsOnly = null;
 
-        private void ReverseOrder()
-        {
-            if (listState != State.Unordered)
-                listState = listState == State.Descending ?
-                    State.Ascending : State.Descending;
+            ConsoleKey key;
 
-            namedTitles = namedTitles.Reverse();
+            Console.Clear();
+            Console.WriteLine("Select the age restriction:\n" +
+                "\n'1' Adults Only" +
+                "\n'2' For Everyone");
+
+            key = Console.ReadKey().Key;
+
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    adultsOnly = true;
+                    break;
+
+                case ConsoleKey.D2:
+                    adultsOnly = false;
+                    break;
+
+                default:
+                    PrintInvalidChoice();
+                    return;
+            }
+            namedTitles = namedTitles
+                .Where(c => c.IsAdult == adultsOnly)
+                .Select(c => c).ToList();
+
             UpdatePage();
         }
+
+        private void StartYearFilter()
+        {
+            int startYear;
+            string yearString;
+            Console.Clear();
+            Console.WriteLine("Type the release year:\n");
+
+            yearString = Console.ReadLine();
+
+            if (!int.TryParse(yearString, out startYear))
+            {
+                PrintInvalidChoice();
+                return;
+            }
+            else int.TryParse(yearString, out startYear);
+
+            namedTitles = namedTitles
+                .Where(c => c.StartYear == startYear)
+                .Select(c => c).ToList();
+
+            UpdatePage();
+        }
+
+        private void EndYearFilter()
+        {
+            int endYear;
+            string yearString;
+            Console.Clear();
+            Console.WriteLine("Type the end year:\n");
+
+            yearString = Console.ReadLine();
+
+            if (!int.TryParse(yearString, out endYear))
+            {
+                PrintInvalidChoice();
+                return;
+            }
+            else int.TryParse(yearString, out endYear);
+
+            namedTitles = namedTitles
+                .Where(c => c.EndYear == endYear)
+                .Select(c => c).ToList();
+
+            UpdatePage();
+        }
+
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
             Console.Clear();
@@ -212,12 +391,31 @@ namespace LP2_P1
             }
 
             Console.WriteLine("\n 'O' to order " +
+                "\n 'F' to filter " +
                 "\n 'R' to reverse the order " +
-                "\n 'ESC' to leave " +
+                "\n 'T' to reset search list" +
+                "\n 'B' to go back to previous menu" +
+                "\n 'ENTER' to select title" +
                 "\n '->' for previous page" +
                 "\n '<-' for next page \n");
 
             Console.CursorTop = 1;
+        }
+
+        private void PrintInvalidChoice()
+        {
+            Console.Clear();
+            Console.WriteLine("Invalid option. Press any key to " +
+                    "return to previous menu.");
+            Console.ReadKey();
+        }
+
+        private void PrintBackToMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("Going back to the previous menu." +
+                "\nPress any key to continue.");
+            Console.ReadKey();
         }
 
         private enum State { Ascending, Descending, Unordered };
