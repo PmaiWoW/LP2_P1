@@ -79,7 +79,7 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.O:
-                        Sort(namedTitles);
+                        Sort(ref namedTitles);
                         UpdatePage();
                         break;
 
@@ -216,7 +216,7 @@ namespace LP2_P1
             }
         }
 
-        public void Sort(IEnumerable<TitleBasics> namedTitles)
+        public void Sort(ref IEnumerable<TitleBasics> namedTitles)
         {
             ConsoleKey key;
 
