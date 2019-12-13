@@ -7,8 +7,9 @@ namespace LP2_P1
     public static class StartMenu
     {
         private static string wantedTitle;
-        private static List<TitleType> types = new List<TitleType>();
-        private static List<TitleGenre?> genres = new List<TitleGenre?>();
+        private static ICollection<TitleType> types = new List<TitleType>();
+        private static ICollection<TitleGenre?> genres = 
+            new List<TitleGenre?>();
         private static bool? isAdult;
         private static int? start;
         private static int? end;
@@ -84,9 +85,9 @@ namespace LP2_P1
             if (adult.HasValue)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.IsAdult == adult);
-            if (genres.Length > 0)
+            for (int i = 0; i < genres.Length - 1; i++)
                 originalNamedTitles = originalNamedTitles.Where
-                    (c => c.Genres == genres);
+                    (c => c.Genres.Contains(genres[i]));
 
             TitleSearch searcher = new TitleSearch();
             searcher.SearchTitle(originalNamedTitles);
