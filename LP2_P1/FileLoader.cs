@@ -35,19 +35,19 @@ namespace LP2_P1
                     using (StreamReader sr = new StreamReader(gzs))
                     {
                         // Declare Nullable variables
-                        int? startYearNul = default;
-                        int? endYearNul = default;
-                        int? runtimeMinsNul = default;
-                        TitleType typeNul = default;
+                        int? startYearNul;
+                        int? endYearNul;
+                        int? runtimeMinsNul;
+                        TitleType? typeNul;
 
                         // Declare non-nullable variables
                         string[] genres;
-                        TitleGenre[] genresTypes = new TitleGenre[3];
+                        TitleGenre[] genresFinal = new TitleGenre[3];
                         bool isAdult;
 
                         string[] elements;
 
-                        Console.WriteLine("");
+                        Console.WriteLine();
                         Console.WriteLine("Loading...");
                         CreateLoadingBar();
 
@@ -62,35 +62,35 @@ namespace LP2_P1
 
                             if (elements[0] != "tconst")
                             {
-                                if (Enum.TryParse(elements[1].ToUpper(),
-                                    out TitleType type)) typeNul = type;
+                                typeNul = Enum.TryParse(elements[1].ToUpper(),
+                                    out TitleType type) ? type :
+                                    typeNul = null;
 
-                                if (elements[4] == "1") isAdult = true;
-                                else isAdult = false;
+                                isAdult = (elements[4] == "1");
 
-                                if (int.TryParse(elements[5], out int
-                                    startYear)) startYearNul = startYear;
+                                startYearNul = int.TryParse(elements[5],
+                                    out int startYear) ? startYear :
+                                    startYearNul = null;
 
-                                if (int.TryParse(elements[6], out int endYear))
-                                    endYearNul = endYear;
+                                endYearNul = int.TryParse(elements[6],
+                                    out int endYear) ? endYear :
+                                    endYearNul = null;
 
-                                if (int.TryParse(elements[7], 
-                                    out int runtimeMins))
-                                    runtimeMinsNul = runtimeMins;
+
+                                runtimeMinsNul = int.TryParse(elements[7],
+                                    out int runtimeMins) ?
+                                    runtimeMins : runtimeMinsNul = null;
+
 
                                 genres = elements[8].Split(",");
                                 for(int i = 0; i < genres.Length; i++)
-                                {
-                                    if (Enum.TryParse(genres[i].ToUpper(),
+                                    if(Enum.TryParse(genres[i].ToUpper(),
                                         out TitleGenre genre))
-                                    {
-                                        genresTypes[i] = genre;
-                                    }
-                                }
+                                        genresFinal[i] = genre;
 
                                 yield return new TitleBasics(elements[0], 
                                     typeNul, elements[2], elements[3], 
-                                    isAdult, genresTypes, startYearNul,
+                                    isAdult, genresFinal, startYearNul,
                                     endYearNul,  runtimeMinsNul);
                             }
                             previous = progress;
@@ -113,9 +113,6 @@ namespace LP2_P1
             // Define local variables
             string line;
 
-            int currentObject = 0;
-            int previous = 0;
-
             // Opens the data file with read permissions
             using (FileStream fs = new FileStream(fileTitleRatingsFull,
                 FileMode.Open, FileAccess.Read))
@@ -128,18 +125,9 @@ namespace LP2_P1
                     {
                         string[] elements;
 
-                        Console.WriteLine("");
-                        Console.WriteLine("Loading...");
-                        CreateLoadingBar();
-
                         while ((line = sr.ReadLine()) != null)
                         {
                             elements = line.Split("\t");
-
-                            int progress = (currentObject++ / (997018 / 100));
-
-                            if (progress != previous)
-                                FillLoadingBar();
 
                             if (elements[0] != "tconst")
                             {
@@ -149,7 +137,6 @@ namespace LP2_P1
                                 yield return new TitleRatings(elements[0],
                                     averageRating, numVotes);
                             }
-                            previous = progress;
                         }
                     }
                 }
