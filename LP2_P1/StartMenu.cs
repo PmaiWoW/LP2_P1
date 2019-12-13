@@ -7,10 +7,13 @@ namespace LP2_P1
     public static class StartMenu
     {
         private static string wantedTitle;
-        private static List<TitleType> types = new List<TitleType>(); 
+        private static List<TitleType> types = new List<TitleType>();
+        private static List<TitleGenre?> genres = new List<TitleGenre?>();
         private static bool? isAdult;
         private static int? start;
         private static int? end;
+        private static int? runtimeLow;
+        private static int? runtimeHigh;
 
         public static void MenuLoop()
         {
@@ -55,27 +58,33 @@ namespace LP2_P1
 
         private static void Titles(string wantedTitle, TitleType[] type,
             bool? adult, int? startDate, int? endDate,
-            TitleGenre?[] genres = null, int runtime1 = 0, int runtime2 = 3000)
+            TitleGenre?[] genres, int? runtime1, int? runtime2)
         {
-            IEnumerable<TitleBasics> originalNamedTitles = FileLoader.LoadTitleBasics()
-                .Where(c => c.PrimaryTitle.ToLower()
-                .Contains(wantedTitle.Trim().ToLower()))
-                .Where(c => c.RuntimeMinutes >= runtime1 && c.RuntimeMinutes <= runtime2)
-                .Select(c => c);
+            IEnumerable<TitleBasics> originalNamedTitles = FileLoader.LoadTitleBasics();
 
-            if (startDate != null)
+            if (wantedTitle != null)
+                originalNamedTitles = originalNamedTitles.Where
+                    (c => c.PrimaryTitle.ToLower().Contains
+                    (wantedTitle.Trim().ToLower()));
+            if (runtime1.HasValue)
+                originalNamedTitles = originalNamedTitles.Where
+                    (c => c.RuntimeMinutes >= runtime1);
+            if (runtime2.HasValue)
+                originalNamedTitles = originalNamedTitles.Where
+                    (c => c.RuntimeMinutes <= runtime2);
+            if (startDate.HasValue)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.StartYear >= startDate);
-            if (endDate != null)
+            if (endDate.HasValue)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.EndYear <= endDate);
-            if (type != null)
+            if (type.Length > 0)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => type.Any(a => a == c.Type));
-            if (adult != null)
+            if (adult.HasValue)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.IsAdult == adult);
-            if (genres != null)
+            if (genres.Length > 0)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.Genres == genres);
 
@@ -87,14 +96,14 @@ namespace LP2_P1
         {
             Console.Clear();
 
-            ConsoleKey key = ConsoleKey.D0;
+            ConsoleKey key;
 
             PrintSearchBar();
             PrintTypeSelection();
 
             Console.CursorTop = 2;
 
-            while (key != ConsoleKey.Q)
+            do
             {
                 Console.CursorLeft = 1;
                 Console.Write(">");
@@ -106,62 +115,92 @@ namespace LP2_P1
                     Program.ClearSpace();
                     Console.CursorTop -= 1;
                 }
-                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 20)
+                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 50)
                 {
                     Program.ClearSpace();
                     Console.CursorTop += 1;
                 }
                 else if (key == ConsoleKey.Enter)
                 {
-                    switch (Console.CursorTop)
+                    if (Console.CursorTop == 2)
                     {
-                        case 2:
-                            PrintSearchBar();
-                            Console.CursorLeft = 4;
-                            Console.BackgroundColor = ConsoleColor.White;
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            wantedTitle = Console.ReadLine();
-                            Console.ResetColor();
-                            break;
-
-                        case 5:case 6:case 7:case 8:case 9:
-                        case 10: case 11:case 12:case 13:case 14:
-                            int index = Console.CursorTop - 5;
-                            if (types.Contains((TitleType)index))
-                                types.Remove((TitleType)index);
-                            else
-                                types.Add((TitleType)index);
-                            PrintTypeSelection();
-                            Console.CursorTop = index + 5;
-                            break;
-
-                        case 15:
-                            if (isAdult == true) isAdult = false;
-                            else if (isAdult == null) isAdult = true;
-                            else if (isAdult == false) isAdult = null;
-                            PrintTypeSelection();
-                            break;
-
-                        case 17:
-                            string[] date = Console.ReadLine().Split(' ');
-
-                            if (date.Length >= 1 && date[0].Length == 4 && int.Parse(date[0]) != 0)
-                                start = int.Parse(date[0]);
-                            else
-                                start = null;
-
-                            if (date.Length == 2 && date[1].Length == 4 && int.Parse(date[1]) != 0)
-                                end = int.Parse(date[1]);
-                            else
-                                end = null;
-                            break;
-
-                        case 20:
-                            Titles(wantedTitle, types.ToArray(), isAdult, start, end);
-                            break;
+                        PrintSearchBar();
+                        Console.CursorLeft = 4;
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        wantedTitle = Console.ReadLine();
+                        Console.ResetColor();
                     }
+                    if (Console.CursorTop >= 5 && Console.CursorTop <= 14)
+                    {
+                        int index = Console.CursorTop - 5;
+                        if (types.Contains((TitleType)index))
+                            types.Remove((TitleType)index);
+                        else
+                            types.Add((TitleType)index);
+                        PrintTypeSelection();
+                        Console.CursorTop = index + 5;
+                    }
+                    if (Console.CursorTop == 15)
+                    {
+                        if (isAdult == true) isAdult = false;
+                        else if (isAdult == null) isAdult = true;
+                        else if (isAdult == false) isAdult = null;
+                        PrintTypeSelection();
+                        Console.CursorTop = 15;
+                    }
+                    if (Console.CursorTop == 17)
+                    {
+                        Console.CursorLeft = 3;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.White;
+                        string[] date = Console.ReadLine().Split(' ');
+
+                        if (date.Length >= 1 && date[0].Length == 4 && int.Parse(date[0]) != 0)
+                            start = int.Parse(date[0]);
+                        else
+                            start = null;
+
+                        if (date.Length == 2 && date[1].Length == 4 && int.Parse(date[1]) != 0)
+                            end = int.Parse(date[1]);
+                        else
+                            end = null;
+
+                        Console.ResetColor();
+                    }
+                    if (Console.CursorTop == 19)
+                    {
+                        Console.CursorLeft = 3;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.White;
+                        string[] runtime = Console.ReadLine().Split(' ');
+
+                        if (runtime.Length >= 1 && runtime[0].Length == 4 && int.Parse(runtime[0]) != 0)
+                            runtimeLow = int.Parse(runtime[0]);
+                        else
+                            runtimeLow = null;
+
+                        if (runtime.Length == 2 && runtime[1].Length == 4 && int.Parse(runtime[1]) != 0)
+                            runtimeHigh = int.Parse(runtime[1]);
+                        else
+                            runtimeHigh = null;
+
+                        Console.ResetColor();
+                    }
+                    if (Console.CursorTop >= 21 && Console.CursorTop <= 47)
+                    {
+                        int indexes = Console.CursorTop - 21;
+                        if (genres.Contains((TitleGenre)indexes))
+                            genres.Remove((TitleGenre)indexes);
+                        else
+                            genres.Add((TitleGenre)indexes);
+                        PrintTypeSelection();
+                        Console.CursorTop = indexes + 21;
+                    }
+                    if (Console.CursorTop == 50)
+                        Titles(wantedTitle, types.ToArray(), isAdult, start, end, genres.ToArray(), runtimeLow, runtimeHigh);
                 }
-            }
+            } while (key != ConsoleKey.Q);
         }
 
         public static void Quit()
@@ -175,6 +214,16 @@ namespace LP2_P1
 
         private static void PrintTypeSelection()
         {
+            string description1 = "  (- no filter | X adult | ' ' not adult)\n\n";
+
+            string description2 = "   Insert 8 digits separated by space, " +
+                "press enter to leave them empty, any unexpected characters " +
+                "will reset to 'unfilled'";
+
+            string description3 = "   Insert the minimum and maximum runtime " +
+                " we should look for any unexpected characters will " +
+                "reset to 'unfilled'\n\n";
+
             Console.SetCursorPosition(0, 5);
             for (int i = 0; i < 9; i++)
             {
@@ -182,13 +231,33 @@ namespace LP2_P1
                 Console.WriteLine($"   [{a}]{(TitleType)i}");
             }
 
-            Console.WriteLine("      (- no filter | X adult | ' ' not adult)");
             if (isAdult.HasValue == false)
-                Console.Write("   [-]Adult Videos");
+                Console.Write("\n   [-]Adult Videos" + description1);
             else if (isAdult.Value == true)
-                Console.Write("   [X]Adult Videos");
+                Console.Write("\n   [X]Adult Videos" + description1);
             else if (isAdult.Value == false)
-                Console.Write("   [ ]Adult Videos");
+                Console.Write("\n   [ ]Adult Videos" + description1);
+
+            for (int i = 0; i < 2; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.CursorLeft = 3;
+                Console.Write($"                                                   ");
+                Console.ResetColor();
+                Console.Write(i == 1? description3: description2 + " \n \n");
+            }
+            
+            for (int i = 0; i < 27; i++)
+            {
+                char a = genres.Contains((TitleGenre)i) ? 'X' : ' ';
+                Console.WriteLine($"   [{a}]{(TitleGenre)i}");
+            }
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\n     ----------------");
+            Console.WriteLine("    |     Search     |");
+            Console.WriteLine("     ----------------");
+            Console.ResetColor();
         }
 
         private static void PrintSearchBar()

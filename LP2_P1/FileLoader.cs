@@ -38,7 +38,7 @@ namespace LP2_P1
                         int? startYearNul = default;
                         int? endYearNul = default;
                         int? runtimeMinsNul = default;
-                        TitleType? typeNul = default;
+                        TitleType typeNul = default;
 
                         // Declare non-nullable variables
                         string[] genres;

@@ -6,7 +6,7 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
-        private IEnumerable<TitleBasics> originalNamedTitles;
+        private List<TitleBasics> originalNamedTitles = new List<TitleBasics>(63506070);
         private IEnumerable<TitleBasics> namedTitles;
         private State listState = State.Unordered;
         private int skipNumber = 30;
@@ -15,11 +15,6 @@ namespace LP2_P1
         public void SearchTitle(IEnumerable<TitleBasics> wantedTitle)
         {
             originalNamedTitles = wantedTitle.ToList();
-                
-                //FileLoader.LoadTitleBasics()
-                //.Where(c => c.PrimaryTitle.ToLower()
-                //.Contains(wantedTitle.Trim().ToLower()))
-                //.Select(c => c).ToList();
 
             SearchMenu();
         }
