@@ -102,7 +102,7 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.Enter:
-                        TitleDetails.DisplayInfo(
+                        TitleDetails.Menu(
                             namedTitles.ElementAt((Console.CursorTop - 1) + skipNumber - 30));
                         UpdatePage();
                         UpdatePage();
@@ -124,6 +124,8 @@ namespace LP2_P1
         // Sorts searched items by Type
         private void UpdatePage()
         {
+            Console.Clear();
+
             PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
                 .Skip(skipNumber - 30).Select(c => c)
                 .ToList());
@@ -356,8 +358,6 @@ namespace LP2_P1
 
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
-            Console.Clear();
-
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Black;
 
