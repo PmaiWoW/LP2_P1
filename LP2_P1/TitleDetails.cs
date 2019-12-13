@@ -6,59 +6,19 @@ namespace LP2_P1
 {
     static class TitleDetails
     {
-        public static void DisplayInfo(TitleBasics title)
-        {
-            int nonNullGenres = 0;
-            Console.Clear();
-
-            Console.WriteLine(title);
-
-            Console.CursorTop = 0;
-            Menu(nonNullGenres);
-        }
-
-        private static void Menu(int nonNullGenres)
+        public static void Menu(TitleBasics title)
         {
             ConsoleKey key = ConsoleKey.D0;
 
             while (key != ConsoleKey.B)
             {
+                Console.Clear();
+                Console.WriteLine(title);
+
                 Console.CursorLeft = 1;
-                Console.Write(">");
+                Console.WriteLine("\nPress 'B' to to back to previous menu");
 
                 key = Console.ReadKey().Key;
-
-                switch (key)
-                {
-                    case ConsoleKey.UpArrow:
-                        if (Console.CursorTop > 0)
-                        {
-                            Console.CursorLeft -= 2;
-                            Console.Write(" ");
-                            Console.CursorTop -= 1;
-                        }
-                        break;
-                    case ConsoleKey.DownArrow:
-                        if (Console.CursorTop < 5 + nonNullGenres)
-                        {
-                            Console.CursorLeft -= 2;
-                            Console.Write(" ");
-                            Console.CursorTop += 1;
-                        }
-                        break;
-                    case ConsoleKey.B:
-                        Console.Clear();
-                        Console.WriteLine("Going back to the previous menu." +
-                            "\nPress any key to continue.");
-                        Console.ReadKey(true);
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Invalid option. Press any key to " +
-                                "return to previous menu.");
-                        Console.ReadKey(true);
-                        break;
-                }
             }
         }
     }
