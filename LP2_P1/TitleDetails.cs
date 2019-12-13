@@ -50,13 +50,13 @@ namespace LP2_P1
                         Console.Clear();
                         Console.WriteLine("Going back to the previous menu." +
                             "\nPress any key to continue.");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
                         break;
                     default:
                         Console.Clear();
                         Console.WriteLine("Invalid option. Press any key to " +
                                 "return to previous menu.");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
                         break;
                 }
             }

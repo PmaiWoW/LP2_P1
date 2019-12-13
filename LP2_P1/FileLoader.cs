@@ -44,6 +44,7 @@ namespace LP2_P1
                         string[] genres;
                         TitleGenre[] genresFinal = new TitleGenre[3];
                         bool isAdult;
+                        string finalString;
 
                         string[] elements;
 
@@ -53,6 +54,7 @@ namespace LP2_P1
 
                         while ((line = sr.ReadLine()) != null)
                         {
+                            finalString = "";
                             elements = line.Split("\t");
 
                             int progress = (currentObject++ / (6350607 / 100));
@@ -84,7 +86,14 @@ namespace LP2_P1
 
                                 genres = elements[8].Split(",");
                                 for(int i = 0; i < genres.Length; i++)
-                                    if(Enum.TryParse(genres[i].ToUpper(),
+                                {
+                                    string[] hyfenGenres = genres[i].Split("-");
+                                    foreach(string hyfenS in hyfenGenres)
+                                        finalString += hyfenS;
+                                    genres[i] = finalString;
+                                }
+                                for (int i = 0; i < genres.Length; i++)
+                                    if (Enum.TryParse(genres[i].ToUpper(),
                                         out TitleGenre genre))
                                         genresFinal[i] = genre;
 

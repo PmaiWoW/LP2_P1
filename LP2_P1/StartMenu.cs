@@ -40,7 +40,7 @@ namespace LP2_P1
                         Console.WriteLine("This search functionality has not" +
                             " been implemented yet.\nPress any key to return" +
                             " to selection.");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
                         break;
 
                     case ConsoleKey.Q:
@@ -51,7 +51,7 @@ namespace LP2_P1
                         Console.Clear();
                         Console.WriteLine("Invalid option. Press any key to " +
                             "return to selection.");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
                         break;
                 }
             } while (key != ConsoleKey.Q);
@@ -62,7 +62,7 @@ namespace LP2_P1
             TitleGenre?[] genres, int? runtime1, int? runtime2)
         {
             IEnumerable<TitleBasics> originalNamedTitles = FileLoader.LoadTitleBasics();
-
+            
             if (wantedTitle != null)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.PrimaryTitle.ToLower().Contains
@@ -86,8 +86,10 @@ namespace LP2_P1
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.IsAdult == adult);
             for (int i = 0; i < genres.Length - 1; i++)
-                originalNamedTitles = originalNamedTitles.Where
-                    (c => c.Genres.Contains(genres[i]));
+                originalNamedTitles =
+                    from title in originalNamedTitles
+                    where title.Genres.Contains(genres[i])
+                    select title;
 
             TitleSearch searcher = new TitleSearch();
             searcher.SearchTitle(originalNamedTitles);
@@ -198,7 +200,7 @@ namespace LP2_P1
                         PrintTypeSelection();
                         Console.CursorTop = indexes + 21;
                     }
-                    if (Console.CursorTop == 50)
+                    if (Console.CursorTop == 49)
                         Titles(wantedTitle, types.ToArray(), isAdult, start, end, genres.ToArray(), runtimeLow, runtimeHigh);
                 }
             } while (key != ConsoleKey.Q);
@@ -209,7 +211,7 @@ namespace LP2_P1
             Console.Clear();
             Console.WriteLine("Thank you for using this searcher, we hope " +
                 "to see you again!\nPress any key to exit.");
-            Console.ReadKey();
+            Console.ReadKey(true);
             Environment.Exit(0);
         }
 
@@ -248,7 +250,7 @@ namespace LP2_P1
                 Console.Write(i == 1? description3: description2 + " \n \n");
             }
             
-            for (int i = 0; i < 27; i++)
+            for (int i = 0; i < 26; i++)
             {
                 char a = genres.Contains((TitleGenre)i) ? 'X' : ' ';
                 Console.WriteLine($"   [{a}]{(TitleGenre)i}");

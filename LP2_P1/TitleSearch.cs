@@ -36,7 +36,7 @@ namespace LP2_P1
                     Console.Clear();
                     Console.WriteLine("No titles found, returning to main " +
                         "menu...");
-                    Console.ReadKey();
+                    Console.ReadKey(true);
                     return;
                 }
 
@@ -97,7 +97,7 @@ namespace LP2_P1
                         namedTitles = originalNamedTitles;
                         Console.WriteLine("Search results have been reset to" +
                             " name only.\nPress any key to continue.");
-                        Console.ReadKey();
+                        Console.ReadKey(true);
                         UpdatePage();
                         break;
 
@@ -402,7 +402,7 @@ namespace LP2_P1
             Console.Clear();
             Console.WriteLine("Invalid option. Press any key to " +
                     "return to previous menu.");
-            Console.ReadKey();
+            Console.ReadKey(true);
         }
 
         private void PrintBackToMenu()
@@ -410,7 +410,7 @@ namespace LP2_P1
             Console.Clear();
             Console.WriteLine("Going back to the previous menu." +
                 "\nPress any key to continue.");
-            Console.ReadKey();
+            Console.ReadKey(true);
         }
 
         private enum State { Ascending, Descending, Unordered };
