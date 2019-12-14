@@ -97,8 +97,8 @@ namespace LP2_P1
                                         out TitleGenre genre))
                                         genresFinal[i] = genre;
 
-                                yield return new TitleBasics(elements[0], 
-                                    typeNul, elements[2], elements[3], 
+                                yield return new TitleBasics(elements[0],
+                                    typeNul, elements[2], elements[3],
                                     isAdult, genresFinal, startYearNul,
                                     endYearNul,  runtimeMinsNul);
                             }
@@ -140,7 +140,8 @@ namespace LP2_P1
 
                             if (elements[0] != "tconst")
                             {
-                                float.TryParse(elements[1], out float averageRating);
+                                float.TryParse(elements[1], 
+                                    out float averageRating);
                                 int.TryParse(elements[2], out int numVotes);
 
                                 yield return new TitleRatings(elements[0],

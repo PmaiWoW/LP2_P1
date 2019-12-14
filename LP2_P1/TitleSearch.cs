@@ -9,8 +9,9 @@ namespace LP2_P1
         private List<TitleBasics> originalNamedTitles = new List<TitleBasics>(63506070);
         private IEnumerable<TitleBasics> namedTitles;
         private State listState = State.Unordered;
-        private int skipNumber = 30;
+        private int skipNumber = 0;
         private int displayedAmount = 0;
+        private const int displayNum = 30;
 
         public void SearchTitle(IEnumerable<TitleBasics> wantedTitle)
         {
@@ -45,7 +46,8 @@ namespace LP2_P1
                 switch (key)
                 {
                     case ConsoleKey.RightArrow:
-                        if (namedTitles.Count() / skipNumber > 0)
+                        if (namedTitles.Count() / (skipNumber + 30) > 0 ||
+                            skipNumber == 0)
                         {
                             skipNumber += 30;
                             UpdatePage();
@@ -53,7 +55,7 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.LeftArrow:
-                        if (skipNumber > 30)
+                        if (skipNumber + 30 > 30)
                         {
                             skipNumber -= 30;
                             UpdatePage();
@@ -103,8 +105,8 @@ namespace LP2_P1
 
                     case ConsoleKey.Enter:
                         TitleDetails.Menu(
-                            namedTitles.ElementAt((Console.CursorTop - 1) + skipNumber - 30));
-                        UpdatePage();
+                            namedTitles.ElementAt((Console.CursorTop - 1) +
+                            skipNumber));
                         UpdatePage();
                         break;
 
@@ -126,8 +128,8 @@ namespace LP2_P1
         {
             Console.Clear();
 
-            PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
-                .Skip(skipNumber - 30).Select(c => c)
+            PrintResults(namedTitles.SkipLast(namedTitles.Count() - 
+                skipNumber - displayNum).Skip(skipNumber).Select(c => c)
                 .ToList());
         }
 
@@ -276,8 +278,8 @@ namespace LP2_P1
 
         private void IsAdultFilter()
         {
-            PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
-                .Skip(skipNumber - 30).Select(c => c));
+            PrintResults(namedTitles.SkipLast(namedTitles.Count() + skipNumber)
+                .Skip(skipNumber).Select(c => c));
             bool? adultsOnly = null;
 
             ConsoleKey key;
