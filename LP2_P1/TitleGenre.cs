@@ -1,0 +1,32 @@
+﻿namespace LP2_P1
+{
+    public enum TitleGenre
+    {
+        ACTION,
+        ADVENTURE,
+        ANIMATION,
+        BIOGRAPHY,
+        COMEDY,
+        CRIME,
+        DOCUMENTARY,
+        DRAMA,
+        FAMILY,
+        FANTASY,
+        FILMNOIR,
+        GAMESHOW,
+        HISTORY,
+        HORROR,
+        MUSIC,
+        MUSICAL,
+        MYSTERY,
+        NEWS,
+        REALITYTV,
+        ROMANCE,
+        SCIFI,
+        SPORT,
+        TALKSHOW,
+        THRILLER,
+        WAR,
+        WESTERN
+    }
+}

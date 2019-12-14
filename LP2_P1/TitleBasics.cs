@@ -3,48 +3,57 @@
     public struct TitleBasics
     {
         public string TConst { get; }
-        public string TitleType { get; }
+        public TitleType? Type { get; }
         public string PrimaryTitle { get; }
         public string OriginalTitle { get; }
         public bool IsAdult { get; }
-        public int StartYear { get; }
+        public int? StartYear { get; }
         public int? EndYear { get; }
         public int? RuntimeMinutes { get; }
-        public string[] Genres { get; }
+        public TitleGenre?[] Genres { get; }
 
-        public TitleBasics(string tConst, string titleType,
-            string primaryTitle, string originalTitle, bool isAdult, 
-            int startYear, string[] genres, int? endYear = null,
+        public TitleBasics(string tConst, TitleType? type,
+            string primaryTitle, string originalTitle, bool isAdult,
+            TitleGenre[] genres, int? startYear = null, int? endYear = null,
             int? runtimeMinutes = null)
         {
             TConst = tConst;
-            TitleType = titleType;
+            Type = type;
             PrimaryTitle = primaryTitle;
             OriginalTitle = originalTitle;
             IsAdult = isAdult;
             StartYear = startYear;
             EndYear = endYear;
             RuntimeMinutes = runtimeMinutes;
-            Genres = new string[3];
-            for (int i = 0; i < genres.Length; i++) Genres[i] = genres[i];
+            Genres = new TitleGenre?[3];
+            for (int i = 0; i < genres?.Length; i++) Genres[i] = genres[i];
         }
 
         public override string ToString()
         {
-            for (int i = 0; i < 3; i++) 
-                Genres[i] = Genres[i] ?? @"\N";
-            string endYearPrint = 
+            string typePrint =
+                Type.HasValue ? Type.ToString() : @"\N";
+            string startYearPrint =
+                StartYear.HasValue ? StartYear.ToString() : @"\N";
+            string endYearPrint =
                 EndYear.HasValue ? EndYear.ToString() : @"\N";
             string isAdult = IsAdult ? "Adult Only" : "For Everyone";
+            string[] genresPrint = new string[3];
+            for (int i = 0; i < 3; i++)
+                genresPrint[i] = Genres[i].HasValue ? 
+                    Genres[i].ToString() : @"\N";
 
-            string s = $"Title Name: {PrimaryTitle}, Type: {TitleType}, " +
-               $"Is Adult Only? {isAdult}, " +
-               $"Release Year: {StartYear}, " +
-               $"Ending Year: {endYearPrint} " +
-               $"Runtime (Mins): {RuntimeMinutes}, " +
-               $"Genres: {Genres[0]}, {Genres[1]}, {Genres[2]}";
+            string s = $"   Title Name:      {PrimaryTitle}" +
+                $"\n   Original Title:  {PrimaryTitle}" +
+                $"\n   Type:            {typePrint}" +
+                $"\n   Age Restriction: {isAdult}" +
+                $"\n   Release Year:    {startYearPrint}" +
+                $"\n   Ending Year:     {endYearPrint}" +
+                $"\n   Runtime (Mins):  {RuntimeMinutes} " +
+                $"\n   Genres:          {genresPrint[0]}" +
+                $"\n                    {genresPrint[1]}" +
+                $"\n                    {genresPrint[2]}";
             return s;
         }
-            
     }
 }

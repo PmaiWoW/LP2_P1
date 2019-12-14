@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LP2_P1
+﻿namespace LP2_P1
 {
     public struct TitlePrincipals
     {
@@ -13,12 +9,12 @@ namespace LP2_P1
         public string Job { get; }
         public string Characters { get; }
 
-        public TitlePrincipals(string tconst, int ordering, string nconst, 
+        public TitlePrincipals(string tConst, int ordering, string nConst,
             string category, string job, string characters)
         {
-            Tconst = tconst;
+            Tconst = tConst;
             Ordering = ordering;
-            Nconst = nconst;
+            Nconst = nConst;
             Category = category;
             Job = job;
             Characters = characters;
