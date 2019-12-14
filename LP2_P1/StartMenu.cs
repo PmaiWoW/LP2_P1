@@ -223,15 +223,15 @@ namespace LP2_P1
 
         private static void PrintTypeSelection()
         {
-            string description1 = " " +
-                " (- no filter | X adult | ' ' not adult)\n\n";
+            string description1 = "  (- no filter | X adult | ' ' not adult)" +
+                "\n\n";
 
             string description2 = "   Insert 8 digits separated by space, " +
-                "press enter to leave them empty, any unexpected characters " +
+                "press enter to leave them empty, any unexpected characters" +
                 " will reset to 'unfilled'";
 
-            string description3 = "   Insert the minimum and maximum runtime" +
-                " we should look for any unexpected characters will " +
+            string description3 = "   Insert the minimum and maximum " +
+                "runtime we should look for any unexpected characters will " +
                 "reset to 'unfilled'\n\n";
 
             Console.SetCursorPosition(0, 5);

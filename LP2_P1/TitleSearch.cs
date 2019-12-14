@@ -47,18 +47,18 @@ namespace LP2_P1
                 switch (key)
                 {
                     case ConsoleKey.RightArrow:
-                        if (namedTitles.Count() / (skipNumber + 30) > 0 ||
+                        if (namedTitles.Count() / (skipNumber + displayNum) > 0 ||
                             skipNumber == 0)
                         {
-                            skipNumber += 30;
+                            skipNumber += displayNum;
                             UpdatePage();
                         }
                         break;
 
                     case ConsoleKey.LeftArrow:
-                        if (skipNumber + 30 > 30)
+                        if (skipNumber + displayNum > displayNum)
                         {
-                            skipNumber -= 30;
+                            skipNumber -= displayNum;
                             UpdatePage();
                         }
                         break;
