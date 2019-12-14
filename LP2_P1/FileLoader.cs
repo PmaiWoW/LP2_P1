@@ -27,7 +27,7 @@ namespace LP2_P1
             int previous = 0;
 
             using (FileStream fs = new FileStream(fileTitleBasicsFull,
-                FileMode.Open))
+                FileMode.Open, FileAccess.Read))
             {
                 using (GZipStream gzs = new GZipStream(fs,
                     CompressionMode.Decompress))

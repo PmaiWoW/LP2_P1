@@ -6,7 +6,8 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
-        private List<TitleBasics> originalNamedTitles = new List<TitleBasics>(63506070);
+        private List<TitleBasics> originalNamedTitles =
+            new List<TitleBasics>(63506070);
         private IEnumerable<TitleBasics> namedTitles;
         private State listState = State.Unordered;
         private int skipNumber = 0;
@@ -90,13 +91,14 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.F:
-                        Filter();
+                        //Filter();
                         UpdatePage();
                         break;
 
                     case ConsoleKey.T:
                         Console.Clear();
                         namedTitles = originalNamedTitles;
+                        listState = State.Unordered;
                         Console.WriteLine("Search results have been reset to" +
                             " name only.\nPress any key to continue.");
                         Console.ReadKey(true);
@@ -135,14 +137,89 @@ namespace LP2_P1
 
         private void ReverseOrder()
         {
+            //Reverses order, only if the list is already ordered
             if (listState != State.Unordered)
+            {
                 listState = listState == State.Descending ?
                     State.Ascending : State.Descending;
 
-            namedTitles = namedTitles.Reverse();
+                namedTitles = namedTitles.Reverse();
+            }
+
             UpdatePage();
         }
 
+        public void Sort(ref IEnumerable<TitleBasics> namedTitles)
+        {
+            ConsoleKey key;
+
+            Console.Clear();
+            Console.CursorLeft = 0;
+            Console.CursorTop = 0;
+
+            // Display Order Options
+            Console.WriteLine("\n '1' to order by type" +
+                "\n '2' to order by title" +
+                "\n '3' to order by adult rating" +
+                "\n '4' to order by year of release" +
+                "\n '5' to order by year of end" +
+                "\n '6' to order by genre" +
+                "\n '7' to order by rating" +
+                "\n '7' to reset order" +
+                "\n 'B' to go back \n");
+
+            // Read user's input
+            key = Console.ReadKey().Key;
+
+            // Resets titles every time the user orders the list
+            if (key != ConsoleKey.B)
+            {
+                namedTitles = originalNamedTitles;
+                listState = State.Ascending;
+            }
+            // Switch case between the possible options selected
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    namedTitles = namedTitles.OrderBy(c => c.Type);
+                    break;
+
+                case ConsoleKey.D2:
+                    namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
+                    break;
+
+                case ConsoleKey.D3:
+                    namedTitles = namedTitles.OrderBy(c => c.IsAdult);
+                    break;
+
+                case ConsoleKey.D4:
+                    namedTitles = namedTitles.OrderBy(c => c.StartYear);
+                    break;
+
+                case ConsoleKey.D5:
+                    namedTitles = namedTitles.OrderBy(c => c.EndYear);
+                    break;
+
+                case ConsoleKey.D6:
+                    namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
+                    break;
+
+                case ConsoleKey.D7:
+                    namedTitles = originalNamedTitles;
+                    listState = State.Unordered;
+                    break;
+
+                case ConsoleKey.B:
+                    PrintBackToMenu();
+                    break;
+
+                default:
+                    PrintInvalidChoice();
+                    break;
+            }
+        }
+
+        /*
         private void Filter()
         {
             Console.Clear();
@@ -198,8 +275,8 @@ namespace LP2_P1
                         "Comedy - Romance - Sport - Action - News - Drama" +
                         "\nFantasy - Horror - Biography - Music - War - " +
                         "Crime - Western - Family - Adventure - History" +
-                        "\nMystery - 0SciFi - Thriller - Musical - FilmNoir - " +
-                        "GameShow - TalkShow - RealityTV - Adult");
+                        "\nMystery - 0SciFi - Thriller - Musical - " +
+                        "FilmNoir - GameShow - TalkShow - RealityTV - Adult");
 
                     input = Console.ReadLine();
                     if (Enum.TryParse(input.Trim().ToUpper(),
@@ -214,64 +291,6 @@ namespace LP2_P1
 
                 case ConsoleKey.B:
                     PrintBackToMenu();
-                    break;
-            }
-        }
-
-        public void Sort(ref IEnumerable<TitleBasics> namedTitles)
-        {
-            ConsoleKey key;
-
-            Console.Clear();
-            Console.CursorLeft = 0;
-            Console.CursorTop = 0;
-
-            // Display Order Options
-            Console.WriteLine("\n '1' to order by type" +
-                "\n '2' to order by title" +
-                "\n '3' to order by adult rating" +
-                "\n '4' to order by year of release" +
-                "\n '5' to order by year of end" +
-                "\n '6' to order by genre" +
-                "\n '7' to order by rating" +
-                "\n 'B' to go back \n");
-
-            // Read user's input
-            key = Console.ReadKey().Key;
-
-            // Switch case between the possible options selected
-            switch (key)
-            {
-                case ConsoleKey.D1:
-                    namedTitles = namedTitles.OrderBy(c => c.Type);
-                    break;
-
-                case ConsoleKey.D2:
-                    namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
-                    break;
-
-                case ConsoleKey.D3:
-                    namedTitles = namedTitles.OrderBy(c => c.IsAdult);
-                    break;
-
-                case ConsoleKey.D4:
-                    namedTitles = namedTitles.OrderBy(c => c.StartYear);
-                    break;
-
-                case ConsoleKey.D5:
-                    namedTitles = namedTitles.OrderBy(c => c.EndYear);
-                    break;
-
-                case ConsoleKey.D6:
-                    namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
-                    break;
-
-                case ConsoleKey.B:
-                    PrintBackToMenu();
-                    break;
-
-                default:
-                    PrintInvalidChoice();
                     break;
             }
         }
@@ -357,6 +376,7 @@ namespace LP2_P1
 
             UpdatePage();
         }
+        */
 
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
@@ -377,15 +397,20 @@ namespace LP2_P1
 
             Console.WriteLine("");
 
+            string pTitle;
+            int maxLenght = 100;
+
             displayedAmount = titlesToDisplay.Count();
 
             for (int i = 0; i < titlesToDisplay.Count(); i++)
             {
+                pTitle = titlesToDisplay.ElementAt(i).PrimaryTitle;
                 Console.CursorLeft = 0;
-                Console.Write($"   {titlesToDisplay.ElementAt(i).PrimaryTitle}");
+                Console.Write($"   " +
+                 $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}");
                 Console.CursorLeft = 100;
                 Console.WriteLine($"| {titlesToDisplay.ElementAt(i).Type}");
-            }
+            }            
 
             Console.WriteLine("\n 'O' to order " +
                 "\n 'F' to filter " +

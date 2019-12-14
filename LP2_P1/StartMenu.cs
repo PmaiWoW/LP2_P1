@@ -61,7 +61,8 @@ namespace LP2_P1
             bool? adult, int? startDate, int? endDate,
             TitleGenre?[] genres, int? runtime1, int? runtime2)
         {
-            IEnumerable<TitleBasics> originalNamedTitles = FileLoader.LoadTitleBasics();
+            IEnumerable<TitleBasics> originalNamedTitles =
+                FileLoader.LoadTitleBasics();
             
             if (wantedTitle != null)
                 originalNamedTitles = originalNamedTitles.Where
@@ -159,13 +160,15 @@ namespace LP2_P1
                         Console.BackgroundColor = ConsoleColor.White;
                         string[] date = Console.ReadLine().Split(' ');
 
-                        if (date.Length >= 1 && date[0].Length == 4 && int.Parse(date[0]) != 0)
-                            start = int.Parse(date[0]);
+                        if (date.Length >= 1 && date[0].Length == 4 &&
+                            int.Parse(date[0]) != 0)
+                                start = int.Parse(date[0]);
                         else
                             start = null;
 
-                        if (date.Length == 2 && date[1].Length == 4 && int.Parse(date[1]) != 0)
-                            end = int.Parse(date[1]);
+                        if (date.Length == 2 && date[1].Length == 4 &&
+                            int.Parse(date[1]) != 0)
+                                end = int.Parse(date[1]);
                         else
                             end = null;
 
@@ -178,13 +181,15 @@ namespace LP2_P1
                         Console.BackgroundColor = ConsoleColor.White;
                         string[] runtime = Console.ReadLine().Split(' ');
 
-                        if (runtime.Length >= 1 && runtime[0].Length == 4 && int.Parse(runtime[0]) != 0)
-                            runtimeLow = int.Parse(runtime[0]);
+                        if (runtime.Length >= 1 && runtime[0].Length == 4 &&
+                            int.Parse(runtime[0]) != 0)
+                                runtimeLow = int.Parse(runtime[0]);
                         else
                             runtimeLow = null;
 
-                        if (runtime.Length == 2 && runtime[1].Length == 4 && int.Parse(runtime[1]) != 0)
-                            runtimeHigh = int.Parse(runtime[1]);
+                        if (runtime.Length == 2 && runtime[1].Length == 4 &&
+                            int.Parse(runtime[1]) != 0)
+                                runtimeHigh = int.Parse(runtime[1]);
                         else
                             runtimeHigh = null;
 
@@ -201,7 +206,8 @@ namespace LP2_P1
                         Console.CursorTop = indexes + 21;
                     }
                     if (Console.CursorTop == 49)
-                        Titles(wantedTitle, types.ToArray(), isAdult, start, end, genres.ToArray(), runtimeLow, runtimeHigh);
+                        Titles(wantedTitle, types.ToArray(), isAdult, start,
+                            end, genres.ToArray(), runtimeLow, runtimeHigh);
                 }
             } while (key != ConsoleKey.Q);
         }
@@ -217,13 +223,14 @@ namespace LP2_P1
 
         private static void PrintTypeSelection()
         {
-            string description1 = "  (- no filter | X adult | ' ' not adult)\n\n";
+            string description1 = " " +
+                " (- no filter | X adult | ' ' not adult)\n\n";
 
             string description2 = "   Insert 8 digits separated by space, " +
                 "press enter to leave them empty, any unexpected characters " +
-                "will reset to 'unfilled'";
+                " will reset to 'unfilled'";
 
-            string description3 = "   Insert the minimum and maximum runtime " +
+            string description3 = "   Insert the minimum and maximum runtime" +
                 " we should look for any unexpected characters will " +
                 "reset to 'unfilled'\n\n";
 
@@ -245,7 +252,8 @@ namespace LP2_P1
             {
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.CursorLeft = 3;
-                Console.Write($"                                                   ");
+                Console.Write($"                      " +
+                    $"                             ");
                 Console.ResetColor();
                 Console.Write(i == 1? description3: description2 + " \n \n");
             }
