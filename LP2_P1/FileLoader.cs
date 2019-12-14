@@ -87,10 +87,14 @@ namespace LP2_P1
                                 genres = elements[8].Split(",");
                                 for(int i = 0; i < genres.Length; i++)
                                 {
-                                    string[] hyfenGenres = genres[i].Split("-");
-                                    foreach(string hyfenS in hyfenGenres)
-                                        finalString += hyfenS;
-                                    genres[i] = finalString;
+                                    if (genres[i].Contains("-"))
+                                    {
+                                        string[] hyfenGenres =
+                                            genres[i].Split("-");
+                                        foreach (string hyfenS in hyfenGenres)
+                                            finalString += hyfenS;
+                                        genres[i] = finalString;
+                                    }
                                 }
                                 for (int i = 0; i < genres.Length; i++)
                                     if (Enum.TryParse(genres[i].ToUpper(),
