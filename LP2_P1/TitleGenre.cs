@@ -3,6 +3,7 @@
     public enum TitleGenre
     {
         ACTION,
+        ADULT,
         ADVENTURE,
         ANIMATION,
         BIOGRAPHY,
@@ -23,6 +24,7 @@
         REALITYTV,
         ROMANCE,
         SCIFI,
+        SHORT,
         SPORT,
         TALKSHOW,
         THRILLER,
