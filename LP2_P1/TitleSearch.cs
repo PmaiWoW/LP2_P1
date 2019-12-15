@@ -28,7 +28,7 @@ namespace LP2_P1
             ConsoleKey key = ConsoleKey.D0;
             UpdatePage();
 
-            while (key != ConsoleKey.Escape)
+            while (key != ConsoleKey.B)
             {
                 Console.CursorLeft = 1;
                 Console.Write(">");
@@ -173,7 +173,7 @@ namespace LP2_P1
                 "\n 'O' to order " +
                 "\n 'R' to reverse the order " +
                 "\n 'T' to reset the order " +
-                "\n 'ESC' to go back to previous menu");
+                "\n 'B' to go back to previous menu");
 
             Console.CursorTop = 1;
         }
@@ -193,7 +193,7 @@ namespace LP2_P1
                 "\n '5' to order by year of end" +
                 "\n '6' to order by genre" +
                 "\n '7' to order by rating" +
-                "\n 'ESC' to go back \n");
+                "\n 'B' to go back \n");
 
             // Read user's input
             key = Console.ReadKey().Key;
@@ -231,7 +231,7 @@ namespace LP2_P1
                     namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
                     break;
 
-                case ConsoleKey.Escape:
+                case ConsoleKey.B:
                     break;
 
                 default:

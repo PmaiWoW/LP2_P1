@@ -20,7 +20,7 @@ namespace LP2_P1
             SearchMenu.MenuLoop();
             
             string wantedTitle = Console.ReadLine();
-            //Console.ResetColor();
+            Console.ResetColor();
         }
     }
 }
