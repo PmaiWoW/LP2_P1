@@ -55,10 +55,6 @@ namespace LP2_P1
                 FileLoader.LoadTitleRatings();
             IEnumerable<TitleBasics> titleBasicsList =
                 FileLoader.LoadTitleBasics();
-            IEnumerable<(TitleBasics titles, TitleRatings ratings)> mixedList =
-                from titles in titleBasicsList
-                join ratings in titleRatingsList on titles.TConst equals ratings.Tconst
-                select (titles, ratings);
 
             if (wantedTitle != null)
                 titleBasicsList = titleBasicsList.Where
@@ -86,7 +82,13 @@ namespace LP2_P1
                 titleBasicsList =
                     from title in titleBasicsList
                     where title.Genres.Contains(genres[i])
-                    select title; 
+                    select title;
+
+            IEnumerable<(TitleBasics titles, TitleRatings ratings)> mixedList =
+                from titles in titleBasicsList
+                join ratings in titleRatingsList on titles.TConst equals ratings.Tconst
+                select (titles, ratings);
+
             if (rating1.HasValue)
                 mixedList = mixedList.Where(c => c.ratings.AverageRating >= rating1);
             if (rating2.HasValue)
