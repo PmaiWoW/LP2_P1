@@ -23,12 +23,10 @@ namespace LP2_P1
                 "\n\n";
 
             string description2 = "   Start Year & End Year - Insert 2 " +
-                "years, separated by space, any unexpected characters will " +
-                "reset to 'unfilled'";
+                "years, separated by a space";
 
             string description3 = "   Minimum and Maximum Runtime - Insert " +
-                "the minimum and maximum runtime we should look for, any " +
-                "unexpected characters will reset to 'unfilled'\n\n";
+                "the minimum and maximum runtime\n\n";
 
             Console.SetCursorPosition(0, 5);
             for (int i = 0; i < 10; i++)
