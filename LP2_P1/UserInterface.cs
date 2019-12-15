@@ -19,8 +19,8 @@ namespace LP2_P1
         public static void PrintTypeSelection(ICollection<TitleType> types,
             ICollection<TitleGenre?> genres, bool? isAdult)
         {
-            string description1 = "  (- no filter | X adult | ' ' not adult)" +
-                "\n\n";
+            string description1 = "  Adult Videos (- no filter | X adult |" +
+                "' ' not adult)\n\n";
 
             string description2 = "   Start Year & End Year - Insert 2 " +
                 "years, separated by a space";
@@ -35,12 +35,14 @@ namespace LP2_P1
                 Console.WriteLine($"   [{a}]{(TitleType)i}");
             }
 
-            if (isAdult.HasValue == false)
-                Console.Write("\n   [-]Adult Videos" + description1);
-            else if (isAdult.Value == true)
-                Console.Write("\n   [X]Adult Videos" + description1);
-            else if (isAdult.Value == false)
-                Console.Write("\n   [ ]Adult Videos" + description1);
+            char isAdultChar = '-';
+
+            if (isAdult.HasValue == false) isAdultChar = '-';
+            else if (isAdult == true) isAdultChar = 'X';
+            else if (isAdult == false) isAdultChar = ' ';
+
+            Console.Write($"\n   [{isAdultChar}]" + description1);
+
 
             for (int i = 0; i < 2; i++)
             {
