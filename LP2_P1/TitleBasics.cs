@@ -37,6 +37,8 @@
                 StartYear.HasValue ? StartYear.ToString() : @"\N";
             string endYearPrint =
                 EndYear.HasValue ? EndYear.ToString() : @"\N";
+            string runtimePrint = RuntimeMinutes.HasValue ? 
+                RuntimeMinutes.ToString() : @"\N";
             string isAdult = IsAdult ? "Adult Only" : "For Everyone";
             string[] genresPrint = new string[3];
             for (int i = 0; i < 3; i++)
@@ -44,7 +46,7 @@
                     Genres[i].ToString() : @"\N";
 
             string s = $"   Title Name:      {PrimaryTitle}" +
-                $"\n   Original Title:  {PrimaryTitle}" +
+                $"\n   Original Title:  {OriginalTitle}" +
                 $"\n   Type:            {typePrint}" +
                 $"\n   Age Restriction: {isAdult}" +
                 $"\n   Release Year:    {startYearPrint}" +

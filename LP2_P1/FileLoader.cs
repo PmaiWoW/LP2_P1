@@ -27,7 +27,7 @@ namespace LP2_P1
             int previous = 0;
 
             using (FileStream fs = new FileStream(fileTitleBasicsFull,
-                FileMode.Open))
+                FileMode.Open, FileAccess.Read))
             {
                 using (GZipStream gzs = new GZipStream(fs,
                     CompressionMode.Decompress))
@@ -48,8 +48,6 @@ namespace LP2_P1
 
                         string[] elements;
 
-                        Console.WriteLine();
-                        Console.WriteLine("Loading...");
                         CreateLoadingBar();
 
                         while ((line = sr.ReadLine()) != null)
@@ -96,6 +94,10 @@ namespace LP2_P1
                                         genres[i] = finalString;
                                     }
                                 }
+
+                                Array.Resize<TitleGenre>(ref genresFinal,
+                                    genres.Length);
+
                                 for (int i = 0; i < genres.Length; i++)
                                     if (Enum.TryParse(genres[i].ToUpper(),
                                         out TitleGenre genre))
@@ -159,6 +161,7 @@ namespace LP2_P1
 
         private static void CreateLoadingBar()
         {
+            Console.WriteLine("\n\n\nLoading...");
             Console.BackgroundColor = ConsoleColor.DarkRed;
             for (int i = 0; i < 100; i++)
                 Console.Write(" ");
