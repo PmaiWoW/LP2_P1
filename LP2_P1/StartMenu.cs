@@ -104,8 +104,8 @@ namespace LP2_P1
 
             ConsoleKey key;
 
-            PrintSearchBar();
-            PrintTypeSelection();
+            UserInterface.PrintSearchBar();
+            UserInterface.PrintTypeSelection(types, genres, isAdult);
 
             Console.CursorTop = 2;
 
@@ -130,7 +130,7 @@ namespace LP2_P1
                 {
                     if (Console.CursorTop == 2)
                     {
-                        PrintSearchBar();
+                        UserInterface.PrintSearchBar();
                         Console.CursorLeft = 4;
                         Console.BackgroundColor = ConsoleColor.White;
                         Console.ForegroundColor = ConsoleColor.Black;
@@ -144,7 +144,8 @@ namespace LP2_P1
                             types.Remove((TitleType)index);
                         else
                             types.Add((TitleType)index);
-                        PrintTypeSelection();
+                        UserInterface.PrintTypeSelection(types, genres,
+                            isAdult);
                         Console.CursorTop = index + 5;
                     }
                     if (Console.CursorTop == 15)
@@ -152,7 +153,8 @@ namespace LP2_P1
                         if (isAdult == true) isAdult = false;
                         else if (isAdult == null) isAdult = true;
                         else if (isAdult == false) isAdult = null;
-                        PrintTypeSelection();
+                        UserInterface.PrintTypeSelection(types, genres,
+                            isAdult);
                         Console.CursorTop = 15;
                     }
                     if (Console.CursorTop == 17)
@@ -204,7 +206,8 @@ namespace LP2_P1
                             genres.Remove((TitleGenre)indexes);
                         else
                             genres.Add((TitleGenre)indexes);
-                        PrintTypeSelection();
+                        UserInterface.PrintTypeSelection(types, genres, 
+                            isAdult);
                         Console.CursorTop = indexes + 21;
                     }
                     if (Console.CursorTop == 52)
@@ -219,72 +222,9 @@ namespace LP2_P1
 
         public static void Quit()
         {
-            Console.Clear();
-            Console.WriteLine("Thank you for using this searcher, we hope " +
-                "to see you again!\nPress any key to exit.");
+            UserInterface.QuitMessage();
             Console.ReadKey(true);
             Environment.Exit(0);
-        }
-
-        private static void PrintTypeSelection()
-        {
-            string description1 = "  (- no filter | X adult | ' ' not adult)" +
-                "\n\n";
-
-            string description2 = "   Insert 8 digits separated by space, " +
-                "press enter to leave them empty, any unexpected characters" +
-                " will reset to 'unfilled'";
-
-            string description3 = "   Insert the minimum and maximum " +
-                "runtime we should look for any unexpected characters will " +
-                "reset to 'unfilled'\n\n";
-
-            Console.SetCursorPosition(0, 5);
-            for (int i = 0; i < 10; i++)
-            {
-                char a = types.Contains((TitleType)i) ? 'X' : ' ';
-                Console.WriteLine($"   [{a}]{(TitleType)i}");
-            }
-
-            if (isAdult.HasValue == false)
-                Console.Write("\n   [-]Adult Videos" + description1);
-            else if (isAdult.Value == true)
-                Console.Write("\n   [X]Adult Videos" + description1);
-            else if (isAdult.Value == false)
-                Console.Write("\n   [ ]Adult Videos" + description1);
-
-            for (int i = 0; i < 2; i++)
-            {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.CursorLeft = 3;
-                Console.Write($"                      " +
-                    $"                             ");
-                Console.ResetColor();
-                Console.Write(i == 1? description3: description2 + " \n \n");
-            }
-            
-            for (int i = 0; i < 28; i++)
-            {
-                char a = genres.Contains((TitleGenre)i) ? 'X' : ' ';
-                Console.WriteLine($"   [{a}]{(TitleGenre)i}");
-            }
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\n     ----------------");
-            Console.WriteLine("    |     Search     |");
-            Console.WriteLine("     ----------------");
-            Console.ResetColor();
-        }
-
-        private static void PrintSearchBar()
-        {
-            Console.SetCursorPosition(3, 0);
-            Console.WriteLine("Write the name of what you're looking for.\n");
-            Console.CursorLeft = 3;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.Write("                                                 ");
-            Console.SetCursorPosition(2, 2);
-            Console.ResetColor();
         }
     }
 }
