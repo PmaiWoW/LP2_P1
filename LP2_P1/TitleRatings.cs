@@ -12,5 +12,9 @@
             AverageRating = averageRating;
             NumVotes = numVotes;
         }
+        public override string ToString()
+        {
+            return $"\n   Average Ratings: {AverageRating} in {NumVotes} votes";
+        }
     }
 }

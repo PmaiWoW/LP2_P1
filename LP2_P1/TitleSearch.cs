@@ -6,32 +6,30 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
-        private IEnumerable<TitleBasics> namedTitles;
+        //private List<TitleBasics> originalNamedTitles =
+        //    new List<TitleBasics>(63506070);
+        //private IEnumerable<TitleBasics> namedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> originalNamedTitles;
+
+        //private IEnumerable<(TitleBasics p, TitleRatings c)> namedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> namedTitles;
+
         private State listState = State.Unordered;
-        private int skipNumber = 30;
+        private int skipNumber = 0;
         private int displayedAmount = 0;
+        private const int displayNum = 30;
 
-        public void SearchTitle(string wantedTitle)
+        public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> wantedTitle)
         {
-            namedTitles = FileLoader.LoadTitleBasics()
-                .Where(c => c.PrimaryTitle.ToLower()
-                .Contains(wantedTitle.Trim().ToLower()))
-                .Select(c => c).ToList();
-
+            originalNamedTitles = wantedTitle.ToHashSet();
             SearchMenu();
         }
 
         private void SearchMenu()
         {
-            ConsoleKey key = ConsoleKey.L;
+            namedTitles = originalNamedTitles;
 
-            if(!namedTitles.Any(c => c.TConst != null))
-            {
-                Console.Clear();
-                Console.WriteLine("No titles found, returning to search " +
-                    "menu...");
-                return;
-            }
+            ConsoleKey key = ConsoleKey.D0;
             UpdatePage();
 
             while (key != ConsoleKey.B)
@@ -39,31 +37,23 @@ namespace LP2_P1
                 Console.CursorLeft = 1;
                 Console.Write(">");
 
+                if (!namedTitles.Any())
+                {
+                    Console.Clear();
+                    Console.WriteLine("No titles found, returning to main " +
+                        "menu...");
+                    Console.ReadKey(true);
+                    return;
+                }
+
                 key = Console.ReadKey().Key;
 
                 switch (key)
                 {
-                    case ConsoleKey.RightArrow:
-                        if (namedTitles.Count() / skipNumber > 0)
-                        {
-                            skipNumber += 30;
-                            UpdatePage();
-                        }
-                        break;
-
-                    case ConsoleKey.LeftArrow:
-                        if (skipNumber > 30)
-                        {
-                            skipNumber -= 30;
-                            UpdatePage();
-                        }
-                        break;
-
                     case ConsoleKey.UpArrow:
                         if (Console.CursorTop > 1)
                         {
-                            Console.CursorLeft -= 2;
-                            Console.Write(" ");
+                            UserInterface.ClearSpace();
                             Console.CursorTop -= 1;
                         }
                         break;
@@ -71,39 +61,54 @@ namespace LP2_P1
                     case ConsoleKey.DownArrow:
                         if (Console.CursorTop < displayedAmount)
                         {
-                            Console.CursorLeft -= 2;
-                            Console.Write(" ");
+                            UserInterface.ClearSpace();
                             Console.CursorTop += 1;
+                        }
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (namedTitles.Count() / (skipNumber + displayNum) > 0 ||
+                            skipNumber == 0)
+                        {
+                            skipNumber += displayNum;
+                            UpdatePage();
+                        }
+                        break;
+
+                    case ConsoleKey.LeftArrow:
+                        if (skipNumber + displayNum > displayNum)
+                        {
+                            skipNumber -= displayNum;
+                            UpdatePage();
                         }
                         break;
 
                     case ConsoleKey.O:
-                        Sort(out key);
+                        Sort();
+                        UpdatePage();
                         break;
 
                     case ConsoleKey.R:
                         ReverseOrder();
                         break;
 
+                    case ConsoleKey.T:
+                        namedTitles = originalNamedTitles;
+                        listState = State.Unordered;
+                        break;
+
                     case ConsoleKey.Enter:
-                        TitleDetails.DisplayInfo(
-                            namedTitles.ElementAt((Console.CursorTop - 1) + skipNumber - 30));
-                        UpdatePage();
+                        TitleDetails.Menu(
+                            namedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).titles,
+                            namedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).ratings);
                         UpdatePage();
                         break;
 
                     case ConsoleKey.B:
-                        Console.Clear();
-                        Console.WriteLine("Going back to the previous menu." +
-                            "\nPress any key to continue.");
-                        Console.ReadKey();
+                        //PrintBackToMenu();
                         break;
 
                     default:
-                        Console.Clear();
-                        Console.WriteLine("Invalid option. Press any key to " +
-                            "return to selection.");
-                        Console.ReadKey();
+                        UserInterface.PrintInvalidChoice();
                         UpdatePage();
                         break;
                 }
@@ -111,11 +116,83 @@ namespace LP2_P1
             Console.Clear();
         }
 
-        private void Sort(out ConsoleKey key)
+        // Sorts searched items by Type
+        private void UpdatePage()
         {
             Console.Clear();
+            UserInterface.ResizeWindow();
+
+            PrintResults(namedTitles.Select(c => c.titles)
+                .SkipLast(namedTitles.Count() - skipNumber - displayNum)
+                .Skip(skipNumber).ToHashSet());
+        }
+
+        private void ReverseOrder()
+        {
+            //Reverses order, only if the list is already ordered
+            if (listState != State.Unordered)
+            {
+                listState = listState == State.Descending ?
+                    State.Ascending : State.Descending;
+
+                namedTitles = namedTitles.Reverse();
+            }
+
+            UpdatePage();
+        }
+
+        private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
+        {
+            UserInterface.ColorSetup(backgroundColor: ConsoleColor.Gray);
+
+            for (int i = 0; i < Console.WindowWidth; i++)
+                Console.Write(" ");
+
+            Console.SetBufferSize(Program.WindowWidth, Program.WindowHeight);
+
             Console.CursorLeft = 0;
-            Console.CursorTop = 0;
+            Console.Write("    Name");
+            Console.CursorLeft = 100;
+            Console.Write("Type");
+            Console.CursorLeft = 150;
+            Console.Write($"State : {listState}");
+
+            Console.ResetColor();
+
+            Console.WriteLine("");
+
+            string pTitle;
+            int maxLenght = 90;
+
+            displayedAmount = titlesToDisplay.Count();
+
+            for (int i = 0; i < titlesToDisplay.Count(); i++)
+            {
+                pTitle = titlesToDisplay.ElementAt(i).PrimaryTitle;
+                Console.CursorLeft = 0;
+                Console.Write($"   " +
+                 $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}");
+                Console.CursorLeft = 100;
+                Console.WriteLine($"| {titlesToDisplay.ElementAt(i).Type}");
+            }
+
+            Console.WriteLine("\n '->' for next page" +
+                "\n '<-' for previous page \n" +
+                "\n 'ENTER' to select title" +
+                "\n 'O' to order " +
+                "\n 'R' to reverse the order " +
+                "\n 'T' to reset the order " +
+                "\n 'B' to go back to previous menu");
+
+            Console.CursorTop = 1;
+        }
+
+        public void Sort()
+        {
+            ConsoleKey key;
+
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
 
             // Display Order Options
             Console.WriteLine("\n '1' to order by type" +
@@ -130,94 +207,64 @@ namespace LP2_P1
             // Read user's input
             key = Console.ReadKey().Key;
 
+            // Resets titles every time the user orders the list
+            if (key != ConsoleKey.B)
+            {
+                namedTitles = originalNamedTitles;
+                listState = State.Ascending;
+            }
             // Switch case between the possible options selected
             switch (key)
             {
                 case ConsoleKey.D1:
-                    namedTitles = Sorter.SortByType(namedTitles);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.Type)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D2:
-                    namedTitles = Sorter.SortByTitle(namedTitles);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.PrimaryTitle)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D3:
-                    namedTitles = Sorter.SortByIsAdult(namedTitles);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.IsAdult)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D4:
-                    namedTitles = Sorter.SortByRelease(namedTitles);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.StartYear)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D5:
-                    namedTitles = Sorter.SortByEnd(namedTitles);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.EndYear)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D6:
-                    namedTitles = Sorter.SortByGenre(namedTitles);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.Genres[0])
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D7:
-                    namedTitles = Sorter.SortByRating(namedTitles);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.ratings.AverageRating)
+                        .Select(c => c).ToHashSet();
+                    break;
+
+                case ConsoleKey.B:
+                    break;
+
+                default:
+                    UserInterface.PrintInvalidChoice();
                     break;
             }
-            UpdatePage();
-        }
-
-        // Sorts searched items by Type
-        private void UpdatePage()
-        {
-            PrintResults(namedTitles.SkipLast(namedTitles.Count() - skipNumber)
-                .Skip(skipNumber - 30).Select(c => c));
-        }
-
-        private void ReverseOrder()
-        {
-            if (listState != State.Unordered)
-                listState = listState == State.Descending ?
-                    State.Ascending : State.Descending;
-
-            namedTitles = namedTitles.Reverse();
-            UpdatePage();
-        }
-        private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
-        {
-            Console.Clear();
-
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.Black;
-
-            for (int i = 0; i < Console.WindowWidth; i++)
-                Console.Write(" ");
-
-            Console.CursorLeft = 0;
-            Console.Write("    Name");
-            Console.CursorLeft = 100;
-            Console.Write("Type");
-            Console.CursorLeft = 150;
-            Console.Write($"State : {listState}");
-
-            Console.ResetColor();
-
-            Console.WriteLine("");
-
-            displayedAmount = titlesToDisplay.Count();
-
-            for (int i = 0; i < titlesToDisplay.Count(); i++)
-            {
-                Console.CursorLeft = 0;
-                Console.Write($"   {titlesToDisplay.ElementAt(i).PrimaryTitle}");
-                Console.CursorLeft = 100;
-                Console.WriteLine($"| {titlesToDisplay.ElementAt(i).Type}");
-            }
-
-            Console.WriteLine("\n 'O' to order " +
-                "\n 'R' to reverse the order " +
-                "\n 'ESC' to leave " +
-                "\n '->' for previous page" +
-                "\n '<-' for next page \n");
-
-            Console.CursorTop = 1;
         }
 
         private enum State { Ascending, Descending, Unordered };
