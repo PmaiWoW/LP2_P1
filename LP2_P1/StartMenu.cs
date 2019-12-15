@@ -121,7 +121,7 @@ namespace LP2_P1
                     Program.ClearSpace();
                     Console.CursorTop -= 1;
                 }
-                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 50)
+                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 52)
                 {
                     Program.ClearSpace();
                     Console.CursorTop += 1;
@@ -207,7 +207,7 @@ namespace LP2_P1
                         PrintTypeSelection();
                         Console.CursorTop = indexes + 21;
                     }
-                    if (Console.CursorTop == 50)
+                    if (Console.CursorTop == 52)
                     {
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
                             end, genres.ToArray(), runtimeLow, runtimeHigh);
@@ -263,7 +263,7 @@ namespace LP2_P1
                 Console.Write(i == 1? description3: description2 + " \n \n");
             }
             
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < 28; i++)
             {
                 char a = genres.Contains((TitleGenre)i) ? 'X' : ' ';
                 Console.WriteLine($"   [{a}]{(TitleGenre)i}");
