@@ -74,6 +74,29 @@ namespace LP2_P1
             Console.ForegroundColor = foregroundColor;
         }
 
+        public static void ClearSpace()
+        {
+            Console.CursorLeft -= 2;
+            Console.Write(" ");
+        }
+
+        public static void PrintInvalidChoice()
+        {
+            Console.Clear();
+            Console.WriteLine("Invalid option. Press any key to " +
+                    "return to previous menu.");
+            Console.ReadKey(true);
+        }
+
+        public static void NotImplemented()
+        {
+            Console.Clear();
+            Console.WriteLine("This search functionality has not" +
+                " been implemented yet.\nPress any key to return" +
+                " to selection.");
+            Console.ReadKey(true);
+        }
+
         public static void QuitMessage()
         {
             Console.Clear();

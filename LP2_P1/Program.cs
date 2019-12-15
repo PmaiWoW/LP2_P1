@@ -5,25 +5,22 @@ using System.Collections.Generic;
 namespace LP2_P1
 {
     internal class Program
-    {
+    {    
+        public const int WindowWidth = 200;
+        public const int WindowHeight = 60;
+
         private static void Main(string[] args)
         {
-            Console.WindowHeight = 60;
-            Console.WindowWidth = 200;
-            Console.CursorVisible = false;
-            Console.Title = "MyIMDBSearcher";
-            
+            Console.SetWindowSize(WindowWidth, WindowHeight);
             Console.SetWindowPosition(0, 0);
+
+            Console.Title = "MyIMDBSearcher";
+            Console.CursorVisible = false;
             
             StartMenu.MenuLoop();
             
             string wantedTitle = Console.ReadLine();
-            Console.ResetColor();
-        }
-        public static void ClearSpace()
-        {
-            Console.CursorLeft -= 2;
-            Console.Write(" ");
+            //Console.ResetColor();
         }
     }
 }
