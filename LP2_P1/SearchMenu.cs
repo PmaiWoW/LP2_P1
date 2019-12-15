@@ -86,13 +86,16 @@ namespace LP2_P1
 
             IEnumerable<(TitleBasics titles, TitleRatings ratings)> mixedList =
                 from titles in titleBasicsList
-                join ratings in titleRatingsList on titles.TConst equals ratings.Tconst
+                join ratings in titleRatingsList on titles.TConst
+                equals ratings.Tconst
                 select (titles, ratings);
 
             if (rating1.HasValue)
-                mixedList = mixedList.Where(c => c.ratings.AverageRating >= rating1);
+                mixedList = mixedList.Where(c =>
+                c.ratings.AverageRating >= rating1);
             if (rating2.HasValue)
-                mixedList = mixedList.Where(c => c.ratings.AverageRating <= rating2);
+                mixedList = mixedList.Where(c =>
+                c.ratings.AverageRating <= rating2);
 
             TitleSearch searcher = new TitleSearch();
             searcher.SearchTitle(mixedList);
@@ -100,7 +103,6 @@ namespace LP2_P1
 
         private static void TitleSearch()
         {
-
             int? start = null;
             int? end = null;
             int? runtime1 = null;
@@ -243,7 +245,8 @@ namespace LP2_P1
                     {
                         UserInterface.ResizeWindow();
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
-                            end, genres.ToArray(), runtime1, runtime2, ratingLow, ratingHigh);
+                            end, genres.ToArray(), runtime1, runtime2, 
+                            ratingLow, ratingHigh);
                         key = ConsoleKey.Q;
                     }
                 }

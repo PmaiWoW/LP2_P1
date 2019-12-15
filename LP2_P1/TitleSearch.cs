@@ -9,17 +9,20 @@ namespace LP2_P1
         //private List<TitleBasics> originalNamedTitles =
         //    new List<TitleBasics>(63506070);
         //private IEnumerable<TitleBasics> namedTitles;
-        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> originalNamedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
+            originalNamedTitles;
 
         //private IEnumerable<(TitleBasics p, TitleRatings c)> namedTitles;
-        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> namedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
+            namedTitles;
 
         private State listState = State.Unordered;
         private int skipNumber = 0;
         private int displayedAmount = 0;
         private const int displayNum = 30;
 
-        public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> wantedTitle)
+        public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> 
+            wantedTitle)
         {
             originalNamedTitles = wantedTitle.ToHashSet();
             SearchMenu();
@@ -66,8 +69,8 @@ namespace LP2_P1
                         }
                         break;
                     case ConsoleKey.RightArrow:
-                        if (namedTitles.Count() / (skipNumber + displayNum) > 0 ||
-                            skipNumber == 0)
+                        if (namedTitles.Count() / (skipNumber + 
+                            displayNum) > 0 || skipNumber == 0)
                         {
                             skipNumber += displayNum;
                             UpdatePage();
@@ -98,8 +101,10 @@ namespace LP2_P1
 
                     case ConsoleKey.Enter:
                         TitleDetails.Menu(
-                            namedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).titles,
-                            namedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).ratings);
+                            namedTitles.ElementAt(Console.CursorTop - 1 +
+                            skipNumber).titles,
+                            namedTitles.ElementAt(Console.CursorTop - 1 +
+                            skipNumber).ratings);
                         UpdatePage();
                         break;
 

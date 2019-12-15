@@ -27,8 +27,8 @@ namespace LP2_P1
                 "years, separated by a space"; 
             string description3 = "   Runtime low & Runtime high - Insert 2" +
                 "numbers, separated by a space";
-            string description4 = "   Lowest rating & Highest rating - Insert2" +
-                "numbers, separated by space";
+            string description4 = "   Lowest rating & Highest rating - " +
+                "Insert 2 numbers, separated by space";
 
             Console.SetCursorPosition(0, 5);
             for (int i = 0; i < 10; i++)

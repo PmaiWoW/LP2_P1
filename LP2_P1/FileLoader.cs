@@ -22,7 +22,6 @@ namespace LP2_P1
 
             // Define local variables
             string line;
-
             int currentObject = 0;
             int previous = 0;
 
