@@ -157,15 +157,14 @@ namespace LP2_P1
                         UserInterface.ColorSetup(3);
                         string[] date = Console.ReadLine().Split(' ');
 
-                        if (date.Length >= 1 && date[0].Length == 4 &&
-                            int.Parse(date[0]) != 0)
-                                start = int.Parse(date[0]);
+                        if (int.TryParse(date[0], out int parsedStart) && 
+                            date[0].Length == 4 && parsedStart != 0)
+                            start = parsedStart;
                         else
                             start = null;
-
-                        if (date.Length == 2 && date[1].Length == 4 &&
-                            int.Parse(date[1]) != 0)
-                                end = int.Parse(date[1]);
+                        if (int.TryParse(date[1], out int parsedEnd) && 
+                            date[1].Length == 4 && parsedEnd != 0)
+                            start = parsedEnd;
                         else
                             end = null;
 
