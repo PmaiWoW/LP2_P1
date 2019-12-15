@@ -6,19 +6,29 @@ namespace LP2_P1
 {
     public static class UserInterface
     {
+        public static void PrintSearchBar()
+        {
+            Console.SetCursorPosition(3, 0);
+            Console.WriteLine("Write the name of what you're looking for.\n");
+            WriteOptions(3);
+            Console.Write("                                                 ");
+            Console.SetCursorPosition(2, 2);
+            Console.ResetColor();
+        }
+
         public static void PrintTypeSelection(ICollection<TitleType> types,
             ICollection<TitleGenre?> genres, bool? isAdult)
         {
             string description1 = "  (- no filter | X adult | ' ' not adult)" +
                 "\n\n";
 
-            string description2 = "   Start Year - Insert 8 digits separated " +
-                "by space, press enter to leave them empty, any unexpected " +
-                "characters will reset to 'unfilled'";
+            string description2 = "   Start Year & End Year - Insert 2 " +
+                "years, separated by space, any unexpected characters will " +
+                "reset to 'unfilled'";
 
-            string description3 = "   End Year - Insert the minimum and " +
-                "maximum runtime we should look for any unexpected " +
-                "characters will reset to 'unfilled'\n\n";
+            string description3 = "   Minimum and Maximum Runtime - Insert " +
+                "the minimum and maximum runtime we should look for, any " +
+                "unexpected characters will reset to 'unfilled'\n\n";
 
             Console.SetCursorPosition(0, 5);
             for (int i = 0; i < 10; i++)
@@ -54,16 +64,6 @@ namespace LP2_P1
             Console.WriteLine("\n     ----------------");
             Console.WriteLine("    |     Search     |");
             Console.WriteLine("     ----------------");
-            Console.ResetColor();
-        }
-
-        public static void PrintSearchBar()
-        {
-            Console.SetCursorPosition(3, 0);
-            Console.WriteLine("Write the name of what you're looking for.\n");
-            WriteOptions(3);
-            Console.Write("                                                 ");
-            Console.SetCursorPosition(2, 2);
             Console.ResetColor();
         }
 

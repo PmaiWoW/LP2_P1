@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LP2_P1
 {
-    public static class StartMenu
+    public static class SearchMenu
     {
         private static string wantedTitle;
         private static ICollection<TitleType> types = new List<TitleType>();
@@ -32,7 +32,7 @@ namespace LP2_P1
                 switch (key)
                 {
                     case ConsoleKey.D1:
-                        SubMenu();
+                        TitleSearch();
                         break;
 
                     case ConsoleKey.D2:
@@ -96,7 +96,7 @@ namespace LP2_P1
             searcher.SearchTitle(originalNamedTitles);
         }
 
-        private static void SubMenu()
+        private static void TitleSearch()
         {
             wantedTitle = default;
 
@@ -121,7 +121,7 @@ namespace LP2_P1
                     Program.ClearSpace();
                     Console.CursorTop -= 1;
                 }
-                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 52)
+                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 53)
                 {
                     Program.ClearSpace();
                     Console.CursorTop += 1;
@@ -146,16 +146,16 @@ namespace LP2_P1
                             isAdult);
                         Console.CursorTop = index + 5;
                     }
-                    if (Console.CursorTop == 15)
+                    if (Console.CursorTop == 16)
                     {
                         if (isAdult == true) isAdult = false;
                         else if (isAdult == null) isAdult = true;
                         else if (isAdult == false) isAdult = null;
                         UserInterface.PrintTypeSelection(types, genres,
                             isAdult);
-                        Console.CursorTop = 15;
+                        Console.CursorTop = 16;
                     }
-                    if (Console.CursorTop == 17)
+                    if (Console.CursorTop == 18)
                     {
                         UserInterface.WriteOptions(3);
                         string[] date = Console.ReadLine().Split(' ');
@@ -174,7 +174,7 @@ namespace LP2_P1
 
                         Console.ResetColor();
                     }
-                    if (Console.CursorTop == 19)
+                    if (Console.CursorTop == 20)
                     {
                         UserInterface.WriteOptions(3);
                         string[] runtime = Console.ReadLine().Split(' ');
@@ -193,18 +193,18 @@ namespace LP2_P1
 
                         Console.ResetColor();
                     }
-                    if (Console.CursorTop >= 21 && Console.CursorTop <= 47)
+                    if (Console.CursorTop >= 22 && Console.CursorTop <= 49)
                     {
-                        int indexes = Console.CursorTop - 21;
+                        int indexes = Console.CursorTop - 22;
                         if (genres.Contains((TitleGenre)indexes))
                             genres.Remove((TitleGenre)indexes);
                         else
                             genres.Add((TitleGenre)indexes);
                         UserInterface.PrintTypeSelection(types, genres, 
                             isAdult);
-                        Console.CursorTop = indexes + 21;
+                        Console.CursorTop = indexes + 22;
                     }
-                    if (Console.CursorTop == 52)
+                    if (Console.CursorTop >= 51 && Console.CursorTop <= 53)
                     {
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
                             end, genres.ToArray(), runtimeLow, runtimeHigh);
