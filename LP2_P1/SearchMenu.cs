@@ -11,8 +11,6 @@ namespace LP2_P1
         private static ICollection<TitleGenre?> genres = 
             new List<TitleGenre?>();
         private static bool? isAdult;
-        private static int? start;
-        private static int? end;
 
         public static void MenuLoop()
         {
@@ -50,17 +48,28 @@ namespace LP2_P1
 
         private static void Titles(string wantedTitle, TitleType[] type,
             bool? adult, int? startDate, int? endDate,
-            TitleGenre?[] genres)
+            TitleGenre?[] genres, int? runtime1, int? runtime2,
+            int? rating1, int? rating2)
         {
             IEnumerable<TitleRatings> titleRatingsList = 
                 FileLoader.LoadTitleRatings();
             IEnumerable<TitleBasics> titleBasicsList =
                 FileLoader.LoadTitleBasics();
-            
+            IEnumerable<(TitleBasics titles, TitleRatings ratings)> mixedList =
+                from titles in titleBasicsList
+                join ratings in titleRatingsList on titles.TConst equals ratings.Tconst
+                select (titles, ratings);
+
             if (wantedTitle != null)
                 titleBasicsList = titleBasicsList.Where
                     (c => c.PrimaryTitle.ToLower().Contains
                     (wantedTitle.Trim().ToLower()));
+            if (runtime1.HasValue)
+                titleBasicsList = titleBasicsList.Where
+                    (c => c.RuntimeMinutes >= runtime1);
+            if (runtime2.HasValue)
+                titleBasicsList = titleBasicsList.Where
+                    (c => c.RuntimeMinutes <= runtime2);
             if (startDate.HasValue)
                 titleBasicsList = titleBasicsList.Where
                     (c => c.StartYear >= startDate);
@@ -77,13 +86,11 @@ namespace LP2_P1
                 titleBasicsList =
                     from title in titleBasicsList
                     where title.Genres.Contains(genres[i])
-                    select title;
-
-            IEnumerable<(TitleBasics a, TitleRatings p)> mixedList =
-                from titles in titleBasicsList
-                join ratings in titleRatingsList on titles.TConst equals ratings.Tconst
-                where ratings.AverageRating >= 8 && ratings.AverageRating <= 10
-                select (titles, ratings);
+                    select title; 
+            if (rating1.HasValue)
+                mixedList = mixedList.Where(c => c.ratings.AverageRating >= rating1);
+            if (rating2.HasValue)
+                mixedList = mixedList.Where(c => c.ratings.AverageRating <= rating2);
 
             TitleSearch searcher = new TitleSearch();
             searcher.SearchTitle(mixedList);
@@ -91,6 +98,13 @@ namespace LP2_P1
 
         private static void TitleSearch()
         {
+
+            int? start = null;
+            int? end = null;
+            int? runtime1 = null;
+            int? runtime2 = null;
+            int? ratingLow = null;
+            int? ratingHigh = null;
             wantedTitle = default;
 
             Console.Clear();
@@ -114,7 +128,7 @@ namespace LP2_P1
                     UserInterface.ClearSpace();
                     Console.CursorTop -= 1;
                 }
-                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 51)
+                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 55)
                 {
                     UserInterface.ClearSpace();
                     Console.CursorTop += 1;
@@ -171,23 +185,63 @@ namespace LP2_P1
 
                         Console.ResetColor();
                     }
-                    if (Console.CursorTop >= 20 && Console.CursorTop <= 47)
+                    if (Console.CursorTop == 20)
                     {
                         UserInterface.ResizeWindow();
-                        int indexes = Console.CursorTop - 20;
+                        UserInterface.ColorSetup(3);
+                        string[] runtime = Console.ReadLine().Split(' ');
+
+                        if (runtime.Length >= 1 && runtime[0].Length > 0 &&
+                            int.Parse(runtime[0]) != 0)
+                            runtime1 = int.Parse(runtime[0]);
+                        else
+                            runtime1 = null;
+
+                        if (runtime.Length == 2 && runtime[0].Length > 0 &&
+                            int.Parse(runtime[1]) != 0)
+                            runtime2 = int.Parse(runtime[1]);
+                        else
+                            runtime2 = null;
+
+                        Console.ResetColor();
+                    }
+                    if (Console.CursorTop == 22)
+                    {
+                        UserInterface.ResizeWindow();
+                        UserInterface.ColorSetup(3);
+                        string[] rating = Console.ReadLine().Split(' ');
+
+                        if (rating.Length >= 1 && rating[0].Length > 0 &&
+                            int.Parse(rating[0]) != 0)
+                            ratingLow = int.Parse(rating[0]);
+                        else
+                            ratingLow = null;
+
+                        if (rating.Length == 2 && rating[1].Length > 0 &&
+                            int.Parse(rating[1]) != 0)
+                            ratingHigh = int.Parse(rating[1]);
+                        else
+                            ratingHigh = null;
+
+                        Console.ResetColor();
+                    }
+                    if (Console.CursorTop >= 24 && Console.CursorTop <= 51)
+                    {
+                        UserInterface.ResizeWindow();
+                        int indexes = Console.CursorTop - 24;
                         if (genres.Contains((TitleGenre)indexes))
                             genres.Remove((TitleGenre)indexes);
                         else
                             genres.Add((TitleGenre)indexes);
                         UserInterface.PrintTypeSelection(types, genres, 
                             isAdult);
-                        Console.CursorTop = indexes + 20;
+                        Console.CursorTop = indexes + 24;
                     }
-                    if (Console.CursorTop >= 49 && Console.CursorTop <= 51)
+                    if (Console.CursorTop >= 53 && Console.CursorTop <= 55)
                     {
                         UserInterface.ResizeWindow();
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
-                            end, genres.ToArray());
+                            end, genres.ToArray(), runtime1, runtime2, ratingLow, ratingHigh);
                         key = ConsoleKey.Q;
                     }
                 }
