@@ -6,9 +6,9 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
-        private List<TitleBasics> originalNamedTitles =
-            new List<TitleBasics>(63506070);
-        private IEnumerable<TitleBasics> namedTitles;
+        //private List<TitleBasics> originalNamedTitles =
+        //    new List<TitleBasics>(63506070);
+        //private IEnumerable<TitleBasics> namedTitles;
         private IEnumerable<(TitleBasics titles, TitleRatings ratings)> originalNamedTitles;
 
         //private IEnumerable<(TitleBasics p, TitleRatings c)> namedTitles;
@@ -82,13 +82,6 @@ namespace LP2_P1
                         }
                         break;
 
-                    case ConsoleKey.Enter:
-                        TitleDetails.Menu(
-                            namedTitles.ElementAt((Console.CursorTop - 1) +
-                            skipNumber));
-                        UpdatePage();
-                        break;
-
                     case ConsoleKey.O:
                         Sort();
                         UpdatePage();
@@ -111,7 +104,7 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.B:
-                        PrintBackToMenu();
+                        //PrintBackToMenu();
                         break;
 
                     default:

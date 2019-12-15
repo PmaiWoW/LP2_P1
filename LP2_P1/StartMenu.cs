@@ -121,12 +121,12 @@ namespace LP2_P1
 
                 if (key == ConsoleKey.UpArrow && Console.CursorTop > 2)
                 {
-                    Program.ClearSpace();
+                    UserInterface.ClearSpace();
                     Console.CursorTop -= 1;
                 }
                 else if (key == ConsoleKey.DownArrow && Console.CursorTop < 49)
                 {
-                    Program.ClearSpace();
+                    UserInterface.ClearSpace();
                     Console.CursorTop += 1;
                 }
                 else if (key == ConsoleKey.Enter)

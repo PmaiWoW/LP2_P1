@@ -52,33 +52,41 @@ namespace LP2_P1
             bool? adult, int? startDate, int? endDate,
             TitleGenre?[] genres)
         {
-            IEnumerable<TitleBasics> originalNamedTitles =
+            IEnumerable<TitleRatings> titleRatingsList = 
+                FileLoader.LoadTitleRatings();
+            IEnumerable<TitleBasics> titleBasicsList =
                 FileLoader.LoadTitleBasics();
             
             if (wantedTitle != null)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.PrimaryTitle.ToLower().Contains
                     (wantedTitle.Trim().ToLower()));
             if (startDate.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.StartYear >= startDate);
             if (endDate.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.EndYear <= endDate);
             if (type.Length > 0)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => type.Any(a => a == c.Type));
             if (adult.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.IsAdult == adult);
             for (int i = 0; i < genres.Length - 1; i++)
-                originalNamedTitles =
-                    from title in originalNamedTitles
+                titleBasicsList =
+                    from title in titleBasicsList
                     where title.Genres.Contains(genres[i])
                     select title;
 
+            IEnumerable<(TitleBasics a, TitleRatings p)> mixedList =
+                from titles in titleBasicsList
+                join ratings in titleRatingsList on titles.TConst equals ratings.Tconst
+                where ratings.AverageRating >= 8 && ratings.AverageRating <= 10
+                select (titles, ratings);
+
             TitleSearch searcher = new TitleSearch();
-            searcher.SearchTitle(originalNamedTitles);
+            searcher.SearchTitle(mixedList);
         }
 
         private static void TitleSearch()
