@@ -66,8 +66,7 @@ namespace LP2_P1
                     case ConsoleKey.UpArrow:
                         if (Console.CursorTop > 1)
                         {
-                            Console.CursorLeft -= 2;
-                            Console.Write(" ");
+                            Program.ClearSpace();
                             Console.CursorTop -= 1;
                         }
                         break;
@@ -75,8 +74,7 @@ namespace LP2_P1
                     case ConsoleKey.DownArrow:
                         if (Console.CursorTop < displayedAmount)
                         {
-                            Console.CursorLeft -= 2;
-                            Console.Write(" ");
+                            Program.ClearSpace();
                             Console.CursorTop += 1;
                         }
                         break;
