@@ -13,8 +13,6 @@ namespace LP2_P1
         private static bool? isAdult;
         private static int? start;
         private static int? end;
-        private static int? runtimeLow;
-        private static int? runtimeHigh;
 
         public static void MenuLoop()
         {
@@ -52,7 +50,7 @@ namespace LP2_P1
 
         private static void Titles(string wantedTitle, TitleType[] type,
             bool? adult, int? startDate, int? endDate,
-            TitleGenre?[] genres, int? runtime1, int? runtime2)
+            TitleGenre?[] genres)
         {
             IEnumerable<TitleBasics> originalNamedTitles =
                 FileLoader.LoadTitleBasics();
@@ -61,12 +59,6 @@ namespace LP2_P1
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.PrimaryTitle.ToLower().Contains
                     (wantedTitle.Trim().ToLower()));
-            if (runtime1.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
-                    (c => c.RuntimeMinutes >= runtime1);
-            if (runtime2.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
-                    (c => c.RuntimeMinutes <= runtime2);
             if (startDate.HasValue)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.StartYear >= startDate);
@@ -167,25 +159,6 @@ namespace LP2_P1
 
                         Console.ResetColor();
                     }
-                    if (Console.CursorTop == 20)
-                    {
-                        UserInterface.ColorSetup(3);
-                        string[] runtime = Console.ReadLine().Split(' ');
-
-                        if (runtime.Length >= 1 && runtime[0].Length == 4 &&
-                            int.Parse(runtime[0]) != 0)
-                                runtimeLow = int.Parse(runtime[0]);
-                        else
-                            runtimeLow = null;
-
-                        if (runtime.Length == 2 && runtime[1].Length == 4 &&
-                            int.Parse(runtime[1]) != 0)
-                                runtimeHigh = int.Parse(runtime[1]);
-                        else
-                            runtimeHigh = null;
-
-                        Console.ResetColor();
-                    }
                     if (Console.CursorTop >= 22 && Console.CursorTop <= 49)
                     {
                         int indexes = Console.CursorTop - 22;
@@ -200,7 +173,7 @@ namespace LP2_P1
                     if (Console.CursorTop >= 51 && Console.CursorTop <= 53)
                     {
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
-                            end, genres.ToArray(), runtimeLow, runtimeHigh);
+                            end, genres.ToArray());
                         key = ConsoleKey.Q;
                     }
                 }

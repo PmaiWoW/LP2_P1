@@ -25,9 +25,6 @@ namespace LP2_P1
             string description2 = "   Start Year & End Year - Insert 2 " +
                 "years, separated by a space";
 
-            string description3 = "   Minimum and Maximum Runtime - Insert " +
-                "the minimum and maximum runtime\n\n";
-
             Console.SetCursorPosition(0, 5);
             for (int i = 0; i < 10; i++)
             {
@@ -43,16 +40,11 @@ namespace LP2_P1
 
             Console.Write($"\n   [{isAdultChar}]" + description1);
 
-
-            for (int i = 0; i < 2; i++)
-            {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.CursorLeft = 3;
-                Console.Write($"                      " +
-                    $"                             ");
-                Console.ResetColor();
-                Console.Write(i == 1 ? description3 : description2 + " \n \n");
-            }
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.CursorLeft = 3;
+            Console.Write($"         ");
+            Console.ResetColor();
+            Console.Write(description2 + " \n \n");
 
             for (int i = 0; i < 28; i++)
             {
@@ -67,7 +59,7 @@ namespace LP2_P1
             Console.ResetColor();
         }
 
-        public static void ColorSetup(int cursorLeft = 0, 
+        public static void ColorSetup(int cursorLeft = 0,
             ConsoleColor backgroundColor = ConsoleColor.White,
             ConsoleColor foregroundColor = ConsoleColor.Black)
         {
