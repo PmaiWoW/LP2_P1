@@ -112,6 +112,7 @@ namespace LP2_P1
         private void UpdatePage()
         {
             Console.Clear();
+            UserInterface.ResizeWindow();
 
             PrintResults(namedTitles.SkipLast(namedTitles.Count() - 
                 skipNumber - displayNum).Skip(skipNumber).Select(c => c)

@@ -163,19 +163,19 @@ namespace LP2_P1
 
                         Console.ResetColor();
                     }
-                    if (Console.CursorTop >= 22 && Console.CursorTop <= 49)
+                    if (Console.CursorTop >= 20 && Console.CursorTop <= 47)
                     {
                         UserInterface.ResizeWindow();
-                        int indexes = Console.CursorTop - 22;
+                        int indexes = Console.CursorTop - 20;
                         if (genres.Contains((TitleGenre)indexes))
                             genres.Remove((TitleGenre)indexes);
                         else
                             genres.Add((TitleGenre)indexes);
                         UserInterface.PrintTypeSelection(types, genres, 
                             isAdult);
-                        Console.CursorTop = indexes + 22;
+                        Console.CursorTop = indexes + 20;
                     }
-                    if (Console.CursorTop >= 51 && Console.CursorTop <= 53)
+                    if (Console.CursorTop >= 49 && Console.CursorTop <= 51)
                     {
                         UserInterface.ResizeWindow();
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
