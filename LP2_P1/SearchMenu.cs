@@ -106,7 +106,7 @@ namespace LP2_P1
                     UserInterface.ClearSpace();
                     Console.CursorTop -= 1;
                 }
-                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 53)
+                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 51)
                 {
                     UserInterface.ClearSpace();
                     Console.CursorTop += 1;
