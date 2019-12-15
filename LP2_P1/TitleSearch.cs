@@ -9,10 +9,10 @@ namespace LP2_P1
         //private List<TitleBasics> originalNamedTitles =
         //    new List<TitleBasics>(63506070);
         //private IEnumerable<TitleBasics> namedTitles;
-        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> originalNamedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> originalMixedTitles;
 
         //private IEnumerable<(TitleBasics p, TitleRatings c)> namedTitles;
-        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> namedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> mixedTitles;
 
         private State listState = State.Unordered;
         private int skipNumber = 0;
@@ -21,13 +21,13 @@ namespace LP2_P1
 
         public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> wantedTitle)
         {
-            originalNamedTitles = wantedTitle.ToHashSet();
+            originalMixedTitles = wantedTitle.ToHashSet();
             SearchMenu();
         }
 
         private void SearchMenu()
         {
-            namedTitles = originalNamedTitles;
+            mixedTitles = originalMixedTitles;
 
             ConsoleKey key = ConsoleKey.D0;
             UpdatePage();
@@ -37,7 +37,7 @@ namespace LP2_P1
                 Console.CursorLeft = 1;
                 Console.Write(">");
 
-                if (!namedTitles.Any())
+                if (!mixedTitles.Any())
                 {
                     Console.Clear();
                     Console.WriteLine("No titles found, returning to main " +
@@ -66,7 +66,7 @@ namespace LP2_P1
                         }
                         break;
                     case ConsoleKey.RightArrow:
-                        if (namedTitles.Count() / (skipNumber + displayNum) > 0 ||
+                        if (mixedTitles.Count() / (skipNumber + displayNum) > 0 ||
                             skipNumber == 0)
                         {
                             skipNumber += displayNum;
@@ -92,14 +92,14 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.T:
-                        namedTitles = originalNamedTitles;
+                        mixedTitles = originalMixedTitles;
                         listState = State.Unordered;
                         break;
 
                     case ConsoleKey.Enter:
                         TitleDetails.Menu(
-                            namedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).titles,
-                            namedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).ratings);
+                            mixedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).titles,
+                            mixedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).ratings);
                         UpdatePage();
                         break;
 
@@ -122,8 +122,8 @@ namespace LP2_P1
             Console.Clear();
             UserInterface.ResizeWindow();
 
-            PrintResults(namedTitles.Select(c => c.titles)
-                .SkipLast(namedTitles.Count() - skipNumber - displayNum)
+            PrintResults(mixedTitles.Select(c => c.titles)
+                .SkipLast(mixedTitles.Count() - skipNumber - displayNum)
                 .Skip(skipNumber).ToHashSet());
         }
 
@@ -135,7 +135,7 @@ namespace LP2_P1
                 listState = listState == State.Descending ?
                     State.Ascending : State.Descending;
 
-                namedTitles = namedTitles.Reverse();
+                mixedTitles = mixedTitles.Reverse();
             }
 
             UpdatePage();
@@ -210,52 +210,52 @@ namespace LP2_P1
             // Resets titles every time the user orders the list
             if (key != ConsoleKey.B)
             {
-                namedTitles = originalNamedTitles;
+                mixedTitles = originalMixedTitles;
                 listState = State.Ascending;
             }
             // Switch case between the possible options selected
             switch (key)
             {
                 case ConsoleKey.D1:
-                    namedTitles = namedTitles
+                    mixedTitles = mixedTitles
                         .OrderBy(c => c.titles.Type)
-                        .Select(c => c).ToHashSet();
+                        .Select(c => c);
                     break;
 
                 case ConsoleKey.D2:
-                    namedTitles = namedTitles
+                    mixedTitles = mixedTitles
                         .OrderBy(c => c.titles.PrimaryTitle)
-                        .Select(c => c).ToHashSet();
+                        .Select(c => c);
                     break;
 
                 case ConsoleKey.D3:
-                    namedTitles = namedTitles
+                    mixedTitles = mixedTitles
                         .OrderBy(c => c.titles.IsAdult)
-                        .Select(c => c).ToHashSet();
+                        .Select(c => c);
                     break;
 
                 case ConsoleKey.D4:
-                    namedTitles = namedTitles
+                    mixedTitles = mixedTitles
                         .OrderBy(c => c.titles.StartYear)
-                        .Select(c => c).ToHashSet();
+                        .Select(c => c);
                     break;
 
                 case ConsoleKey.D5:
-                    namedTitles = namedTitles
+                    mixedTitles = mixedTitles
                         .OrderBy(c => c.titles.EndYear)
-                        .Select(c => c).ToHashSet();
+                        .Select(c => c);
                     break;
 
                 case ConsoleKey.D6:
-                    namedTitles = namedTitles
+                    mixedTitles = mixedTitles
                         .OrderBy(c => c.titles.Genres[0])
-                        .Select(c => c).ToHashSet();
+                        .Select(c => c);
                     break;
 
                 case ConsoleKey.D7:
-                    namedTitles = namedTitles
+                    mixedTitles = mixedTitles
                         .OrderBy(c => c.ratings.AverageRating)
-                        .Select(c => c).ToHashSet();
+                        .Select(c => c);
                     break;
 
                 case ConsoleKey.B:
