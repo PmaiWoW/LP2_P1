@@ -37,6 +37,8 @@
                 StartYear.HasValue ? StartYear.ToString() : @"\N";
             string endYearPrint =
                 EndYear.HasValue ? EndYear.ToString() : @"\N";
+            string runtimePrint =
+                RuntimeMinutes.HasValue ? RuntimeMinutes.ToString() : @"\N";
             string isAdult = IsAdult ? "Adult Only" : "For Everyone";
             string[] genresPrint = new string[3];
             for (int i = 0; i < 3; i++)
