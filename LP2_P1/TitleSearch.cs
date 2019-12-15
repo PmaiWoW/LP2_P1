@@ -28,7 +28,7 @@ namespace LP2_P1
             ConsoleKey key = ConsoleKey.D0;
             UpdatePage();
 
-            while (key != ConsoleKey.B)
+            while (key != ConsoleKey.Escape)
             {
                 Console.CursorLeft = 1;
                 Console.Write(">");
@@ -49,7 +49,7 @@ namespace LP2_P1
                     case ConsoleKey.UpArrow:
                         if (Console.CursorTop > 1)
                         {
-                            Program.ClearSpace();
+                            UserInterface.ClearSpace();
                             Console.CursorTop -= 1;
                         }
                         break;
@@ -57,7 +57,7 @@ namespace LP2_P1
                     case ConsoleKey.DownArrow:
                         if (Console.CursorTop < displayedAmount)
                         {
-                            Program.ClearSpace();
+                            UserInterface.ClearSpace();
                             Console.CursorTop += 1;
                         }
                         break;
@@ -99,11 +99,8 @@ namespace LP2_P1
                         listState = State.Unordered;
                         break;
 
-                    case ConsoleKey.Escape:
-                        break;
-
                     default:
-                        PrintInvalidChoice();
+                        UserInterface.PrintInvalidChoice();
                         UpdatePage();
                         break;
                 }
@@ -142,6 +139,8 @@ namespace LP2_P1
 
             for (int i = 0; i < Console.WindowWidth; i++)
                 Console.Write(" ");
+
+            Console.SetBufferSize(Program.WindowWidth, Program.WindowHeight);
 
             Console.CursorLeft = 0;
             Console.Write("    Name");
@@ -185,8 +184,7 @@ namespace LP2_P1
             ConsoleKey key;
 
             Console.Clear();
-            Console.CursorLeft = 0;
-            Console.CursorTop = 0;
+            Console.SetCursorPosition(0, 0);
 
             // Display Order Options
             Console.WriteLine("\n '1' to order by type" +
@@ -238,17 +236,9 @@ namespace LP2_P1
                     break;
 
                 default:
-                    PrintInvalidChoice();
+                    UserInterface.PrintInvalidChoice();
                     break;
             }
-        }
-
-        private void PrintInvalidChoice()
-        {
-            Console.Clear();
-            Console.WriteLine("Invalid option. Press any key to " +
-                    "return to previous menu.");
-            Console.ReadKey(true);
         }
 
         private enum State { Ascending, Descending, Unordered };

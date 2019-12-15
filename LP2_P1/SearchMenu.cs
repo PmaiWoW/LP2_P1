@@ -36,11 +36,7 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.D2:
-                        Console.Clear();
-                        Console.WriteLine("This search functionality has not" +
-                            " been implemented yet.\nPress any key to return" +
-                            " to selection.");
-                        Console.ReadKey(true);
+                        UserInterface.NotImplemented();
                         break;
 
                     case ConsoleKey.Q:
@@ -48,10 +44,7 @@ namespace LP2_P1
                         break;
 
                     default:
-                        Console.Clear();
-                        Console.WriteLine("Invalid option. Press any key to " +
-                            "return to selection.");
-                        Console.ReadKey(true);
+                        UserInterface.PrintInvalidChoice();
                         break;
                 }
             } while (key != ConsoleKey.Q);
@@ -118,12 +111,12 @@ namespace LP2_P1
                 
                 if (key == ConsoleKey.UpArrow && Console.CursorTop > 2)
                 {
-                    Program.ClearSpace();
+                    UserInterface.ClearSpace();
                     Console.CursorTop -= 1;
                 }
                 else if (key == ConsoleKey.DownArrow && Console.CursorTop < 53)
                 {
-                    Program.ClearSpace();
+                    UserInterface.ClearSpace();
                     Console.CursorTop += 1;
                 }
                 else if (key == ConsoleKey.Enter)
