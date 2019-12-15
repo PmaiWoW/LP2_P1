@@ -124,7 +124,7 @@ namespace LP2_P1
                     if (Console.CursorTop == 2)
                     {
                         UserInterface.PrintSearchBar();
-                        UserInterface.WriteOptions(4);
+                        UserInterface.ColorSetup(4);
                         wantedTitle = Console.ReadLine();
                         Console.ResetColor();
                     }
@@ -150,7 +150,7 @@ namespace LP2_P1
                     }
                     if (Console.CursorTop == 18)
                     {
-                        UserInterface.WriteOptions(3);
+                        UserInterface.ColorSetup(3);
                         string[] date = Console.ReadLine().Split(' ');
 
                         if (date.Length >= 1 && date[0].Length == 4 &&
@@ -169,7 +169,7 @@ namespace LP2_P1
                     }
                     if (Console.CursorTop == 20)
                     {
-                        UserInterface.WriteOptions(3);
+                        UserInterface.ColorSetup(3);
                         string[] runtime = Console.ReadLine().Split(' ');
 
                         if (runtime.Length >= 1 && runtime[0].Length == 4 &&

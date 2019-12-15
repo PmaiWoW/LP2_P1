@@ -134,8 +134,7 @@ namespace LP2_P1
 
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.Black;
+            UserInterface.ColorSetup(backgroundColor: ConsoleColor.Gray);
 
             for (int i = 0; i < Console.WindowWidth; i++)
                 Console.Write(" ");
