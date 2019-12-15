@@ -8,8 +8,7 @@ namespace LP2_P1
     {
         private static string wantedTitle;
         private static ICollection<TitleType> types = new List<TitleType>();
-        private static ICollection<TitleGenre?> genres = 
-            new List<TitleGenre?>();
+        private static ICollection<TitleGenre?> genres = new List<TitleGenre?>();
         private static bool? isAdult;
         private static int? start;
         private static int? end;
@@ -61,38 +60,45 @@ namespace LP2_P1
             bool? adult, int? startDate, int? endDate,
             TitleGenre?[] genres, int? runtime1, int? runtime2)
         {
-            IEnumerable<TitleBasics> originalNamedTitles = FileLoader.LoadTitleBasics();
-            
+            IEnumerable<TitleRatings> titleRatingsList = FileLoader.LoadTitleRatings();
+            IEnumerable<TitleBasics> titleBasicsList = FileLoader.LoadTitleBasics();
+
             if (wantedTitle != null)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.PrimaryTitle.ToLower().Contains
                     (wantedTitle.Trim().ToLower()));
             if (runtime1.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.RuntimeMinutes >= runtime1);
             if (runtime2.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.RuntimeMinutes <= runtime2);
             if (startDate.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.StartYear >= startDate);
             if (endDate.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.EndYear <= endDate);
             if (type.Length > 0)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => type.Any(a => a == c.Type));
             if (adult.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                titleBasicsList = titleBasicsList.Where
                     (c => c.IsAdult == adult);
             for (int i = 0; i < genres.Length - 1; i++)
-                originalNamedTitles =
-                    from title in originalNamedTitles
+                titleBasicsList =
+                    from title in titleBasicsList
                     where title.Genres.Contains(genres[i])
                     select title;
 
+            IEnumerable<(TitleBasics a, TitleRatings p)> mixedList =
+                from titles in titleBasicsList
+                join ratings in titleRatingsList on titles.TConst equals ratings.Tconst
+                where ratings.AverageRating >= 8 && ratings.AverageRating <= 10
+                select (titles, ratings);
+
             TitleSearch searcher = new TitleSearch();
-            searcher.SearchTitle(originalNamedTitles);
+            searcher.SearchTitle(mixedList);
         }
 
         private static void SubMenu()
@@ -118,7 +124,7 @@ namespace LP2_P1
                     Program.ClearSpace();
                     Console.CursorTop -= 1;
                 }
-                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 50)
+                else if (key == ConsoleKey.DownArrow && Console.CursorTop < 49)
                 {
                     Program.ClearSpace();
                     Console.CursorTop += 1;
@@ -159,13 +165,13 @@ namespace LP2_P1
                         Console.BackgroundColor = ConsoleColor.White;
                         string[] date = Console.ReadLine().Split(' ');
 
-                        if (date.Length >= 1 && date[0].Length == 4 && 
+                        if (date.Length >= 1 && date[0].Length == 4 &&
                             int.Parse(date[0]) != 0)
                             start = int.Parse(date[0]);
                         else
                             start = null;
 
-                        if (date.Length == 2 && date[1].Length == 4 && 
+                        if (date.Length == 2 && date[1].Length == 4 &&
                             int.Parse(date[1]) != 0)
                             end = int.Parse(date[1]);
                         else
@@ -180,13 +186,13 @@ namespace LP2_P1
                         Console.BackgroundColor = ConsoleColor.White;
                         string[] runtime = Console.ReadLine().Split(' ');
 
-                        if (runtime.Length >= 1 && runtime[0].Length == 4 && 
+                        if (runtime.Length >= 1 && runtime[0].Length == 4 &&
                             int.Parse(runtime[0]) != 0)
                             runtimeLow = int.Parse(runtime[0]);
                         else
                             runtimeLow = null;
 
-                        if (runtime.Length == 2 && runtime[1].Length == 4 && 
+                        if (runtime.Length == 2 && runtime[1].Length == 4 &&
                             int.Parse(runtime[1]) != 0)
                             runtimeHigh = int.Parse(runtime[1]);
                         else
@@ -256,9 +262,9 @@ namespace LP2_P1
                 Console.CursorLeft = 3;
                 Console.Write($"                                                   ");
                 Console.ResetColor();
-                Console.Write(i == 1? description3: description2 + " \n \n");
+                Console.Write(i == 1 ? description3 : description2 + " \n \n");
             }
-            
+
             for (int i = 0; i < 26; i++)
             {
                 char a = genres.Contains((TitleGenre)i) ? 'X' : ' ';

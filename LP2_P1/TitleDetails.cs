@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LP2_P1
 {
-    static class TitleDetails
+    internal static class TitleDetails
     {
-        public static void Menu(TitleBasics title)
+        public static void Menu(TitleBasics title, TitleRatings ratings)
         {
             ConsoleKey key = ConsoleKey.D0;
 
@@ -14,6 +12,7 @@ namespace LP2_P1
             {
                 Console.Clear();
                 Console.WriteLine(title);
+                Console.WriteLine(ratings);
 
                 Console.CursorLeft = 1;
                 Console.WriteLine("\nPress 'B' to to back to previous menu");

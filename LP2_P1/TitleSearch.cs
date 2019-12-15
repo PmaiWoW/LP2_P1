@@ -6,17 +6,19 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
-        private List<TitleBasics> originalNamedTitles = new List<TitleBasics>(63506070);
-        private IEnumerable<TitleBasics> namedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> originalNamedTitles;
+
+        //private IEnumerable<(TitleBasics p, TitleRatings c)> namedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> namedTitles;
+
         private State listState = State.Unordered;
         private int skipNumber = 0;
         private int displayedAmount = 0;
         private const int displayNum = 30;
 
-        public void SearchTitle(IEnumerable<TitleBasics> wantedTitle)
+        public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> wantedTitle)
         {
-            originalNamedTitles = wantedTitle.ToList();
-
+            originalNamedTitles = wantedTitle.ToHashSet();
             SearchMenu();
         }
 
@@ -81,7 +83,7 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.O:
-                        Sort(ref namedTitles);
+                        Sort();
                         UpdatePage();
                         break;
 
@@ -105,8 +107,8 @@ namespace LP2_P1
 
                     case ConsoleKey.Enter:
                         TitleDetails.Menu(
-                            namedTitles.ElementAt((Console.CursorTop - 1) +
-                            skipNumber));
+                            namedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).titles,
+                            namedTitles.ElementAt(Console.CursorTop - 1 + skipNumber).ratings);
                         UpdatePage();
                         break;
 
@@ -128,9 +130,9 @@ namespace LP2_P1
         {
             Console.Clear();
 
-            PrintResults(namedTitles.SkipLast(namedTitles.Count() - 
-                skipNumber - displayNum).Skip(skipNumber).Select(c => c)
-                .ToList());
+            PrintResults(namedTitles.Select(c => c.titles)
+                .SkipLast(namedTitles.Count() - skipNumber - displayNum)
+                .Skip(skipNumber).ToHashSet());
         }
 
         private void ReverseOrder()
@@ -174,8 +176,8 @@ namespace LP2_P1
                     {
                         namedTitles =
                             (from title in namedTitles
-                             where title.Type == type
-                             select title).ToList();
+                             where title.titles.Type == type
+                             select title).ToHashSet();
                     }
                     break;
 
@@ -207,8 +209,8 @@ namespace LP2_P1
                     {
                         namedTitles =
                             (from title in namedTitles
-                             where title.Genres.Contains(genre)
-                             select title).ToList();
+                             where title.titles.Genres.Contains(genre)
+                             select title).ToHashSet();
                     }
                     break;
 
@@ -218,7 +220,7 @@ namespace LP2_P1
             }
         }
 
-        public void Sort(ref IEnumerable<TitleBasics> namedTitles)
+        public void Sort()
         {
             ConsoleKey key;
 
@@ -243,27 +245,45 @@ namespace LP2_P1
             switch (key)
             {
                 case ConsoleKey.D1:
-                    namedTitles = namedTitles.OrderBy(c => c.Type);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.Type)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D2:
-                    namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.PrimaryTitle)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D3:
-                    namedTitles = namedTitles.OrderBy(c => c.IsAdult);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.IsAdult)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D4:
-                    namedTitles = namedTitles.OrderBy(c => c.StartYear);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.StartYear)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D5:
-                    namedTitles = namedTitles.OrderBy(c => c.EndYear);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.EndYear)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.D6:
-                    namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.Genres[0])
+                        .Select(c => c).ToHashSet();
+                    break;
+
+                case ConsoleKey.D7:
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.ratings.AverageRating)
+                        .Select(c => c).ToHashSet();
                     break;
 
                 case ConsoleKey.B:
@@ -278,8 +298,9 @@ namespace LP2_P1
 
         private void IsAdultFilter()
         {
-            PrintResults(namedTitles.SkipLast(namedTitles.Count() + skipNumber)
-                .Skip(skipNumber).Select(c => c));
+            PrintResults(namedTitles.Select(c => c.titles)
+                .SkipLast(namedTitles.Count() + skipNumber)
+                .Skip(skipNumber).ToHashSet());
             bool? adultsOnly = null;
 
             ConsoleKey key;
@@ -305,9 +326,9 @@ namespace LP2_P1
                     PrintInvalidChoice();
                     return;
             }
-            namedTitles = namedTitles
-                .Where(c => c.IsAdult == adultsOnly)
-                .Select(c => c).ToList();
+            namedTitles
+                .Where(c => c.titles.IsAdult == adultsOnly)
+                .Select(c => c).ToHashSet();
 
             UpdatePage();
         }
@@ -328,9 +349,9 @@ namespace LP2_P1
             }
             else int.TryParse(yearString, out startYear);
 
-            namedTitles = namedTitles
-                .Where(c => c.StartYear == startYear)
-                .Select(c => c).ToList();
+            namedTitles
+                .Where(c => c.titles.StartYear == startYear)
+                .Select(c => c).ToHashSet();
 
             UpdatePage();
         }
@@ -351,9 +372,9 @@ namespace LP2_P1
             }
             else int.TryParse(yearString, out endYear);
 
-            namedTitles = namedTitles
-                .Where(c => c.EndYear == endYear)
-                .Select(c => c).ToList();
+            namedTitles
+                .Where(c => c.titles.EndYear == endYear)
+                .Select(c => c).ToHashSet();
 
             UpdatePage();
         }
