@@ -13,14 +13,14 @@ namespace LP2_P1
         {
             Console.SetWindowSize(WindowWidth, WindowHeight);
             Console.SetWindowPosition(0, 0);
-
+            
             Console.Title = "MyIMDBSearcher";
             Console.CursorVisible = false;
             
             SearchMenu.MenuLoop();
             
-            string wantedTitle = Console.ReadLine();
             Console.ResetColor();
+
         }
     }
 }

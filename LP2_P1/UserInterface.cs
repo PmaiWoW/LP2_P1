@@ -60,6 +60,46 @@ namespace LP2_P1
             Console.ResetColor();
         }
 
+
+
+        public static void OrderMenu()
+        {
+            Console.Clear();
+
+            // Display Order Options
+            Console.WriteLine("\n '1' to order by type" +
+                "\n '2' to order by title" +
+                "\n '3' to order by adult rating" +
+                "\n '4' to order by year of release" +
+                "\n '5' to order by year of end" +
+                "\n '6' to order by genre" +
+                "\n '7' to order by rating" +
+                "\n 'B' to go back \n");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public static void ColorSetup(int cursorLeft = 0,
             ConsoleColor backgroundColor = ConsoleColor.White,
             ConsoleColor foregroundColor = ConsoleColor.Black)

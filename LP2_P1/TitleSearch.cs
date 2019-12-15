@@ -13,6 +13,7 @@ namespace LP2_P1
         private int skipNumber = 0;
         private int displayedAmount = 0;
         private const int displayNum = 30;
+        string sortParameterString = default;
 
         public void SearchTitle(IEnumerable<TitleBasics> wantedTitle)
         {
@@ -26,13 +27,11 @@ namespace LP2_P1
             namedTitles = originalNamedTitles;
 
             ConsoleKey key = ConsoleKey.D0;
+            int keyInt = 0;
             UpdatePage();
 
             while (key != ConsoleKey.B)
             {
-                Console.CursorLeft = 1;
-                Console.Write(">");
-
                 if (!namedTitles.Any())
                 {
                     Console.Clear();
@@ -44,23 +43,10 @@ namespace LP2_P1
 
                 key = Console.ReadKey().Key;
 
+                //if (Int32.TryParse(key.))
+
                 switch (key)
                 {
-                    case ConsoleKey.UpArrow:
-                        if (Console.CursorTop > 1)
-                        {
-                            UserInterface.ClearSpace();
-                            Console.CursorTop -= 1;
-                        }
-                        break;
-
-                    case ConsoleKey.DownArrow:
-                        if (Console.CursorTop < displayedAmount)
-                        {
-                            UserInterface.ClearSpace();
-                            Console.CursorTop += 1;
-                        }
-                        break;
                     case ConsoleKey.RightArrow:
                         if (namedTitles.Count() / (skipNumber + displayNum) > 0 ||
                             skipNumber == 0)
@@ -96,6 +82,7 @@ namespace LP2_P1
 
                     case ConsoleKey.T:
                         namedTitles = originalNamedTitles;
+                        sortParameterString = default;
                         listState = State.Unordered;
                         break;
 
@@ -142,12 +129,12 @@ namespace LP2_P1
 
             Console.SetBufferSize(Program.WindowWidth, Program.WindowHeight);
 
-            Console.CursorLeft = 0;
             Console.Write("    Name");
             Console.CursorLeft = 100;
-            Console.Write("Type");
+            Console.Write(sortParameterString);
             Console.CursorLeft = 150;
-            Console.Write($"State : {listState}");
+            if (listState != State.Unordered)
+                Console.Write($"State : {listState}");
 
             Console.ResetColor();
 
@@ -156,11 +143,12 @@ namespace LP2_P1
             string pTitle;
             int maxLenght = 90;
 
+
             displayedAmount = titlesToDisplay.Count();
 
             for (int i = 0; i < titlesToDisplay.Count(); i++)
             {
-                pTitle = titlesToDisplay.ElementAt(i).PrimaryTitle;
+                pTitle = $"{i+1}: {titlesToDisplay.ElementAt(i).PrimaryTitle}";
                 Console.CursorLeft = 0;
                 Console.Write($"   " +
                  $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}");
@@ -169,11 +157,11 @@ namespace LP2_P1
             }
 
             Console.WriteLine("\n '->' for next page" +
-                "\n '<-' for previous page \n" +
+                "\n '<-' for previous page" +
                 "\n 'ENTER' to select title" +
-                "\n 'O' to order " +
-                "\n 'R' to reverse the order " +
-                "\n 'T' to reset the order " +
+                "\n 'O' to order" +
+                "\n 'R' to reverse the order" +
+                "\n 'T' to reset the order" +
                 "\n 'B' to go back to previous menu");
 
             Console.CursorTop = 1;
@@ -183,18 +171,7 @@ namespace LP2_P1
         {
             ConsoleKey key;
 
-            Console.Clear();
-            Console.SetCursorPosition(0, 0);
-
-            // Display Order Options
-            Console.WriteLine("\n '1' to order by type" +
-                "\n '2' to order by title" +
-                "\n '3' to order by adult rating" +
-                "\n '4' to order by year of release" +
-                "\n '5' to order by year of end" +
-                "\n '6' to order by genre" +
-                "\n '7' to order by rating" +
-                "\n 'B' to go back \n");
+            UserInterface.OrderMenu();
 
             // Read user's input
             key = Console.ReadKey().Key;
@@ -209,26 +186,32 @@ namespace LP2_P1
             switch (key)
             {
                 case ConsoleKey.D1:
+                    sortParameterString = "Type"; 
                     namedTitles = namedTitles.OrderBy(c => c.Type);
                     break;
 
                 case ConsoleKey.D2:
+                    sortParameterString = "PrimaryTitle";
                     namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
                     break;
 
                 case ConsoleKey.D3:
+                    sortParameterString = "IsAdult";
                     namedTitles = namedTitles.OrderBy(c => c.IsAdult);
                     break;
 
                 case ConsoleKey.D4:
+                    sortParameterString = "StartYear";
                     namedTitles = namedTitles.OrderBy(c => c.StartYear);
                     break;
 
                 case ConsoleKey.D5:
+                    sortParameterString = "EndYear";
                     namedTitles = namedTitles.OrderBy(c => c.EndYear);
                     break;
 
                 case ConsoleKey.D6:
+                    sortParameterString = "Genres";
                     namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
                     break;
 
