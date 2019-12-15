@@ -10,7 +10,7 @@ namespace LP2_P1
         {
             Console.SetCursorPosition(3, 0);
             Console.WriteLine("Write the name of what you're looking for.\n");
-            WriteOptions(3);
+            ColorSetup(3);
             Console.Write("                                                 ");
             Console.SetCursorPosition(2, 2);
             Console.ResetColor();
@@ -67,11 +67,13 @@ namespace LP2_P1
             Console.ResetColor();
         }
 
-        public static void WriteOptions(int cursorLeft)
+        public static void ColorSetup(int cursorLeft = 0, 
+            ConsoleColor backgroundColor = ConsoleColor.White,
+            ConsoleColor foregroundColor = ConsoleColor.Black)
         {
             Console.CursorLeft = cursorLeft;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = backgroundColor;
+            Console.ForegroundColor = foregroundColor;
         }
 
         public static void QuitMessage()

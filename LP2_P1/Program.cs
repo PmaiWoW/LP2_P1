@@ -15,7 +15,7 @@ namespace LP2_P1
             
             Console.SetWindowPosition(0, 0);
             
-            SearchMenu.MenuLoop();
+            StartMenu.MenuLoop();
             
             string wantedTitle = Console.ReadLine();
             Console.ResetColor();
