@@ -39,13 +39,13 @@ namespace LP2_P1
             else if (isAdult == true) isAdultChar = 'X';
             else if (isAdult == false) isAdultChar = ' ';
 
-            Console.Write($"\n   [{isAdultChar}]" + description1);
+            Console.Write($"\n   [{isAdultChar}] {description1}");
 
             Console.BackgroundColor = ConsoleColor.White;
             Console.CursorLeft = 3;
             Console.Write($"         ");
             Console.ResetColor();
-            Console.Write(description2 + " \n \n");
+            Console.Write($"{description2}\n\n");
 
             for (int i = 0; i < 28; i++)
             {
@@ -54,9 +54,9 @@ namespace LP2_P1
             }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\n     ----------------");
-            Console.WriteLine("    |     Search     |");
-            Console.WriteLine("     ----------------");
+            Console.WriteLine("\n     ----------------" +
+                "\n    |     Search     |" +
+                "\n     ----------------");
             Console.ResetColor();
         }
 
