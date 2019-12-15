@@ -17,7 +17,7 @@ namespace LP2_P1
             Console.Title = "MyIMDBSearcher";
             Console.CursorVisible = false;
             
-            StartMenu.MenuLoop();
+            SearchMenu.MenuLoop();
             
             string wantedTitle = Console.ReadLine();
             //Console.ResetColor();
