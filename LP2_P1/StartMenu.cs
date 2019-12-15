@@ -98,6 +98,8 @@ namespace LP2_P1
 
         private static void SubMenu()
         {
+            wantedTitle = default;
+
             Console.Clear();
 
             ConsoleKey key;
@@ -205,9 +207,12 @@ namespace LP2_P1
                         PrintTypeSelection();
                         Console.CursorTop = indexes + 21;
                     }
-                    if (Console.CursorTop == 49)
+                    if (Console.CursorTop == 50)
+                    {
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
                             end, genres.ToArray(), runtimeLow, runtimeHigh);
+                        key = ConsoleKey.Q;
+                    }
                 }
             } while (key != ConsoleKey.Q);
         }
@@ -235,7 +240,7 @@ namespace LP2_P1
                 "reset to 'unfilled'\n\n";
 
             Console.SetCursorPosition(0, 5);
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 10; i++)
             {
                 char a = types.Contains((TitleType)i) ? 'X' : ' ';
                 Console.WriteLine($"   [{a}]{(TitleType)i}");

@@ -90,21 +90,6 @@ namespace LP2_P1
                         ReverseOrder();
                         break;
 
-                    case ConsoleKey.F:
-                        //Filter();
-                        UpdatePage();
-                        break;
-
-                    case ConsoleKey.T:
-                        Console.Clear();
-                        namedTitles = originalNamedTitles;
-                        listState = State.Unordered;
-                        Console.WriteLine("Search results have been reset to" +
-                            " name only.\nPress any key to continue.");
-                        Console.ReadKey(true);
-                        UpdatePage();
-                        break;
-
                     case ConsoleKey.Enter:
                         TitleDetails.Menu(
                             namedTitles.ElementAt((Console.CursorTop - 1) +
@@ -165,7 +150,7 @@ namespace LP2_P1
                 "\n '5' to order by year of end" +
                 "\n '6' to order by genre" +
                 "\n '7' to order by rating" +
-                "\n '7' to reset order" +
+                "\n '8' to reset order" +
                 "\n 'B' to go back \n");
 
             // Read user's input
@@ -204,7 +189,7 @@ namespace LP2_P1
                     namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
                     break;
 
-                case ConsoleKey.D7:
+                case ConsoleKey.D8:
                     namedTitles = originalNamedTitles;
                     listState = State.Unordered;
                     break;
@@ -218,165 +203,6 @@ namespace LP2_P1
                     break;
             }
         }
-
-        /*
-        private void Filter()
-        {
-            Console.Clear();
-            ConsoleKey key = ConsoleKey.D0;
-            Console.WriteLine("Select the intended filter:\n" +
-                "\n'1' to filter by a type" +
-                "\n'2' to filter by age restriction" +
-                "\n'3' to filter by a release year" +
-                "\n'4' to filter by a end year" +
-                "\n'5' to filter by a genre" +
-                "\n'B' to go back to previous menu");
-
-            key = Console.ReadKey().Key;
-            string input;
-
-            switch (key)
-            {
-                case ConsoleKey.D1:
-                    Console.Clear();
-                    Console.WriteLine("Available types are:" +
-                        "\nShort - Movie - tvMovie - tvSeries - tvEpisode - " +
-                        "tvShort - tvMiniSeries - tvSpecial - Video - " +
-                        "Videogame" +
-                        "\nInsert the desired type:");
-
-                    input = Console.ReadLine();
-                    if (Enum.TryParse(input.Trim().ToUpper(),
-                        out TitleType type))
-                    {
-                        namedTitles =
-                            (from title in namedTitles
-                             where title.Type == type
-                             select title).ToList();
-                    }
-                    break;
-
-                case ConsoleKey.D2:
-                    IsAdultFilter();
-                    break;
-
-                case ConsoleKey.D3:
-                    StartYearFilter();
-                    break;
-
-                case ConsoleKey.D4:
-                    EndYearFilter();
-                    break;
-
-                case ConsoleKey.D5:
-                    Console.Clear();
-                    Console.WriteLine("Available genres are:" +
-                        "\nDocumentary - Short - Animation - " +
-                        "Comedy - Romance - Sport - Action - News - Drama" +
-                        "\nFantasy - Horror - Biography - Music - War - " +
-                        "Crime - Western - Family - Adventure - History" +
-                        "\nMystery - 0SciFi - Thriller - Musical - " +
-                        "FilmNoir - GameShow - TalkShow - RealityTV - Adult");
-
-                    input = Console.ReadLine();
-                    if (Enum.TryParse(input.Trim().ToUpper(),
-                        out TitleGenre genre))
-                    {
-                        namedTitles =
-                            (from title in namedTitles
-                             where title.Genres.Contains(genre)
-                             select title).ToList();
-                    }
-                    break;
-
-                case ConsoleKey.B:
-                    PrintBackToMenu();
-                    break;
-            }
-        }
-
-        private void IsAdultFilter()
-        {
-            PrintResults(namedTitles.SkipLast(namedTitles.Count() + skipNumber)
-                .Skip(skipNumber).Select(c => c));
-            bool? adultsOnly = null;
-
-            ConsoleKey key;
-
-            Console.Clear();
-            Console.WriteLine("Select the age restriction:\n" +
-                "\n'1' Adults Only" +
-                "\n'2' For Everyone");
-
-            key = Console.ReadKey().Key;
-
-            switch (key)
-            {
-                case ConsoleKey.D1:
-                    adultsOnly = true;
-                    break;
-
-                case ConsoleKey.D2:
-                    adultsOnly = false;
-                    break;
-
-                default:
-                    PrintInvalidChoice();
-                    return;
-            }
-            namedTitles = namedTitles
-                .Where(c => c.IsAdult == adultsOnly)
-                .Select(c => c).ToList();
-
-            UpdatePage();
-        }
-
-        private void StartYearFilter()
-        {
-            int startYear;
-            string yearString;
-            Console.Clear();
-            Console.WriteLine("Type the release year:\n");
-
-            yearString = Console.ReadLine();
-
-            if (!int.TryParse(yearString, out startYear))
-            {
-                PrintInvalidChoice();
-                return;
-            }
-            else int.TryParse(yearString, out startYear);
-
-            namedTitles = namedTitles
-                .Where(c => c.StartYear == startYear)
-                .Select(c => c).ToList();
-
-            UpdatePage();
-        }
-
-        private void EndYearFilter()
-        {
-            int endYear;
-            string yearString;
-            Console.Clear();
-            Console.WriteLine("Type the end year:\n");
-
-            yearString = Console.ReadLine();
-
-            if (!int.TryParse(yearString, out endYear))
-            {
-                PrintInvalidChoice();
-                return;
-            }
-            else int.TryParse(yearString, out endYear);
-
-            namedTitles = namedTitles
-                .Where(c => c.EndYear == endYear)
-                .Select(c => c).ToList();
-
-            UpdatePage();
-        }
-        */
 
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
@@ -398,7 +224,7 @@ namespace LP2_P1
             Console.WriteLine("");
 
             string pTitle;
-            int maxLenght = 100;
+            int maxLenght = 90;
 
             displayedAmount = titlesToDisplay.Count();
 
@@ -413,7 +239,6 @@ namespace LP2_P1
             }            
 
             Console.WriteLine("\n 'O' to order " +
-                "\n 'F' to filter " +
                 "\n 'R' to reverse the order " +
                 "\n 'T' to reset search list" +
                 "\n 'B' to go back to previous menu" +

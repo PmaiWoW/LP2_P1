@@ -44,7 +44,7 @@
                     Genres[i].ToString() : @"\N";
 
             string s = $"   Title Name:      {PrimaryTitle}" +
-                $"\n   Original Title:  {PrimaryTitle}" +
+                $"\n   Original Title:  {OriginalTitle}" +
                 $"\n   Type:            {typePrint}" +
                 $"\n   Age Restriction: {isAdult}" +
                 $"\n   Release Year:    {startYearPrint}" +

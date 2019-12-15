@@ -96,6 +96,10 @@ namespace LP2_P1
                                         genres[i] = finalString;
                                     }
                                 }
+
+                                Array.Resize<TitleGenre>(ref genresFinal,
+                                    genres.Length);
+
                                 for (int i = 0; i < genres.Length; i++)
                                     if (Enum.TryParse(genres[i].ToUpper(),
                                         out TitleGenre genre))
