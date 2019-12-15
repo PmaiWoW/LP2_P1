@@ -24,7 +24,11 @@ namespace LP2_P1
                 "' ' not adult)\n\n";
 
             string description2 = "   Start Year & End Year - Insert 2 " +
-                "years, separated by a space";
+                "years, separated by a space"; 
+            string description3 = "   Runtime low & Runtime high - Insert 2" +
+                "numbers, separated by a space";
+            string description4 = "   Lowest rating & Highest rating - " +
+                "Insert 2 numbers, separated by space";
 
             Console.SetCursorPosition(0, 5);
             for (int i = 0; i < 10; i++)
@@ -41,11 +45,16 @@ namespace LP2_P1
 
             Console.Write($"\n   [{isAdultChar}] {description1}");
 
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.CursorLeft = 3;
-            Console.Write($"         ");
-            Console.ResetColor();
-            Console.Write($"{description2}\n\n");
+            for (int i = 0; i < 3; i++)
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.CursorLeft = 3;
+                Console.Write($"         ");
+                Console.ResetColor();
+                if (i == 0) Console.Write(description2 + "\n\n");
+                if (i == 1) Console.Write(description3 + "\n\n");
+                if (i == 2) Console.Write(description4 + "\n\n");
+            }
 
             for (int i = 0; i < 28; i++)
             {
