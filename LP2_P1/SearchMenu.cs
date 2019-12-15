@@ -115,6 +115,7 @@ namespace LP2_P1
                 {
                     if (Console.CursorTop == 2)
                     {
+                        UserInterface.ResizeWindow();
                         UserInterface.PrintSearchBar();
                         UserInterface.ColorSetup(4);
                         wantedTitle = Console.ReadLine();
@@ -122,6 +123,7 @@ namespace LP2_P1
                     }
                     if (Console.CursorTop >= 5 && Console.CursorTop <= 14)
                     {
+                        UserInterface.ResizeWindow();
                         int index = Console.CursorTop - 5;
                         if (types.Contains((TitleType)index))
                             types.Remove((TitleType)index);
@@ -133,6 +135,7 @@ namespace LP2_P1
                     }
                     if (Console.CursorTop == 16)
                     {
+                        UserInterface.ResizeWindow();
                         if (isAdult == true) isAdult = false;
                         else if (isAdult == null) isAdult = true;
                         else if (isAdult == false) isAdult = null;
@@ -142,6 +145,7 @@ namespace LP2_P1
                     }
                     if (Console.CursorTop == 18)
                     {
+                        UserInterface.ResizeWindow();
                         UserInterface.ColorSetup(3);
                         string[] date = Console.ReadLine().Split(' ');
 
@@ -161,6 +165,7 @@ namespace LP2_P1
                     }
                     if (Console.CursorTop >= 22 && Console.CursorTop <= 49)
                     {
+                        UserInterface.ResizeWindow();
                         int indexes = Console.CursorTop - 22;
                         if (genres.Contains((TitleGenre)indexes))
                             genres.Remove((TitleGenre)indexes);
@@ -172,6 +177,7 @@ namespace LP2_P1
                     }
                     if (Console.CursorTop >= 51 && Console.CursorTop <= 53)
                     {
+                        UserInterface.ResizeWindow();
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
                             end, genres.ToArray());
                         key = ConsoleKey.Q;

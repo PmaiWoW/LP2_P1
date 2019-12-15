@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace LP2_P1
 {
@@ -96,6 +97,12 @@ namespace LP2_P1
             Console.Clear();
             Console.WriteLine("Thank you for using this searcher, we hope " +
                 "to see you again!\nPress any key to exit.");
+        }
+
+        public static void ResizeWindow()
+        {
+            Console.SetWindowSize(Program.WindowWidth, Program.WindowHeight);
+            Console.SetBufferSize(Program.WindowWidth, Program.WindowHeight);
         }
     }
 }
