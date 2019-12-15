@@ -46,6 +46,21 @@ namespace LP2_P1
 
                 switch (key)
                 {
+                    case ConsoleKey.UpArrow:
+                        if (Console.CursorTop > 1)
+                        {
+                            Program.ClearSpace();
+                            Console.CursorTop -= 1;
+                        }
+                        break;
+
+                    case ConsoleKey.DownArrow:
+                        if (Console.CursorTop < displayedAmount)
+                        {
+                            Program.ClearSpace();
+                            Console.CursorTop += 1;
+                        }
+                        break;
                     case ConsoleKey.RightArrow:
                         if (namedTitles.Count() / (skipNumber + displayNum) > 0 ||
                             skipNumber == 0)
@@ -63,20 +78,11 @@ namespace LP2_P1
                         }
                         break;
 
-                    case ConsoleKey.UpArrow:
-                        if (Console.CursorTop > 1)
-                        {
-                            Program.ClearSpace();
-                            Console.CursorTop -= 1;
-                        }
-                        break;
-
-                    case ConsoleKey.DownArrow:
-                        if (Console.CursorTop < displayedAmount)
-                        {
-                            Program.ClearSpace();
-                            Console.CursorTop += 1;
-                        }
+                    case ConsoleKey.Enter:
+                        TitleDetails.Menu(
+                            namedTitles.ElementAt((Console.CursorTop - 1) +
+                            skipNumber));
+                        UpdatePage();
                         break;
 
                     case ConsoleKey.O:
@@ -88,15 +94,12 @@ namespace LP2_P1
                         ReverseOrder();
                         break;
 
-                    case ConsoleKey.Enter:
-                        TitleDetails.Menu(
-                            namedTitles.ElementAt((Console.CursorTop - 1) +
-                            skipNumber));
-                        UpdatePage();
+                    case ConsoleKey.T:
+                        namedTitles = originalNamedTitles;
+                        listState = State.Unordered;
                         break;
 
-                    case ConsoleKey.B:
-                        PrintBackToMenu();
+                    case ConsoleKey.Escape:
                         break;
 
                     default:
@@ -132,6 +135,51 @@ namespace LP2_P1
             UpdatePage();
         }
 
+        private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+
+            for (int i = 0; i < Console.WindowWidth; i++)
+                Console.Write(" ");
+
+            Console.CursorLeft = 0;
+            Console.Write("    Name");
+            Console.CursorLeft = 100;
+            Console.Write("Type");
+            Console.CursorLeft = 150;
+            Console.Write($"State : {listState}");
+
+            Console.ResetColor();
+
+            Console.WriteLine("");
+
+            string pTitle;
+            int maxLenght = 90;
+
+            displayedAmount = titlesToDisplay.Count();
+
+            for (int i = 0; i < titlesToDisplay.Count(); i++)
+            {
+                pTitle = titlesToDisplay.ElementAt(i).PrimaryTitle;
+                Console.CursorLeft = 0;
+                Console.Write($"   " +
+                 $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}");
+                Console.CursorLeft = 100;
+                Console.WriteLine($"| {titlesToDisplay.ElementAt(i).Type}");
+            }
+
+            Console.WriteLine("\n '->' for next page" +
+                "\n '<-' for previous page \n" +
+                "\n 'ENTER' to select title" +
+                "\n 'O' to order " +
+                "\n 'R' to reverse the order " +
+                "\n 'T' to reset the order " +
+                "\n 'ESC' to go back to previous menu");
+
+            Console.CursorTop = 1;
+        }
+
         public void Sort(ref IEnumerable<TitleBasics> namedTitles)
         {
             ConsoleKey key;
@@ -148,8 +196,7 @@ namespace LP2_P1
                 "\n '5' to order by year of end" +
                 "\n '6' to order by genre" +
                 "\n '7' to order by rating" +
-                "\n '8' to reset order" +
-                "\n 'B' to go back \n");
+                "\n 'ESC' to go back \n");
 
             // Read user's input
             key = Console.ReadKey().Key;
@@ -187,13 +234,7 @@ namespace LP2_P1
                     namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
                     break;
 
-                case ConsoleKey.D8:
-                    namedTitles = originalNamedTitles;
-                    listState = State.Unordered;
-                    break;
-
-                case ConsoleKey.B:
-                    PrintBackToMenu();
+                case ConsoleKey.Escape:
                     break;
 
                 default:
@@ -202,64 +243,11 @@ namespace LP2_P1
             }
         }
 
-        private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
-        {
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.Black;
-
-            for (int i = 0; i < Console.WindowWidth; i++)
-                Console.Write(" ");
-
-            Console.CursorLeft = 0;
-            Console.Write("    Name");
-            Console.CursorLeft = 100;
-            Console.Write("Type");
-            Console.CursorLeft = 150;
-            Console.Write($"State : {listState}");
-
-            Console.ResetColor();
-
-            Console.WriteLine("");
-
-            string pTitle;
-            int maxLenght = 90;
-
-            displayedAmount = titlesToDisplay.Count();
-
-            for (int i = 0; i < titlesToDisplay.Count(); i++)
-            {
-                pTitle = titlesToDisplay.ElementAt(i).PrimaryTitle;
-                Console.CursorLeft = 0;
-                Console.Write($"   " +
-                 $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}");
-                Console.CursorLeft = 100;
-                Console.WriteLine($"| {titlesToDisplay.ElementAt(i).Type}");
-            }            
-
-            Console.WriteLine("\n 'O' to order " +
-                "\n 'R' to reverse the order " +
-                "\n 'T' to reset search list" +
-                "\n 'B' to go back to previous menu" +
-                "\n 'ENTER' to select title" +
-                "\n '->' for previous page" +
-                "\n '<-' for next page \n");
-
-            Console.CursorTop = 1;
-        }
-
         private void PrintInvalidChoice()
         {
             Console.Clear();
             Console.WriteLine("Invalid option. Press any key to " +
                     "return to previous menu.");
-            Console.ReadKey(true);
-        }
-
-        private void PrintBackToMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("Going back to the previous menu." +
-                "\nPress any key to continue.");
             Console.ReadKey(true);
         }
 

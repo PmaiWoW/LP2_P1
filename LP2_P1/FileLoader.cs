@@ -48,8 +48,6 @@ namespace LP2_P1
 
                         string[] elements;
 
-                        Console.WriteLine();
-                        Console.WriteLine("Loading...");
                         CreateLoadingBar();
 
                         while ((line = sr.ReadLine()) != null)
@@ -163,6 +161,7 @@ namespace LP2_P1
 
         private static void CreateLoadingBar()
         {
+            Console.WriteLine("\n\n\nLoading...");
             Console.BackgroundColor = ConsoleColor.DarkRed;
             for (int i = 0; i < 100; i++)
                 Console.Write(" ");
