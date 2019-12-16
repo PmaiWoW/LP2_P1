@@ -15,6 +15,12 @@ namespace LP2_P1
                 Console.WriteLine(ratings);
 
                 Console.CursorLeft = 1;
+
+                if(title.Type == TitleType.TVSERIES)
+                {
+                    Console.WriteLine("");
+                }
+
                 Console.WriteLine("\nPress 'B' to to back to previous menu");
 
                 key = Console.ReadKey().Key;

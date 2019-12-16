@@ -183,7 +183,6 @@ namespace LP2_P1
                     {
                         int? seasonNumberNul;
                         int? episodeNumberNul;
-
                         string[] elements;
 
                         while ((line = sr.ReadLine()) != null)

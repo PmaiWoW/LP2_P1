@@ -9,20 +9,20 @@ namespace LP2_P1
         //private List<TitleBasics> originalNamedTitles =
         //    new List<TitleBasics>(63506070);
         //private IEnumerable<TitleBasics> namedTitles;
-        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
-            originalNamedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings, 
+            TitleEpisode)> originalNamedTitles;
 
         //private IEnumerable<(TitleBasics p, TitleRatings c)> namedTitles;
-        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
-            namedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings, 
+            TitleEpisode)> namedTitles;
 
         private State listState = State.Unordered;
         private int skipNumber = 0;
         private int displayedAmount = 0;
         private const int displayNum = 30;
 
-        public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> 
-            wantedTitle)
+        public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings, 
+            TitleEpisode)> wantedTitle)
         {
             originalNamedTitles = wantedTitle.ToHashSet();
             SearchMenu();

@@ -51,44 +51,49 @@ namespace LP2_P1
             TitleGenre?[] genres, int? runtime1, int? runtime2,
             int? rating1, int? rating2)
         {
-            IEnumerable<TitleRatings> titleRatingsList = 
+            IEnumerable<TitleRatings> titleRatingsEnumerable = 
                 FileLoader.LoadTitleRatings();
-            IEnumerable<TitleBasics> titleBasicsList =
+            IEnumerable<TitleBasics> titleBasicsEnumerable =
                 FileLoader.LoadTitleBasics();
+            IEnumerable<TitleEpisode> titleEpisodesEnumerable =
+                FileLoader.LoadTitleEpisode();
 
             if (wantedTitle != null)
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnumerable = titleBasicsEnumerable.Where
                     (c => c.PrimaryTitle.ToLower().Contains
                     (wantedTitle.Trim().ToLower()));
             if (runtime1.HasValue)
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnumerable = titleBasicsEnumerable.Where
                     (c => c.RuntimeMinutes >= runtime1);
             if (runtime2.HasValue)
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnumerable = titleBasicsEnumerable.Where
                     (c => c.RuntimeMinutes <= runtime2);
             if (startDate.HasValue)
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnumerable = titleBasicsEnumerable.Where
                     (c => c.StartYear >= startDate);
             if (endDate.HasValue)
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnumerable = titleBasicsEnumerable.Where
                     (c => c.EndYear <= endDate);
             if (type.Length > 0)
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnumerable = titleBasicsEnumerable.Where
                     (c => type.Any(a => a == c.Type));
             if (adult.HasValue)
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnumerable = titleBasicsEnumerable.Where
                     (c => c.IsAdult == adult);
             for (int i = 0; i < genres.Length - 1; i++)
-                titleBasicsList =
-                    from title in titleBasicsList
+                titleBasicsEnumerable =
+                    from title in titleBasicsEnumerable
                     where title.Genres.Contains(genres[i])
                     select title;
 
-            IEnumerable<(TitleBasics titles, TitleRatings ratings)> mixedList =
-                from titles in titleBasicsList
-                join ratings in titleRatingsList on titles.TConst
+            IEnumerable<(TitleBasics titles, TitleRatings ratings, 
+                TitleEpisode episodes)> mixedList =
+                from titles in titleBasicsEnumerable
+                join ratings in titleRatingsEnumerable on titles.TConst
                 equals ratings.Tconst
-                select (titles, ratings);
+                join episodes in titleEpisodesEnumerable on titles.TConst
+                equals episodes.ParentTconst
+                select (titles, ratings, episodes);
 
             if (rating1.HasValue)
                 mixedList = mixedList.Where(c =>
