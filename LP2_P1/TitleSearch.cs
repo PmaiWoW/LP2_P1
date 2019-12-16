@@ -98,6 +98,7 @@ namespace LP2_P1
                     case ConsoleKey.T:
                         namedTitles = originalNamedTitles;
                         listState = State.Unordered;
+                        UpdatePage();
                         break;
 
                     case ConsoleKey.Enter:
