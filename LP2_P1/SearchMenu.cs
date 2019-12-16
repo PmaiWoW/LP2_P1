@@ -42,7 +42,6 @@ namespace LP2_P1
                         break;
 
                     default:
-                        UserInterface.PrintInvalidChoice();
                         break;
                 }
             } while (key != ConsoleKey.Q);

@@ -11,8 +11,7 @@ namespace LP2_P1
         private IEnumerable<TitleBasics> namedTitles;
         private State listState = State.Unordered;
         private int skipNumber = 0;
-        private int displayedAmount = 0;
-        private const int displayNum = 30;
+        private const int displayNum = 9;
         string sortParameterString = default;
 
         public void SearchTitle(IEnumerable<TitleBasics> wantedTitle)
@@ -27,7 +26,6 @@ namespace LP2_P1
             namedTitles = originalNamedTitles;
 
             ConsoleKey key = ConsoleKey.D0;
-            int keyInt = 0;
             UpdatePage();
 
             while (key != ConsoleKey.B)
@@ -43,54 +41,52 @@ namespace LP2_P1
 
                 key = Console.ReadKey().Key;
 
-                //if (Int32.TryParse(key.))
-
-                switch (key)
+                if (key.ToString().Length == 2 && key.ToString()[0]=='D'
+                    && char.IsDigit(key.ToString()[1]))
                 {
-                    case ConsoleKey.RightArrow:
-                        if (namedTitles.Count() / (skipNumber + displayNum) > 0 ||
-                            skipNumber == 0)
-                        {
-                            skipNumber += displayNum;
-                            UpdatePage();
-                        }
-                        break;
-
-                    case ConsoleKey.LeftArrow:
-                        if (skipNumber + displayNum > displayNum)
-                        {
-                            skipNumber -= displayNum;
-                            UpdatePage();
-                        }
-                        break;
-
-                    case ConsoleKey.Enter:
-                        TitleDetails.Menu(
-                            namedTitles.ElementAt((Console.CursorTop - 1) +
+                    if (int.TryParse(key.ToString()[1].ToString(),
+                        out int keyInt) && keyInt != 0)
+                    {
+                        TitleDetails.Menu(namedTitles.ElementAt(keyInt - 1 +
                             skipNumber));
                         UpdatePage();
-                        break;
-
-                    case ConsoleKey.O:
-                        Sort(ref namedTitles);
-                        UpdatePage();
-                        break;
-
-                    case ConsoleKey.R:
-                        ReverseOrder();
-                        break;
-
-                    case ConsoleKey.T:
-                        namedTitles = originalNamedTitles;
-                        sortParameterString = default;
-                        listState = State.Unordered;
-                        break;
-
-                    default:
-                        UserInterface.PrintInvalidChoice();
-                        UpdatePage();
-                        break;
+                    }
                 }
+                else
+                {
+                    switch (key)
+                    {
+                        case ConsoleKey.RightArrow:
+                            if (namedTitles.Count()/(skipNumber + displayNum)>0
+                                || skipNumber == 0)
+                                    skipNumber += displayNum;
+                            UpdatePage();
+                            break;
+
+                        case ConsoleKey.LeftArrow:
+                            if (skipNumber + displayNum > displayNum)
+                                skipNumber -= displayNum;
+                            UpdatePage();
+                            break;
+
+                        case ConsoleKey.O:
+                            Sort(ref namedTitles);
+                            break;
+
+                        case ConsoleKey.R:
+                            ReverseOrder();
+                            break;
+
+                        case ConsoleKey.T:
+                            ResetTitles();
+                            break;
+
+                        default:
+                            UpdatePage();
+                            break;
+                    }
+                }
+
             }
             Console.Clear();
         }
@@ -120,6 +116,14 @@ namespace LP2_P1
             UpdatePage();
         }
 
+        private void ResetTitles()
+        {
+            namedTitles = originalNamedTitles;
+            sortParameterString = default;
+            listState = State.Unordered;
+            UpdatePage();
+        }
+
         private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
         {
             UserInterface.ColorSetup(backgroundColor: ConsoleColor.Gray);
@@ -143,9 +147,6 @@ namespace LP2_P1
             string pTitle;
             int maxLenght = 90;
 
-
-            displayedAmount = titlesToDisplay.Count();
-
             for (int i = 0; i < titlesToDisplay.Count(); i++)
             {
                 pTitle = $"{i+1}: {titlesToDisplay.ElementAt(i).PrimaryTitle}";
@@ -158,7 +159,7 @@ namespace LP2_P1
 
             Console.WriteLine("\n '->' for next page" +
                 "\n '<-' for previous page" +
-                "\n 'ENTER' to select title" +
+                "\n '1'-'9' to select title" +
                 "\n 'O' to order" +
                 "\n 'R' to reverse the order" +
                 "\n 'T' to reset the order" +
@@ -219,9 +220,9 @@ namespace LP2_P1
                     break;
 
                 default:
-                    UserInterface.PrintInvalidChoice();
                     break;
             }
+            UpdatePage();
         }
 
         private enum State { Ascending, Descending, Unordered };
