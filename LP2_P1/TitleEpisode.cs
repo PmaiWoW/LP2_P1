@@ -15,5 +15,8 @@
             SeasonNumber = seasonNumber;
             EpisodeNumber = episodeNumber;
         }
+
+        public override string ToString() => $"  Season nº: {SeasonNumber}\t" +
+            $"Episode nº: {EpisodeNumber}";
     }
 }

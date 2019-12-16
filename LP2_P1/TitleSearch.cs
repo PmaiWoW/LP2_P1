@@ -9,22 +9,23 @@ namespace LP2_P1
         //private List<TitleBasics> originalNamedTitles =
         //    new List<TitleBasics>(63506070);
         //private IEnumerable<TitleBasics> namedTitles;
-        private IEnumerable<(TitleBasics titles, TitleRatings ratings, 
-            TitleEpisode)> originalNamedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
+            originalNamedTitles;
 
-        //private IEnumerable<(TitleBasics p, TitleRatings c)> namedTitles;
-        private IEnumerable<(TitleBasics titles, TitleRatings ratings, 
-            TitleEpisode)> namedTitles;
+        private IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
+            namedTitles;
 
         private State listState = State.Unordered;
         private int skipNumber = 0;
         private int displayedAmount = 0;
         private const int displayNum = 30;
 
-        public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings, 
-            TitleEpisode)> wantedTitle)
+        public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> 
+            wantedTitles)
         {
-            originalNamedTitles = wantedTitle.ToHashSet();
+            originalNamedTitles = wantedTitles.ToArray();
+            Console.WriteLine(originalNamedTitles.Count());
+            Console.ReadKey();
             SearchMenu();
         }
 
@@ -100,11 +101,12 @@ namespace LP2_P1
                         break;
 
                     case ConsoleKey.Enter:
-                        TitleDetails.Menu(
-                            namedTitles.ElementAt(Console.CursorTop - 1 +
-                            skipNumber).titles,
-                            namedTitles.ElementAt(Console.CursorTop - 1 +
-                            skipNumber).ratings);
+                        int position = Console.CursorTop - 1 + skipNumber;
+
+                        TitleDetails.DisplayMenu(
+                            namedTitles.ElementAt(position).titles,
+                            namedTitles.ElementAt(position).ratings,
+                            ref namedTitles);
                         UpdatePage();
                         break;
 

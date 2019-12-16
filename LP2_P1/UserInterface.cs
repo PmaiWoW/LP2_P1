@@ -111,6 +111,7 @@ namespace LP2_P1
         public static void ResizeWindow()
         {
             Console.SetWindowSize(Program.WindowWidth, Program.WindowHeight);
+            
             Console.SetBufferSize(Program.WindowWidth, Program.WindowHeight);
         }
     }

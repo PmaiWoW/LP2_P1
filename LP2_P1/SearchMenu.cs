@@ -8,7 +8,7 @@ namespace LP2_P1
     {
         private static string wantedTitle;
         private static ICollection<TitleType> types = new List<TitleType>();
-        private static ICollection<TitleGenre?> genres = 
+        private static ICollection<TitleGenre?> genres =
             new List<TitleGenre?>();
         private static bool? isAdult;
 
@@ -51,11 +51,13 @@ namespace LP2_P1
             TitleGenre?[] genres, int? runtime1, int? runtime2,
             int? rating1, int? rating2)
         {
-            IEnumerable<TitleRatings> titleRatingsEnumerable = 
-                FileLoader.LoadTitleRatings();
+            TitleSearch searcher = new TitleSearch();
+
             IEnumerable<TitleBasics> titleBasicsEnumerable =
                 FileLoader.LoadTitleBasics();
-            IEnumerable<TitleEpisode> titleEpisodesEnumerable =
+            IEnumerable<TitleRatings> titleRatingsEnumerable =
+                FileLoader.LoadTitleRatings();
+            IEnumerable<TitleEpisode> titleEpisodeEnumerable =
                 FileLoader.LoadTitleEpisode();
 
             if (wantedTitle != null)
@@ -86,24 +88,26 @@ namespace LP2_P1
                     where title.Genres.Contains(genres[i])
                     select title;
 
-            IEnumerable<(TitleBasics titles, TitleRatings ratings, 
-                TitleEpisode episodes)> mixedList =
-                from titles in titleBasicsEnumerable
-                join ratings in titleRatingsEnumerable on titles.TConst
-                equals ratings.Tconst
-                join episodes in titleEpisodesEnumerable on titles.TConst
-                equals episodes.ParentTconst
-                select (titles, ratings, episodes);
+            Console.WriteLine($"rating1:{rating1.HasValue}\nrating2{rating2.HasValue}");
+            Console.ReadKey();
+
+            IEnumerable<(TitleBasics titles, TitleRatings ratings)> mixedEnum =
+                titleBasicsEnumerable.GroupJoin(titleRatingsEnumerable.
+                Where(c => true), title2 => title2.TConst, rating2 => 
+                rating2.Tconst, (t, r) => new 
+                {
+                    Title = t,
+                    Rating = r.Where(y => y.Tconst.Contains(t.TConst))
+                }).Select(x => (x.Title, x.Rating.FirstOrDefault())).ToArray();
 
             if (rating1.HasValue)
-                mixedList = mixedList.Where(c =>
+                mixedEnum = mixedEnum.Where(c =>
                 c.ratings.AverageRating >= rating1);
             if (rating2.HasValue)
-                mixedList = mixedList.Where(c =>
+                mixedEnum = mixedEnum.Where(c =>
                 c.ratings.AverageRating <= rating2);
 
-            TitleSearch searcher = new TitleSearch();
-            searcher.SearchTitle(mixedList);
+            searcher.SearchTitle(mixedEnum);
         }
 
         private static void TitleSearch()
@@ -131,7 +135,7 @@ namespace LP2_P1
                 Console.Write(">");
 
                 key = Console.ReadKey().Key;
-                
+
                 if (key == ConsoleKey.UpArrow && Console.CursorTop > 2)
                 {
                     UserInterface.ClearSpace();
@@ -182,13 +186,13 @@ namespace LP2_P1
 
                         if (date.Length >= 1 && date[0].Length == 4 &&
                             int.Parse(date[0]) != 0)
-                                start = int.Parse(date[0]);
+                            start = int.Parse(date[0]);
                         else
                             start = null;
 
                         if (date.Length == 2 && date[1].Length == 4 &&
                             int.Parse(date[1]) != 0)
-                                end = int.Parse(date[1]);
+                            end = int.Parse(date[1]);
                         else
                             end = null;
 
@@ -242,7 +246,7 @@ namespace LP2_P1
                             genres.Remove((TitleGenre)indexes);
                         else
                             genres.Add((TitleGenre)indexes);
-                        UserInterface.PrintTypeSelection(types, genres, 
+                        UserInterface.PrintTypeSelection(types, genres,
                             isAdult);
                         Console.CursorTop = indexes + 24;
                     }
@@ -250,7 +254,7 @@ namespace LP2_P1
                     {
                         UserInterface.ResizeWindow();
                         Titles(wantedTitle, types.ToArray(), isAdult, start,
-                            end, genres.ToArray(), runtime1, runtime2, 
+                            end, genres.ToArray(), runtime1, runtime2,
                             ratingLow, ratingHigh);
                         key = ConsoleKey.Q;
                     }
