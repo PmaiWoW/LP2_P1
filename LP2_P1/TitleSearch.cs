@@ -9,7 +9,7 @@ namespace LP2_P1
         private List<TitleBasics> originalNamedTitles =
             new List<TitleBasics>(63506070);
         private IEnumerable<TitleBasics> namedTitles;
-        private State listState = State.Unordered;
+        private SortState listState = SortState.Unordered;
         private int skipNumber = 0;
         private const int displayNum = 9;
         string sortParameterString = default;
@@ -97,18 +97,18 @@ namespace LP2_P1
             Console.Clear();
             UserInterface.ResizeWindow();
 
-            PrintResults(namedTitles.SkipLast(namedTitles.Count() - 
-                skipNumber - displayNum).Skip(skipNumber).Select(c => c)
-                .ToList());
+            UserInterface.PrintResults(namedTitles.SkipLast(namedTitles.Count()
+                - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
+                .ToList(), sortParameterString, listState);
         }
 
         private void ReverseOrder()
         {
             //Reverses order, only if the list is already ordered
-            if (listState != State.Unordered)
+            if (listState != SortState.Unordered)
             {
-                listState = listState == State.Descending ?
-                    State.Ascending : State.Descending;
+                listState = listState == SortState.Descending ?
+                    SortState.Ascending : SortState.Descending;
 
                 namedTitles = namedTitles.Reverse();
             }
@@ -120,52 +120,8 @@ namespace LP2_P1
         {
             namedTitles = originalNamedTitles;
             sortParameterString = default;
-            listState = State.Unordered;
+            listState = SortState.Unordered;
             UpdatePage();
-        }
-
-        private void PrintResults(IEnumerable<TitleBasics> titlesToDisplay)
-        {
-            UserInterface.ColorSetup(backgroundColor: ConsoleColor.Gray);
-
-            for (int i = 0; i < Console.WindowWidth; i++)
-                Console.Write(" ");
-
-            Console.SetBufferSize(Program.WindowWidth, Program.WindowHeight);
-
-            Console.Write("    Name");
-            Console.CursorLeft = 100;
-            Console.Write(sortParameterString);
-            Console.CursorLeft = 150;
-            if (listState != State.Unordered)
-                Console.Write($"State : {listState}");
-
-            Console.ResetColor();
-
-            Console.WriteLine("");
-
-            string pTitle;
-            int maxLenght = 90;
-
-            for (int i = 0; i < titlesToDisplay.Count(); i++)
-            {
-                pTitle = $"{i+1}: {titlesToDisplay.ElementAt(i).PrimaryTitle}";
-                Console.CursorLeft = 0;
-                Console.Write($"   " +
-                 $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}");
-                Console.CursorLeft = 100;
-                Console.WriteLine($"| {titlesToDisplay.ElementAt(i).Type}");
-            }
-
-            Console.WriteLine("\n '->' for next page" +
-                "\n '<-' for previous page" +
-                "\n '1'-'9' to select title" +
-                "\n 'O' to order" +
-                "\n 'R' to reverse the order" +
-                "\n 'T' to reset the order" +
-                "\n 'B' to go back to previous menu");
-
-            Console.CursorTop = 1;
         }
 
         public void Sort(ref IEnumerable<TitleBasics> namedTitles)
@@ -181,7 +137,7 @@ namespace LP2_P1
             if (key != ConsoleKey.B)
             {
                 namedTitles = originalNamedTitles;
-                listState = State.Ascending;
+                listState = SortState.Ascending;
             }
             // Switch case between the possible options selected
             switch (key)
@@ -224,7 +180,6 @@ namespace LP2_P1
             }
             UpdatePage();
         }
-
-        private enum State { Ascending, Descending, Unordered };
+        public enum SortState { Ascending, Descending, Unordered };
     }
 }

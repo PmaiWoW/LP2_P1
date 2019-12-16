@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace LP2_P1
 {
@@ -10,7 +11,7 @@ namespace LP2_P1
         public const int WindowHeight = 60;
 
         private static void Main(string[] args)
-        {
+        {      
             Console.SetWindowSize(WindowWidth, WindowHeight);
             Console.SetWindowPosition(0, 0);
             
@@ -20,7 +21,6 @@ namespace LP2_P1
             SearchMenu.MenuLoop();
             
             Console.ResetColor();
-
         }
     }
 }
