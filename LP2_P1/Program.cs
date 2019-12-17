@@ -10,6 +10,7 @@ namespace LP2_P1
 
         private static void Main(string[] args)
         {
+            SearchMenu searchMenu = new SearchMenu();
             // Sets the console hight and width to the amount specified
             Console.SetWindowSize(WindowWidth, WindowHeight);
             // Positions the console
@@ -18,9 +19,9 @@ namespace LP2_P1
             // Gives a title to the console window
             Console.Title = "MyIMDBSearcher";
             Console.CursorVisible = false;
-            
+
             // Starts the Main menu loop on SearchMenu class
-            SearchMenu.MenuLoop();
+            searchMenu.MenuLoop();
         }
     }
 }

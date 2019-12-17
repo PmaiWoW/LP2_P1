@@ -1,7 +1,7 @@
 ﻿namespace LP2_P1
 {
     /// <summary>
-    /// Enumerator that holds every possible value to a title basic's genre
+    /// The possible genres existing in the database
     /// </summary>
     public enum TitleGenre
     {
