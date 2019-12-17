@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace LP2_P1
 {
-    public static class SearchMenu
+    public class SearchMenu
     {
         // Creates a IEnumerable of all the titles
         private static IEnumerable<TitleBasics> titleBasicsEnum =
@@ -20,7 +20,7 @@ namespace LP2_P1
         private static bool? isAdult;
 
 
-        public static void MenuLoop()
+        public  void MenuLoop()
         {
             // Variable for input key
             ConsoleKey key;
@@ -63,7 +63,7 @@ namespace LP2_P1
             } while (key != ConsoleKey.Q);
         }
 
-        private static void Titles(string wantedTitle, TitleType[] type,
+        private  void Titles(string wantedTitle, TitleType[] type,
             bool? adult, int? startDate, int? endDate,
             TitleGenre?[] genres, int? runtime1, int? runtime2,
             int? rating1, int? rating2)
@@ -149,7 +149,7 @@ namespace LP2_P1
             searcher.SearchTitle(mixedList);
         }
 
-        private static void TitleSearch()
+        private void TitleSearch()
         {
             // Creates the variables to be passed as arguments to the 'Titles'
             // method
@@ -399,7 +399,7 @@ namespace LP2_P1
             } while (key != ConsoleKey.Q);
         }
 
-        public static void Quit()
+        public void Quit()
         {
             // Uses the UserInterface to display a message to the user while 
             // quitting
