@@ -2,7 +2,7 @@
 
 namespace LP2_P1
 {
-    internal static class TitleDetails
+    public static class TitleDetails
     {
         public static void Menu(TitleBasics title, TitleRatings ratings)
         {

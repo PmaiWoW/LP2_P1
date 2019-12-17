@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LP2_P1
 {
-    internal class Program
+    public class Program
     {    
         public const int WindowWidth = 200;
         public const int WindowHeight = 60;
