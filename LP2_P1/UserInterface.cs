@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+using System.Linq;
+using System.Reflection;
 
 namespace LP2_P1
 {
     public static class UserInterface
     {
+        // SearchMenu UI
+        // --------------------------------------------------------------------
         public static void PrintSearchBar()
         {
             Console.SetCursorPosition(3, 0);
@@ -69,21 +71,161 @@ namespace LP2_P1
             Console.ResetColor();
         }
 
-        public static void ColorSetup(int cursorLeft = 0,
-            ConsoleColor backgroundColor = ConsoleColor.White,
-            ConsoleColor foregroundColor = ConsoleColor.Black)
+        // Search Results UI
+        // -------------------------------------------------------------------
+        public static void PrintResults(
+            IEnumerable<TitleBasics> titlesToDisplay,
+            string sortParameterString, OrderState listState)
         {
-            Console.CursorLeft = cursorLeft;
-            Console.BackgroundColor = backgroundColor;
-            Console.ForegroundColor = foregroundColor;
+            Console.Clear();
+            // Sets color for first line
+            ColorSetup(backgroundColor: ConsoleColor.Gray);
+
+            // Assigns value to 'sortParameterString' to prevent errors
+            if (sortParameterString == null) sortParameterString = "";
+
+            // Initializes null strings that track how many space there are
+            // until the end of that specific line, for printing purposes
+            string fillAllLine = default;
+            string fillPartialLine = default;
+
+            // Supporting variable to get 'fillPartialLine' value
+            int extraFill = listState.ToString().Length +
+                sortParameterString.Length;
+
+            // Checks how many spaces are between the last print and the end
+            // of the console width, and add those blank spaces to variables
+            for (int i = 7; i < Program.WindowWidth; i++) fillAllLine += " ";
+            for (int i = 64 + extraFill; i < Program.WindowWidth; i++)
+                fillPartialLine += " ";
+
+            // Prints first line, checking if the list has been sorted to
+            // add aditional information to the first line
+            Console.WriteLine($"Name".PadLeft(6) +
+                ((listState != OrderState.Unordered &&
+                sortParameterString != "Title") ? ($"Sorting by: ".PadLeft(54) +
+                sortParameterString) + $" ({listState})" +
+                fillPartialLine : $"{fillAllLine}"));
+
+            Console.ResetColor();
+
+            // Supporting variables for optimized printing
+            string pTitle;
+            string pTitleDisplay;
+            string sortParameterDisplay = default;
+            int maxLenght = 50;
+
+            // Loops through each title to display,
+            // and prints required information
+            for (int i = 0; i < titlesToDisplay.Count(); i++)
+            {
+
+                pTitle = $"{i + 1}: " +
+                    $"{titlesToDisplay.ElementAt(i).PrimaryTitle}";
+
+                pTitleDisplay = $"  " +
+                 $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}" +
+                 (titlesToDisplay.ElementAt(i).PrimaryTitle.Length > maxLenght
+                 ? $"... " : "");
+
+                switch (sortParameterString)
+                {
+                    case "Type":
+                        sortParameterDisplay = "|" +
+                            titlesToDisplay.ElementAt(i).Type.ToString();
+                        break;
+                    case "Age Restriction":
+                        sortParameterDisplay = "|" +
+                            (titlesToDisplay.ElementAt(i).IsAdult ?
+                            "Adults Only" : "For Everyone");
+                        break;
+                    case "Start Year":
+                        sortParameterDisplay = "|" +
+                            (titlesToDisplay.ElementAt(i).StartYear.HasValue ?
+                            titlesToDisplay.ElementAt(i).StartYear.ToString()
+                            : @"\N");
+                        break;
+                    case "End Year":
+                        sortParameterDisplay = "|" +
+                            (titlesToDisplay.ElementAt(i).EndYear.HasValue ?
+                            titlesToDisplay.ElementAt(i).EndYear.ToString()
+                            : @"\N"); break;
+                    case "Genres":
+                        sortParameterDisplay = "|" +
+                           ((titlesToDisplay.ElementAt(i).Genres[0].HasValue ?
+                           titlesToDisplay.ElementAt(i).Genres[0].ToString()
+                           : @"\N") + ", ").PadRight(14) +
+                           ((titlesToDisplay.ElementAt(i).Genres[1].HasValue ?
+                           titlesToDisplay.ElementAt(i).Genres[1].ToString()
+                           : @"\N") + ", ").PadRight(14) +
+                           (titlesToDisplay.ElementAt(i).Genres[2].HasValue ?
+                           titlesToDisplay.ElementAt(i).Genres[2].ToString()
+                           : @"\N");
+                        break;
+
+                    default:
+                        break;
+                }
+                Console.WriteLine(pTitleDisplay.PadRight(59) + sortParameterDisplay);
+            }
+
+
+        }
+        // Menu UI
+        // --------------------------------------------------------------------
+
+        public static void ShowResultsMenu(
+            IEnumerable<TitleBasics> titlesToDisplay,
+            string sortParameterString, OrderState listState)
+        {
+            PrintResults(titlesToDisplay, sortParameterString, listState);
+
+            Console.WriteLine("\n  '1-9' to select title" +
+                "\n  '->' for next page" +
+                "\n  '<-' for previous page" +
+                "\n  'O' to order" +
+                "\n  'R' to reverse the order" +
+                "\n  'T' to reset the order" +
+                "\n  'B' to go back to previous menu");
         }
 
-        public static void ClearSpace()
+        public static void ShowOrderMenu(
+            IEnumerable<TitleBasics> titlesToDisplay,
+            string sortParameterString, OrderState listState)
         {
-            Console.CursorLeft -= 2;
-            Console.Write(" ");
+            Console.Clear();
+
+            PrintResults(titlesToDisplay, sortParameterString, listState);
+
+            // Display Order Options
+            Console.WriteLine("\n  '1' to order by title" +
+                "\n  '2' to order by type" +
+                "\n  '3' to order by adult rating" +
+                "\n  '4' to order by year of release" +
+                "\n  '5' to order by year of end" +
+                "\n  '6' to order by genre" +
+                "\n  '7' to order by rating" +
+                "\n  'B' to go back \n");
         }
 
+        public static void ShowTitleDetails(TitleBasics title)
+        {
+            Console.Clear();
+            Console.WriteLine(title);
+            Console.WriteLine("\n  Press 'B' to to back to previous menu");
+        }
+
+        // Messages
+        // --------------------------------------------------------------------
+
+        public static void NoResults()
+        {
+            Console.Clear();
+            Console.WriteLine("No titles found, returning to main " +
+                "menu...");
+            Console.ReadKey(true);
+        }
+        // Currently not being used
         public static void PrintInvalidChoice()
         {
             Console.Clear();
@@ -106,6 +248,24 @@ namespace LP2_P1
             Console.Clear();
             Console.WriteLine("Thank you for using this searcher, we hope " +
                 "to see you again!\nPress any key to exit.");
+        }
+
+        // DisplayOptions
+        // --------------------------------------------------------------------
+
+
+        public static void ClearSpace()
+        {
+            Console.CursorLeft = 1;
+            Console.Write(" ");
+        }
+        public static void ColorSetup(int cursorLeft = 0,
+            ConsoleColor backgroundColor = ConsoleColor.White,
+            ConsoleColor foregroundColor = ConsoleColor.Black)
+        {
+            Console.CursorLeft = cursorLeft;
+            Console.BackgroundColor = backgroundColor;
+            Console.ForegroundColor = foregroundColor;
         }
 
         public static void ResizeWindow()

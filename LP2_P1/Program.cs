@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace LP2_P1
 {
@@ -12,7 +10,7 @@ namespace LP2_P1
 
         private static void Main(string[] args)
         {
-            // Sets the console hight and width to the amount specefied
+            // Sets the console hight and width to the amount specified
             Console.SetWindowSize(WindowWidth, WindowHeight);
             // Positions the console
             Console.SetWindowPosition(0, 0);

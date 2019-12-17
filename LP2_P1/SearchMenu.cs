@@ -6,7 +6,13 @@ namespace LP2_P1
 {
     public static class SearchMenu
     {
-        // Initialization of variables
+        public static IEnumerable<TitleRatings> titleRatingsList = 
+            FileLoader.LoadTitleRatings();
+        public static IEnumerable<TitleBasics> titleBasicsList =
+            FileLoader.LoadTitleBasics();
+
+        public static IEnumerable<TitleBasics> searchResults;
+
         private static string wantedTitle;
         private static ICollection<TitleType> types = new List<TitleType>();
         private static ICollection<TitleGenre?> genres =
@@ -29,9 +35,9 @@ namespace LP2_P1
             {
                 // Displays information on the console
                 Console.Clear();
-                Console.WriteLine("1. Search Title\n" +
-                                  "2. Search People\n" +
-                                  "Q. Quit\n");
+                Console.WriteLine("\n  1. Search Title\n" +
+                                  "  2. Search People\n" +
+                                  "  Q. Quit\n");
 
                 // Sets the value of the vaiable 'key' to the input of the user
                 key = Console.ReadKey().Key;
@@ -41,6 +47,7 @@ namespace LP2_P1
                 {
                     // Opens a sub-menu for the user to specify what he wants
                     case ConsoleKey.D1:
+                        wantedTitle = default;
                         TitleSearch();
                         break;
 
@@ -56,7 +63,6 @@ namespace LP2_P1
 
                     // if the input is not expected tells the user
                     default:
-                        UserInterface.PrintInvalidChoice();
                         break;
                 }
             } while (key != ConsoleKey.Q);
@@ -67,10 +73,6 @@ namespace LP2_P1
             TitleGenre?[] genres, int? runtime1, int? runtime2,
             int? rating1, int? rating2)
         {
-            IEnumerable<TitleRatings> titleRatingsList = 
-                FileLoader.LoadTitleRatings();
-            IEnumerable<TitleBasics> titleBasicsList =
-                FileLoader.LoadTitleBasics();
 
             // Checks if the method received a title to search for
             if (wantedTitle != null)
@@ -93,34 +95,55 @@ namespace LP2_P1
 
             // Checks if the method received a base date
             if (startDate.HasValue)
+<<<<<<< HEAD
                 // Gets all titles where the year is equal or lower than given
                 titleBasicsEnum = titleBasicsEnum.Where
+=======
+                searchResults = searchResults.Where
+>>>>>>> UIRework-TitleSearchOnly
                     (c => c.StartYear >= startDate);
 
             // Checks if the method received a maximum date
             if (endDate.HasValue)
+<<<<<<< HEAD
                 // Gets all titles where the year is equal or lower than given
                 titleBasicsEnum = titleBasicsEnum.Where
+=======
+                searchResults = searchResults.Where
+>>>>>>> UIRework-TitleSearchOnly
                     (c => c.EndYear <= endDate);
 
             // Checks if the types array has anything inside
             if (type.Length > 0)
+<<<<<<< HEAD
                 // Gets all the titles where the type equals the type given
                 titleBasicsEnum = titleBasicsEnum.Where
+=======
+                searchResults = searchResults.Where
+>>>>>>> UIRework-TitleSearchOnly
                     (c => type.Any(a => a == c.Type));
 
             // Checks if the adult bool is not null
             if (adult.HasValue)
+<<<<<<< HEAD
                 // Gets all the titles where adult equals
                 titleBasicsEnum = titleBasicsEnum.Where
+=======
+                searchResults = searchResults.Where
+>>>>>>> UIRework-TitleSearchOnly
                     (c => c.IsAdult == adult);
 
             // A loop the size of the Genres array
             for (int i = 0; i < genres.Length - 1; i++)
+<<<<<<< HEAD
                 // Gets all the titles where the genres are the same has one of
                 // the genres given
                 titleBasicsEnum =
                     from title in titleBasicsEnum
+=======
+                searchResults =
+                    from title in searchResults
+>>>>>>> UIRework-TitleSearchOnly
                     where title.Genres.Contains(genres[i])
                     select title;
 
@@ -145,12 +168,17 @@ namespace LP2_P1
             // Creates an instance of the TitleSearch class
             TitleSearch searcher = new TitleSearch();
 
+<<<<<<< HEAD
             // Goes to the SearchTitle method passing the list of titles and ratings
             searcher.SearchTitle(mixedList);
+=======
+            searcher.SearchTitle(searchResults);
+>>>>>>> UIRework-TitleSearchOnly
         }
 
         private static void TitleSearch()
         {
+<<<<<<< HEAD
             // Creates the variables to be passed as arguments to the 'Titles'
             // method
             int? start = null;
@@ -161,6 +189,8 @@ namespace LP2_P1
             int? ratingHigh = null;
 
             // Cleans the console
+=======
+>>>>>>> UIRework-TitleSearchOnly
             Console.Clear();
 
             // Defines a variable for the user input
@@ -213,8 +243,12 @@ namespace LP2_P1
                         UserInterface.PrintSearchBar();
                         // Sets the color of the console acording to a id
                         UserInterface.ColorSetup(4);
+<<<<<<< HEAD
                         // Reads the input of the user and saves it on the
                         // wantedtitle variable
+=======
+                        wantedTitle = default;
+>>>>>>> UIRework-TitleSearchOnly
                         wantedTitle = Console.ReadLine();
                         // Resets the color of the console
                         Console.ResetColor();
