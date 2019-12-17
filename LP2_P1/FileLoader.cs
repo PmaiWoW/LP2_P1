@@ -23,9 +23,6 @@ namespace LP2_P1
             // Define local variables
             string line;
 
-            int currentObject = 0;
-            int previous = 0;
-
             using (FileStream fs = new FileStream(fileTitleBasicsFull,
                 FileMode.Open, FileAccess.Read))
             {
@@ -48,17 +45,10 @@ namespace LP2_P1
 
                         string[] elements;
 
-                        CreateLoadingBar();
-
                         while ((line = sr.ReadLine()) != null)
                         {
                             finalString = "";
                             elements = line.Split("\t");
-
-                            int progress = (currentObject++ / (6350607 / 100));
-
-                            if (progress != previous)
-                                FillLoadingBar();
 
                             if (elements[0] != "tconst")
                             {
@@ -108,7 +98,6 @@ namespace LP2_P1
                                     isAdult, genresFinal, startYearNul,
                                     endYearNul,  runtimeMinsNul);
                             }
-                            previous = progress;
                         }
                         Console.CursorVisible = true;
                     }
@@ -157,24 +146,6 @@ namespace LP2_P1
                     }
                 }
             }
-        }
-
-        private static void CreateLoadingBar()
-        {
-            Console.WriteLine("\n\n\nLoading...");
-            Console.BackgroundColor = ConsoleColor.DarkRed;
-            for (int i = 0; i < 100; i++)
-                Console.Write(" ");
-            Console.CursorLeft = 0;
-            Console.ResetColor();
-        }
-
-        private static void FillLoadingBar()
-        {
-            Console.CursorVisible = false;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.Write(" ");
-            Console.ResetColor();
         }
     }
 }

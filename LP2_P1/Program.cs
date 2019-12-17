@@ -14,8 +14,12 @@ namespace LP2_P1
             
             Console.Title = "MyIMDBSearcher";
             Console.CursorVisible = false;
-            
+
             SearchMenu.MenuLoop();
+
+            //Searcher searcher = new Searcher();
+
+            //searcher.SelectSearch();
             
             Console.ResetColor();
         }

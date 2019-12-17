@@ -7,6 +7,118 @@ namespace LP2_P1
 {
     public static class UserInterface
     {
+        public static void SelectSearchUI()
+        {
+            Console.Clear();
+            Console.WriteLine("\n  '1' to Search Title\n" +
+              "  '2' to Search People\n" +
+              "  'Q' to Quit\n");
+        }
+
+        public static void TitleSearchUI()
+        {
+            Console.Clear();
+            Console.WriteLine("\n  '1' to Select Name" +
+              "\n  '2' to Select Type" +
+              "\n  '3' to Select Age Restrictions" +
+              "\n  '4' to Select Start Year" +
+              "\n  '5' to Select End Year" +
+              "\n  '6' to Select Genres" +
+              "\n  'ENTER' to Search" +
+              "\n  'B' to Go Back");
+        }
+
+
+        public static string SelectNameUI()
+        {
+            Console.Clear();
+            Console.WriteLine("Write the name of what you're looking for.\n");
+            return Console.ReadLine();
+        }
+        public static void SelectTypeUI()
+        {
+            Console.Clear();
+
+        }
+        public static bool? SelectAgeRestrictionUI()
+        {
+            bool validInput = false;
+            bool? isAdult = null;
+            ConsoleKey key = ConsoleKey.D0;
+            do
+            {
+                Console.WriteLine("\n  '1' For Everyone" +
+                    "\n  '2' Adults Only" +
+                    "\n  '3' No Filter");
+                switch (key)
+                {
+                    case ConsoleKey.D1:
+                        isAdult = false;
+                        validInput = true;
+                        break;
+                    case ConsoleKey.D2:
+                        isAdult = true;
+                        validInput = true;
+                        break;
+                    case ConsoleKey.D3:
+                        isAdult = null;
+                        validInput = true;
+                        break;
+
+                    default:
+                        break;
+                }
+
+            } while (!validInput);
+            return isAdult;
+        }
+        public static int? SelectStartYearUI()
+        {
+            string startYearString;
+            int? startYearNul = null;
+
+            Console.Clear();
+            Console.WriteLine("Insert Start Year in 4 digits. Will not be" +
+                "considered if it's not YYYY\n");
+
+            startYearString = Console.ReadLine();
+
+            if (startYearString.Length != 4 &&
+                int.TryParse(startYearString, out int startYear))
+                startYearNul = startYear;
+            return startYearNul;
+        }
+        public static int? SelectEndYearUI()
+        {
+            string endYearString;
+            int? endYearNul = null;
+
+            Console.Clear();
+            Console.WriteLine("Insert End Year in 4 digits. Will not be" +
+                "considered if it's not YYYY\n");
+
+            endYearString = Console.ReadLine();
+
+            if (endYearString.Length != 4 &&
+                int.TryParse(endYearString, out int startYear))
+                endYearNul = startYear;
+            return endYearNul;
+        }
+        public static void SelectGenresUI()
+        {
+
+          Console.Clear();
+          Console.WriteLine("  '1'  ACTION      '11' FANTASY   '21' ROMANCE"  +
+                          "\n  '2'  ADULT       '12' FILMNOIR  '22' SCIFI"    +
+                          "\n  '3'  ADVENTURE   '13' GAMESHOW  '23' SHORT"    +
+                          "\n  '4'  ANIMATION   '14' HISTORY   '24' SPORT"    +
+                          "\n  '5'  BIOGRAPHY   '15' HORROR    '25' TALKSHOW" +
+                          "\n  '6'  COMEDY      '16' MUSIC     '26' THRILLER" +
+                          "\n  '7'  CRIME       '17' MUSICAL   '27' WAR"      +
+                          "\n  '8'  DOCUMENTARY '18' MYSTERY   '28' WESTERN"  +
+                          "\n  '9'  DRAMA       '19' NEWS"                    +   
+                          "\n  '10' FAMILY      '20' REALITYTV\n");
+        }
         // SearchMenu UI
         // --------------------------------------------------------------------
         public static void PrintSearchBar()
@@ -111,7 +223,7 @@ namespace LP2_P1
             for (int i = 0; i < titlesToDisplay.Count(); i++)
             {
 
-                pTitle = $"{i + 1}:" +
+                pTitle = $"{i + 1}: " +
                     $"{titlesToDisplay.ElementAt(i).PrimaryTitle}";
 
                 pTitleDisplay = $"  " +
@@ -157,7 +269,7 @@ namespace LP2_P1
                     default:
                         break;
                 }
-                Console.WriteLine(pTitleDisplay.PadRight(59) + sortParameterDisplay);
+                Console.WriteLine(pTitleDisplay.PadRight(60) + sortParameterDisplay);
             }
 
 
@@ -198,6 +310,7 @@ namespace LP2_P1
                 "\n  '7' to order by rating" +
                 "\n  'B' to go back \n");
         }
+
 
         // Messages
         // --------------------------------------------------------------------
