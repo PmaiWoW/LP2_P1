@@ -13,8 +13,6 @@ namespace LP2_P1
         private static IEnumerable<TitleRatings> titleRatingsEnum =
             FileLoader.LoadTitleRatings();
 
-        public static IEnumerable<TitleBasics> searchResults;
-
         private static string wantedTitle;
         private static ICollection<TitleType> types = new List<TitleType>();
         private static ICollection<TitleGenre?> genres =
