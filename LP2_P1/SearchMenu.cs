@@ -4,22 +4,34 @@ using System.Linq;
 
 namespace LP2_P1
 {
+    /// <summary>
+    /// Responsible for providing and assigning the choices of the user
+    /// </summary>
     public static class SearchMenu
     {
         // Creates a IEnumerable of all the titles
         private static IEnumerable<TitleBasics> titleBasicsEnum =
             FileLoader.LoadTitleBasics();
+
         // Creates a IEnumerable of all the ratings
         private static IEnumerable<TitleRatings> titleRatingsEnum =
             FileLoader.LoadTitleRatings();
 
+        // creates a string where the input will be saved
         private static string wantedTitle;
+
+        // Creates two collection to save rhe types and genres
         private static ICollection<TitleType> types = new List<TitleType>();
+
         private static ICollection<TitleGenre?> genres =
             new List<TitleGenre?>();
+
+        // Creates a nullable bool acessible in all class
         private static bool? isAdult;
 
-
+        /// <summary>
+        /// The start menu where the user can choose what to search for
+        /// </summary>
         public static void MenuLoop()
         {
             // Variable for input key
@@ -63,12 +75,25 @@ namespace LP2_P1
             } while (key != ConsoleKey.Q);
         }
 
+        /// <summary>
+        /// It passes an IEnumerable with the titles that fit the criteria to
+        /// TitleSearch
+        /// </summary>
+        /// <param name="wantedTitle"> The title the user provided </param>
+        /// <param name="type"> the type of video </param>
+        /// <param name="adult"> if its adult, not adult or all </param>
+        /// <param name="startDate"> The date the video started </param>
+        /// <param name="endDate"> The date the video ended </param>
+        /// <param name="genres"> The genres it fits into </param>
+        /// <param name="runtime1"> The minimum runtime </param>
+        /// <param name="runtime2"> The maximum runtime </param>
+        /// <param name="rating1"> The minimum rating </param>
+        /// <param name="rating2"> The maximum rating </param>
         private static void Titles(string wantedTitle, TitleType[] type,
             bool? adult, int? startDate, int? endDate,
             TitleGenre?[] genres, int? runtime1, int? runtime2,
             int? rating1, int? rating2)
         {
-
             // Checks if the method received a title to search for
             if (wantedTitle != null)
                 // Checks the titles list for the title given
@@ -121,11 +146,16 @@ namespace LP2_P1
                     where title.Genres.Contains(genres[i])
                     select title;
 
+            // Groups the two IEnumerables together
             IEnumerable<(TitleBasics, TitleRatings)> mixedList =
                 titleBasicsEnum.GroupJoin(titleRatingsEnum.Where(c => true),
                 title2 => title2.TConst, rating2 => rating2.Tconst, (t, r) =>
-                new { Title = t, Rating = r.Where(y => y.Tconst.Contains(t.
-                TConst)) }).Select(x => (x.Title, x.Rating.FirstOrDefault()));
+                new
+                {
+                    Title = t,
+                    Rating = r.Where(y => y.Tconst.Contains(t.
+   TConst))
+                }).Select(x => (x.Title, x.Rating.FirstOrDefault()));
 
             // Checks if the method received a lowest rating
             if (rating1.HasValue)
@@ -149,6 +179,10 @@ namespace LP2_P1
             searcher.SearchTitle(mixedList);
         }
 
+        /// <summary>
+        /// Provides a menu for the user to choose the parameters he wants to
+        /// search for
+        /// </summary>
         private static void TitleSearch()
         {
             // Creates the variables to be passed as arguments to the 'Titles'
@@ -230,7 +264,7 @@ namespace LP2_P1
                         int index = Console.CursorTop - 5;
                         // Checks if the types list contains the selected type
                         if (types.Contains((TitleType)index))
-                            // If it's already there it removes it from the 
+                            // If it's already there it removes it from the
                             // list
                             types.Remove((TitleType)index);
                         // If it's not in the list it adds it
@@ -239,7 +273,7 @@ namespace LP2_P1
 
                         // Uses the UserInterface class to display the choosen
                         // options
-                        UserInterface.PrintTypeSelection(types, genres, 
+                        UserInterface.PrintTypeSelection(types, genres,
                             isAdult);
                         // Resets the cursor position to the index plus 5
                         Console.CursorTop = index + 5;
@@ -255,7 +289,7 @@ namespace LP2_P1
                         else if (isAdult == false) isAdult = null;
 
                         // Displays to the user the decisions
-                        UserInterface.PrintTypeSelection(types, genres, 
+                        UserInterface.PrintTypeSelection(types, genres,
                             isAdult);
                         // Resets the cursor position back to 16
                         Console.CursorTop = 16;
@@ -305,7 +339,7 @@ namespace LP2_P1
                         // and splits it by space
                         string[] runtime = Console.ReadLine().Split(' ');
 
-                        // Checks if the first string is valid 
+                        // Checks if the first string is valid
                         if (runtime.Length >= 1 && runtime[0].Length > 0 &&
                             int.Parse(runtime[0]) != 0)
                             // Sets the value of start to the parsed string
@@ -314,7 +348,7 @@ namespace LP2_P1
                             // Resets the string back to null
                             runtime1 = null;
 
-                        // Checks if the second string is valid 
+                        // Checks if the second string is valid
                         if (runtime.Length == 2 && runtime[0].Length > 0 &&
                             int.Parse(runtime[1]) != 0)
                             // Sets the value of start to the parsed string
@@ -337,7 +371,7 @@ namespace LP2_P1
                         // and splits it by space
                         string[] rating = Console.ReadLine().Split(' ');
 
-                        // Checks if the first string is valid 
+                        // Checks if the first string is valid
                         if (rating.Length >= 1 && rating[0].Length > 0 &&
                             int.Parse(rating[0]) != 0)
                             // Sets the value of start to the parsed string
@@ -346,7 +380,7 @@ namespace LP2_P1
                             // Resets the string back to null
                             ratingLow = null;
 
-                        // Checks if the second string is valid 
+                        // Checks if the second string is valid
                         if (rating.Length == 2 && rating[1].Length > 0 &&
                             int.Parse(rating[1]) != 0)
                             // Sets the value of start to the parsed string
@@ -376,7 +410,7 @@ namespace LP2_P1
 
                         // Uses the UserInterface class to display the choosen
                         // options
-                        UserInterface.PrintTypeSelection(types, genres, 
+                        UserInterface.PrintTypeSelection(types, genres,
                             isAdult);
                         // Resets the cursor position to the index plus 24
                         Console.CursorTop = indexes + 24;
@@ -399,9 +433,12 @@ namespace LP2_P1
             } while (key != ConsoleKey.Q);
         }
 
+        /// <summary>
+        /// Exits the program with a message
+        /// </summary>
         public static void Quit()
         {
-            // Uses the UserInterface to display a message to the user while 
+            // Uses the UserInterface to display a message to the user while
             // quitting
             UserInterface.QuitMessage();
             // Checks for any input from the user

@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace LP2_P1
 {
+    /// <summary>
+    /// The main look of the program where the the titles are displayed and
+    /// the user can interect with them
+    /// </summary>
     public class TitleSearch
     {
         // Creates two IEnumerables responsible for containing the information
@@ -15,10 +19,19 @@ namespace LP2_P1
         // Creates variables
         private OrderState listState = OrderState.Unordered;
     
+        // Integer for the number of titles it should skip
         private int skipNumber = 0;
+        // Integer for the number of titles it shoudl display
         private const int displayNum = 9;
+        // Which parameter should the collection be srted by.
         string sortParameterString = default;
 
+        /// <summary>
+        /// Assigns this originalTitles the IEnumerable it received and goes
+        /// to the main loop
+        /// </summary>
+        /// <param name="wantedTitle"> IEnumerable with the titles with the 
+        /// parameters the user chose </param>
         public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> 
             wantedTitle)
         {
@@ -29,15 +42,20 @@ namespace LP2_P1
             // Goes to SearchMenu method
             SearchMenu();
         }
-
+        /// <summary>
+        /// The main loop of the menu
+        /// </summary>
         private void SearchMenu()
         {
             // Equals namedTitles to originalNamedTitles
             namedTitles = originalNamedTitles;
 
+            // Checks if there's titles on the list
             if (!namedTitles.Any())
             {
+                // Displays a message to the user
                 UserInterface.NoResults();
+                // Returns to the searchmenu
                 return;
             }
 
@@ -49,6 +67,7 @@ namespace LP2_P1
             // A while loop until the user presses 'b'
             while (key != ConsoleKey.B)
             {
+                // Updates the page info
                 UpdatePage();
                 // Assigns the value of key the key the user pressed
                 key = Console.ReadKey().Key;

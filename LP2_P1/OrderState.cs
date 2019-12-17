@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LP2_P1
+﻿namespace LP2_P1
 {
+    /// <summary>
+    /// The possible states the TitleSearch list order
+    /// </summary>
     public enum OrderState
     {
         Ascending,

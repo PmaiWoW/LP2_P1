@@ -1,5 +1,8 @@
 ﻿namespace LP2_P1
 {
+    /// <summary>
+    /// The possible genres existing in the database
+    /// </summary>
     public enum TitleGenre
     {
         ACTION,
