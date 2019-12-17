@@ -2,6 +2,7 @@
 {
     public struct TitleBasics
     {
+        // Instance Variables with the information necessary to a title basics
         public string TConst { get; }
         public TitleType? Type { get; }
         public string PrimaryTitle { get; }
@@ -12,6 +13,7 @@
         public int? RuntimeMinutes { get; }
         public TitleGenre?[] Genres { get; }
 
+        // 'TitleBasics' Constructor Method
         public TitleBasics(string tConst, TitleType? type,
             string primaryTitle, string originalTitle, bool isAdult,
             TitleGenre[] genres, int? startYear = null, int? endYear = null,
