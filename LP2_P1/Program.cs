@@ -7,10 +7,12 @@ namespace LP2_P1
         // Holds the desired height and width of the console
         public const int WindowWidth = 200;
         public const int WindowHeight = 60;
+        private static SearchMenu searchMenu;
 
         private static void Main(string[] args)
         {
-            SearchMenu searchMenu = new SearchMenu();
+            // Declare and instantiate searchMenu = new SearchMenu();
+            searchMenu = new SearchMenu();
             // Sets the console hight and width to the amount specified
             Console.SetWindowSize(WindowWidth, WindowHeight);
             // Positions the console

@@ -19,7 +19,7 @@ namespace LP2_P1
             new List<TitleGenre?>();
         private static bool? isAdult;
 
-        // Creates an instance of the TitleSearch class
+        // Declares and instantiates an instance of the TitleSearch class
         private static TitleSearch searcher= new TitleSearch();
 
 

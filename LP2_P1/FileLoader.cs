@@ -187,7 +187,7 @@ namespace LP2_P1
             // Define local variables
             string line;
 
-            // try block that checks if TitleBasics file exists as it's
+            // try block that checks if TitleRatings file exists as it's
             // supposed to be in a method that throws an exception if 
             // the file is not present, which is caught right after by the
             // catch block, which displays the exception message and shuts 
