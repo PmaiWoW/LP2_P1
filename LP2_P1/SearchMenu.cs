@@ -34,7 +34,7 @@ namespace LP2_P1
         /// <summary>
         /// The start menu where the user can choose what to search for
         /// </summary>
-        public  void MenuLoop()
+        public void MenuLoop()
         {
             // Variable for input key
             ConsoleKey key;
