@@ -95,10 +95,10 @@ namespace LP2_P1
                 // uses description 2
                 if (i == 0) Console.Write(description2 + "\n\n");
 
-                // uses description 2
+                // uses description 3
                 if (i == 1) Console.Write(description3 + "\n\n");
 
-                // uses description 2
+                // uses description 4
                 if (i == 2) Console.Write(description4 + "\n\n");
             }
 
