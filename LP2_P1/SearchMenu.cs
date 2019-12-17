@@ -6,6 +6,9 @@ namespace LP2_P1
 {
     public static class SearchMenu
     {
+        public static IEnumerable<TitleBasics> originalNamedTitles =
+            FileLoader.LoadTitleBasics();
+
         private static string wantedTitle;
         private static ICollection<TitleType> types = new List<TitleType>();
         private static ICollection<TitleGenre?> genres = 
@@ -30,6 +33,7 @@ namespace LP2_P1
                 switch (key)
                 {
                     case ConsoleKey.D1:
+                        wantedTitle = default;
                         TitleSearch();
                         break;
 
@@ -51,9 +55,6 @@ namespace LP2_P1
             bool? adult, int? startDate, int? endDate,
             TitleGenre?[] genres)
         {
-            IEnumerable<TitleBasics> originalNamedTitles =
-                FileLoader.LoadTitleBasics();
-            
             if (wantedTitle != null)
                 originalNamedTitles = originalNamedTitles.Where
                     (c => c.PrimaryTitle.ToLower().Contains
@@ -77,13 +78,12 @@ namespace LP2_P1
                     select title;
 
             TitleSearch searcher = new TitleSearch();
+
             searcher.SearchTitle(originalNamedTitles);
         }
 
         private static void TitleSearch()
         {
-            wantedTitle = default;
-
             Console.Clear();
 
             ConsoleKey key;
@@ -117,6 +117,7 @@ namespace LP2_P1
                         UserInterface.ResizeWindow();
                         UserInterface.PrintSearchBar();
                         UserInterface.ColorSetup(4);
+                        wantedTitle = default;
                         wantedTitle = Console.ReadLine();
                         Console.ResetColor();
                     }

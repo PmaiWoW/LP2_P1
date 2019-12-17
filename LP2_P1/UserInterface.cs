@@ -87,6 +87,7 @@ namespace LP2_P1
             Console.WriteLine("");
 
             string pTitle;
+            string sortParameterDisplay = default;
             int maxLenght = 90;
 
             for (int i = 0; i < titlesToDisplay.Count(); i++)
@@ -101,35 +102,32 @@ namespace LP2_P1
                 switch (sortParameterString)
                 {
                     case "Type":
-                        Console.WriteLine($"|" +
-                            $"{titlesToDisplay.ElementAt(i).Type}");
-                        break;
-                    case "PrimaryTitle":
-                        Console.WriteLine($"|" +
-                            $"{titlesToDisplay.ElementAt(i).PrimaryTitle}");
+                        sortParameterDisplay = "|" +
+                            titlesToDisplay.ElementAt(i).Type.ToString();
                         break;
                     case "IsAdult":
-                        Console.WriteLine($"|" +
-                            $"{titlesToDisplay.ElementAt(i).IsAdult}");
+                        sortParameterDisplay = "|" +
+                            titlesToDisplay.ElementAt(i).IsAdult.ToString();
                         break;
                     case "StartYear":
-                        Console.WriteLine($"|" +
-                            $"{titlesToDisplay.ElementAt(i).StartYear}");
+                        sortParameterDisplay = "|" +
+                            titlesToDisplay.ElementAt(i).StartYear.ToString();
                         break;
                     case "EndYear":
-                        Console.WriteLine($"|" +
-                            $"{titlesToDisplay.ElementAt(i).EndYear}");
+                        sortParameterDisplay = "|" +
+                            titlesToDisplay.ElementAt(i).EndYear.ToString();
                         break;
                     case "Genres":
-                        Console.WriteLine($"|" +
-                            $"{titlesToDisplay.ElementAt(i).Genres[0]}, " +
-                            $"{titlesToDisplay.ElementAt(i).Genres[1]}, " +
-                            $"{titlesToDisplay.ElementAt(i).Genres[2]}");
+                        sortParameterDisplay = "|" +
+                            titlesToDisplay.ElementAt(i).Genres[0].ToString() +
+                            titlesToDisplay.ElementAt(i).Genres[1].ToString() +
+                            titlesToDisplay.ElementAt(i).Genres[2].ToString();
                         break;
 
                     default:
                         break;
                 }
+                Console.WriteLine(sortParameterDisplay);
             }
 
             Console.WriteLine("\n '->' for next page" +
@@ -163,6 +161,13 @@ namespace LP2_P1
         // Messages
         // --------------------------------------------------------------------
 
+        public static void NoResults()
+        {
+            Console.Clear();
+            Console.WriteLine("No titles found, returning to main " +
+                "menu...");
+            Console.ReadKey(true);
+        }
         // Currently not being used
         public static void PrintInvalidChoice()
         {

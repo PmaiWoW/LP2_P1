@@ -6,9 +6,8 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
-        private List<TitleBasics> originalNamedTitles =
-            new List<TitleBasics>(63506070);
-        private IEnumerable<TitleBasics> namedTitles;
+        private List<TitleBasics> namedTitles;
+        private IEnumerable<TitleBasics> originalNamedTitles;
         private SortState listState = SortState.Unordered;
         private int skipNumber = 0;
         private const int displayNum = 9;
@@ -16,29 +15,26 @@ namespace LP2_P1
 
         public void SearchTitle(IEnumerable<TitleBasics> wantedTitle)
         {
-            originalNamedTitles = wantedTitle.ToList();
+            namedTitles = wantedTitle.ToList();
 
             SearchMenu();
         }
 
         private void SearchMenu()
         {
-            namedTitles = originalNamedTitles;
+            originalNamedTitles = namedTitles;
+
+            if (!originalNamedTitles.Any())
+            {
+                UserInterface.NoResults();
+                return;
+            }
 
             ConsoleKey key = ConsoleKey.D0;
             UpdatePage();
 
             while (key != ConsoleKey.B)
             {
-                if (!namedTitles.Any())
-                {
-                    Console.Clear();
-                    Console.WriteLine("No titles found, returning to main " +
-                        "menu...");
-                    Console.ReadKey(true);
-                    return;
-                }
-
                 key = Console.ReadKey().Key;
 
                 if (key.ToString().Length == 2 && key.ToString()[0]=='D'
@@ -47,7 +43,7 @@ namespace LP2_P1
                     if (int.TryParse(key.ToString()[1].ToString(),
                         out int keyInt) && keyInt != 0)
                     {
-                        TitleDetails.Menu(namedTitles.ElementAt(keyInt - 1 +
+                        TitleDetails.Menu(originalNamedTitles.ElementAt(keyInt - 1 +
                             skipNumber));
                         UpdatePage();
                     }
@@ -57,7 +53,7 @@ namespace LP2_P1
                     switch (key)
                     {
                         case ConsoleKey.RightArrow:
-                            if (namedTitles.Count()/(skipNumber + displayNum)>0
+                            if (originalNamedTitles.Count()/(skipNumber + displayNum)>0
                                 || skipNumber == 0)
                                     skipNumber += displayNum;
                             UpdatePage();
@@ -70,7 +66,7 @@ namespace LP2_P1
                             break;
 
                         case ConsoleKey.O:
-                            Sort(ref namedTitles);
+                            Sort(ref originalNamedTitles);
                             break;
 
                         case ConsoleKey.R:
@@ -97,7 +93,7 @@ namespace LP2_P1
             Console.Clear();
             UserInterface.ResizeWindow();
 
-            UserInterface.PrintResults(namedTitles.SkipLast(namedTitles.Count()
+            UserInterface.PrintResults(originalNamedTitles.SkipLast(originalNamedTitles.Count()
                 - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
                 .ToList(), sortParameterString, listState);
         }
@@ -110,7 +106,7 @@ namespace LP2_P1
                 listState = listState == SortState.Descending ?
                     SortState.Ascending : SortState.Descending;
 
-                namedTitles = namedTitles.Reverse();
+                originalNamedTitles = originalNamedTitles.Reverse();
             }
 
             UpdatePage();
@@ -118,7 +114,7 @@ namespace LP2_P1
 
         private void ResetTitles()
         {
-            namedTitles = originalNamedTitles;
+            originalNamedTitles = namedTitles;
             sortParameterString = default;
             listState = SortState.Unordered;
             UpdatePage();
@@ -136,7 +132,7 @@ namespace LP2_P1
             // Resets titles every time the user orders the list
             if (key != ConsoleKey.B)
             {
-                namedTitles = originalNamedTitles;
+                namedTitles = this.namedTitles;
                 listState = SortState.Ascending;
             }
             // Switch case between the possible options selected
@@ -148,7 +144,6 @@ namespace LP2_P1
                     break;
 
                 case ConsoleKey.D2:
-                    sortParameterString = "PrimaryTitle";
                     namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
                     break;
 
