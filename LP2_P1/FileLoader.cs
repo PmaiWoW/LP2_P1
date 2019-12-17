@@ -10,15 +10,25 @@ namespace LP2_P1
         private const string appName = "MyIMDBSearcher";
         private const string fileTitleBasics = "title.basics.tsv.gz";
         private const string fileTitleRatings = "title.ratings.tsv.gz";
+        // Full path to folder with data files
+        private static string folderWithFiles = 
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.
+                LocalApplicationData), appName);
 
         public static IEnumerable<TitleBasics> LoadTitleBasics()
         {
-            // Full path to folder with data files
-            string folderWithFiles = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData), appName);
             // Full path to data files
             string fileTitleBasicsFull = Path.Combine(folderWithFiles,
                 fileTitleBasics);
+            try
+            {
+                CheckForFile(fileTitleBasicsFull);
+            } catch (Exception missingFile)
+            {
+                Console.WriteLine($"The following error ocurred:\n" +
+                    $"{missingFile.Message}");
+                Environment.Exit(0);
+            }
 
             // Define local variables
             string line;
@@ -118,15 +128,21 @@ namespace LP2_P1
 
         public static IEnumerable<TitleRatings> LoadTitleRatings()
         {
-            // Full path to folder with data files
-            string folderWithFiles = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData), appName);
-            // Full path to data file
             string fileTitleRatingsFull = Path.Combine(folderWithFiles,
                 fileTitleRatings);
-
             // Define local variables
             string line;
+
+            try
+            {
+                CheckForFile(fileTitleRatingsFull);
+            }
+            catch (Exception missingFile)
+            {
+                Console.WriteLine($"The following error ocurred:\n" +
+                    $"{missingFile.Message}");
+                Environment.Exit(0);
+            }
 
             // Opens the data file with read permissions
             using (FileStream fs = new FileStream(fileTitleRatingsFull,
@@ -159,7 +175,19 @@ namespace LP2_P1
             }
         }
 
-        private static void CreateLoadingBar()
+        private static void CheckForFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                throw new Exception("Required file not found, program will" +
+                    " shutdown.\nPlease acquire the correct files with the" +
+                    $" following names :\n{fileTitleBasics}\n" +
+                    $"{fileTitleRatings}\nand place them in the correct " +
+                    $"path:\n{folderWithFiles}");
+            }
+        }
+
+    private static void CreateLoadingBar()
         {
             Console.WriteLine("\n\n\nLoading...");
             Console.BackgroundColor = ConsoleColor.DarkRed;

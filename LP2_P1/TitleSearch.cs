@@ -11,7 +11,7 @@ namespace LP2_P1
         private IEnumerable<(TitleBasics titles, TitleRatings ratings)> namedTitles;
 
         // Creates variables
-        private State listState = State.Unordered;
+        private OrderState listState = OrderState.Unordered;
         private int skipNumber = 0;
         private int displayedAmount = 0;
         private const int displayNum = 30;
@@ -135,7 +135,7 @@ namespace LP2_P1
                         // Resets namedTitles to the original state
                         namedTitles = originalNamedTitles;
                         // Sets the state of the list to unordered
-                        listState = State.Unordered;
+                        listState = OrderState.Unordered;
                         break;
 
                     // if the user pressed Enter
@@ -185,10 +185,10 @@ namespace LP2_P1
         private void ReverseOrder()
         {
             //Reverses order, only if the list is already ordered
-            if (listState != State.Unordered)
+            if (listState != OrderState.Unordered)
             {
-                listState = listState == State.Descending ?
-                    State.Ascending : State.Descending;
+                listState = listState == OrderState.Descending ?
+                    OrderState.Ascending : OrderState.Descending;
 
                 namedTitles = namedTitles.Reverse();
             }
@@ -214,7 +214,7 @@ namespace LP2_P1
             Console.CursorLeft = 100;
             Console.Write("Type");
             Console.CursorLeft = 150;
-            Console.Write($"State : {listState}");
+            Console.Write($"OrderState : {listState}");
 
             // Resets the console color
             Console.ResetColor();
@@ -279,7 +279,7 @@ namespace LP2_P1
             if (key != ConsoleKey.B)
             {
                 namedTitles = originalNamedTitles;
-                listState = State.Ascending;
+                listState = OrderState.Ascending;
             }
             // Switch case between the possible options selected
             switch (key)
@@ -348,8 +348,5 @@ namespace LP2_P1
             // Makes sure the Garbage collector runs after ordering
             GC.Collect();
         }
-
-        // A private enum with the possible states os the list
-        private enum State { Ascending, Descending, Unordered };
     }
 }

@@ -12,6 +12,12 @@ namespace LP2_P1
         private static ICollection<TitleGenre?> genres =
             new List<TitleGenre?>();
         private static bool? isAdult;
+        // Creates a IEnumerable of all the titles
+        private static IEnumerable<TitleBasics> titleBasicsEnum =
+            FileLoader.LoadTitleBasics();
+        // Creates a IEnumerable of all the ratings
+        private static IEnumerable<TitleRatings> titleRatingsEnum =
+            FileLoader.LoadTitleRatings();
 
         public static void MenuLoop()
         {
@@ -61,68 +67,61 @@ namespace LP2_P1
             TitleGenre?[] genres, int? runtime1, int? runtime2,
             int? rating1, int? rating2)
         {
-            // Creates a IEnumerable of all the ratings
-            IEnumerable<TitleRatings> titleRatingsList =
-                FileLoader.LoadTitleRatings();
-
-            // Creates a IEnumerable of all the titles
-            IEnumerable<TitleBasics> titleBasicsList =
-                FileLoader.LoadTitleBasics();
 
             // Checks if the method received a title to search for
             if (wantedTitle != null)
                 // Checks the titles list for the title given
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnum = titleBasicsEnum.Where
                     (c => c.PrimaryTitle.Trim().ToLower().Contains
                     (wantedTitle.Trim().ToLower()));
 
             // Checks if the method received a base runtime
             if (runtime1.HasValue)
                 // Gets all the titles with a runtime equal or lower than given
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnum = titleBasicsEnum.Where
                     (c => c.RuntimeMinutes >= runtime1);
 
             // Checks if the method received a max runtime
             if (runtime2.HasValue)
                 // Gets all the titles with a runtime higher or equl than given
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnum = titleBasicsEnum.Where
                     (c => c.RuntimeMinutes <= runtime2);
 
             // Checks if the method received a base date
             if (startDate.HasValue)
                 // Gets all titles where the year is equal or lower than given
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnum = titleBasicsEnum.Where
                     (c => c.StartYear >= startDate);
 
             // Checks if the method received a maximum date
             if (endDate.HasValue)
                 // Gets all titles where the year is equal or lower than given
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnum = titleBasicsEnum.Where
                     (c => c.EndYear <= endDate);
 
             // Checks if the types array has anything inside
             if (type.Length > 0)
                 // Gets all the titles where the type equals the type given
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnum = titleBasicsEnum.Where
                     (c => type.Any(a => a == c.Type));
 
             // Checks if the adult bool is not null
             if (adult.HasValue)
                 // Gets all the titles where adult equals
-                titleBasicsList = titleBasicsList.Where
+                titleBasicsEnum = titleBasicsEnum.Where
                     (c => c.IsAdult == adult);
 
             // A loop the size of the Genres array
             for (int i = 0; i < genres.Length - 1; i++)
                 // Gets all the titles where the genres are the same has one of
                 // the genres given
-                titleBasicsList =
-                    from title in titleBasicsList
+                titleBasicsEnum =
+                    from title in titleBasicsEnum
                     where title.Genres.Contains(genres[i])
                     select title;
 
             IEnumerable<(TitleBasics, TitleRatings)> mixedList =
-                titleBasicsList.GroupJoin(titleRatingsList.Where(c => true),
+                titleBasicsEnum.GroupJoin(titleRatingsEnum.Where(c => true),
                 title2 => title2.TConst, rating2 => rating2.Tconst, (t, r) =>
                 new { Title = t, Rating = r.Where(y => y.Tconst.Contains(t.TConst)) })
                 .Select(x => (x.Title, x.Rating.FirstOrDefault()));
