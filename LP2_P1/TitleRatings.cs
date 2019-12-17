@@ -12,14 +12,5 @@
             AverageRating = averageRating;
             NumVotes = numVotes;
         }
-        public override string ToString()
-        {
-            if(!AverageRating.HasValue && !NumVotes.HasValue)
-            {
-                return "This title has no ratings";
-            }
-            return $"\n   Average Ratings: {AverageRating} in {NumVotes} " +
-                $"votes";
-        }
     }
 }

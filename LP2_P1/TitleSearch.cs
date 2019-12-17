@@ -53,16 +53,15 @@ namespace LP2_P1
                 // Assigns the value of key the key the user pressed
                 key = Console.ReadKey().Key;
 
-
                 if (key.ToString().Length == 2 && key.ToString()[0]=='D'
                     && char.IsDigit(key.ToString()[1]))
                 {
                     if (int.TryParse(key.ToString()[1].ToString(),
                         out int keyInt) && keyInt != 0)
                     {   
-                        TitleDetails.Menu(namedTitles.ElementAt(keyInt - 1 +
-                            skipNumber).titles, namedTitles.ElementAt(keyInt - 1 +
-                            skipNumber).ratings);
+                        UserInterface.Menu(namedTitles.ElementAt(keyInt - 1 +
+                            skipNumber).titles, namedTitles.ElementAt(keyInt 
+                            - 1 + skipNumber).ratings);
                     }
                     UpdatePage();
                 }

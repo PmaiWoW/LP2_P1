@@ -168,7 +168,8 @@ namespace LP2_P1
                                     out float averageRating))
                                     averageRatingNul = averageRating;
                                 else averageRatingNul = null;
-                                if (int.TryParse(elements[2], out int numVotes))
+                                if (int.TryParse(elements[2], out int 
+                                    numVotes))
                                     numVotesNul = numVotes;
                                 else numVotesNul = null;
 

@@ -125,8 +125,8 @@ namespace LP2_P1
 
                 pTitleDisplay = $"  " +
                  $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}" +
-                 (titlesToDisplay.ElementAt(i).a.PrimaryTitle.Length > maxLenght
-                 ? $"... " : "");
+                 (titlesToDisplay.ElementAt(i).a.PrimaryTitle.Length > 
+                 maxLenght ? $"... " : "");
 
                 switch (sortParameterString)
                 {
@@ -210,11 +210,62 @@ namespace LP2_P1
                 "\n  'B' to go back \n");
         }
 
+        public static void Menu(TitleBasics title, TitleRatings ratings)
+        {
+            // Crates a variable to hold the user input
+            ConsoleKey key;
+
+            // Stays on loop until the user presses 'B'
+            do
+            {
+                ShowTitleDetails(title);
+                ShowTitleRatings(ratings);
+                key = Console.ReadKey().Key;
+            } while (key != ConsoleKey.B);
+        }
+
         public static void ShowTitleDetails(TitleBasics title)
         {
             Console.Clear();
-            Console.WriteLine(title);
-            Console.WriteLine("\n  Press 'B' to to back to previous menu");
+
+            string typePrint =
+                title.Type.HasValue ? title.Type.ToString() : @"\N";
+            string startYearPrint =
+                title.StartYear.HasValue ? title.StartYear.ToString() : @"\N";
+            string endYearPrint =
+                title.EndYear.HasValue ? title.EndYear.ToString() : @"\N";
+            string runtimePrint = title.RuntimeMinutes.HasValue ?
+                title.RuntimeMinutes.ToString() : @"\N";
+            string isAdult = title.IsAdult ? "Adults Only" : "For Everyone";
+            string[] genresPrint = new string[3];
+            for (int i = 0; i < 3; i++)
+                genresPrint[i] = title.Genres[i].HasValue ?
+                    title.Genres[i].ToString() : @"\N";
+
+            Console.WriteLine($"\n  Title Name:      {title.PrimaryTitle}" +
+                $"\n  Original Title:  {title.OriginalTitle}" +
+                $"\n  Type:            {typePrint}" +
+                $"\n  Age Restriction: {isAdult}" +
+                $"\n  Release Year:    {startYearPrint}" +
+                $"\n  Ending Year:     {endYearPrint}" +
+                $"\n  Runtime (Mins):  {runtimePrint} " +
+                $"\n  Genres:          {genresPrint[0]}" +
+                $"\n                   {genresPrint[1]}" +
+                $"\n                   {genresPrint[2]}");
+        }
+
+        public static void ShowTitleRatings(TitleRatings ratings)
+        {
+            if (!ratings.AverageRating.HasValue && !ratings.NumVotes.HasValue)
+            {
+                Console.WriteLine("This title has no ratings" + 
+                    $"\n  Press 'B' to to back to previous menu");
+            }
+            else
+            {
+                Console.WriteLine($"\n   Average Ratings: " +
+                    $"{ratings.AverageRating}in {ratings.NumVotes} votes");
+            }
         }
 
         // Messages

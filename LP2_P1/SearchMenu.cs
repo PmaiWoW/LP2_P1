@@ -126,25 +126,28 @@ namespace LP2_P1
             IEnumerable<(TitleBasics, TitleRatings)> mixedList =
                 titleBasicsEnum.GroupJoin(titleRatingsEnum.Where(c => true),
                 title2 => title2.TConst, rating2 => rating2.Tconst, (t, r) =>
-                new { Title = t, Rating = r.Where(y => y.Tconst.Contains(t.TConst)) })
-                .Select(x => (x.Title, x.Rating.FirstOrDefault()));
+                new { Title = t, Rating = r.Where(y => y.Tconst.Contains(t.
+                TConst)) }).Select(x => (x.Title, x.Rating.FirstOrDefault()));
 
             // Checks if the method received a lowest rating
             if (rating1.HasValue)
                 // Gets all the titles and ratings where the average rating is
                 // equal or higher than the value given
-                mixedList = mixedList.Where(c => c.Item2.AverageRating >= rating1);
+                mixedList = mixedList.Where(c => c.Item2.AverageRating >=
+                rating1);
 
             // Checks if the method received a highest rating
             if (rating2.HasValue)
                 // Gets all the titles and ratings where the average rating is
                 // equal or lower than the value given
-                mixedList = mixedList.Where(c => c.Item2.AverageRating <= rating2);
+                mixedList = mixedList.Where(c => c.Item2.AverageRating <=
+                rating2);
 
             // Creates an instance of the TitleSearch class
             TitleSearch searcher = new TitleSearch();
 
-            // Goes to the SearchTitle method passing the list of titles and ratings
+            // Goes to the SearchTitle method passing the list of titles and
+            // ratings
             searcher.SearchTitle(mixedList);
         }
 
