@@ -6,7 +6,6 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
-<<<<<<< HEAD
         // Creates two IEnumerables responsible for containing the information
         private IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
             originalNamedTitles;
@@ -15,11 +14,7 @@ namespace LP2_P1
 
         // Creates variables
         private OrderState listState = OrderState.Unordered;
-=======
-        private IEnumerable<TitleBasics> originalSearchResults;
-        private IEnumerable<TitleBasics> orderedResults;        
-        private SortState listState = SortState.Unordered;
->>>>>>> UIRework-TitleSearchOnly
+    
         private int skipNumber = 0;
         private const int displayNum = 9;
         string sortParameterString = default;
@@ -47,48 +42,42 @@ namespace LP2_P1
             }
 
             // Creates a variable for storing user input
-            ConsoleKey key;
+            ConsoleKey key = ConsoleKey.D0;
             // Updates the information displayed to the user
             UpdatePage();
 
             // A while loop until the user presses 'b'
-            do
+            while (key != ConsoleKey.B)
             {
+                UpdatePage();
                 // Assigns the value of key the key the user pressed
                 key = Console.ReadKey().Key;
 
-                // Switch case depending on the key the user pressed
-                switch (key)
-                {
-                    key = Console.ReadKey().Key;
 
-                    if (key.ToString().Length == 2 && key.ToString()[0]=='D'
-                        && char.IsDigit(key.ToString()[1]))
-                    {
-                        if (int.TryParse(key.ToString()[1].ToString(),
-                            out int keyInt) && keyInt != 0)
-                        {   
-                            TitleDetails.Menu(namedTitles.ElementAt(keyInt - 1 +
-                                skipNumber));
-                        }
-                        UpdatePage();
+                if (key.ToString().Length == 2 && key.ToString()[0]=='D'
+                    && char.IsDigit(key.ToString()[1]))
+                {
+                    if (int.TryParse(key.ToString()[1].ToString(),
+                        out int keyInt) && keyInt != 0)
+                    {   
+                        TitleDetails.Menu(namedTitles.ElementAt(keyInt - 1 +
+                            skipNumber).titles, namedTitles.ElementAt(keyInt - 1 +
+                            skipNumber).ratings);
                     }
-                    else
+                    UpdatePage();
+                }
+                else
+                {
+                    switch (key)
                     {
-                        switch (key)
-                        {
-                            // if the user pressed the right arrow
-                            case ConsoleKey.RightArrow:
-                                // Checks if the next page will have content if pressed
-                                if (namedTitles.Count() / (skipNumber + displayNum) > 0
-                                    || skipNumber == 0)
-                                {
-                                    // Adds 30 to the amount of titles the program
-                                    //should skip
-                                    skipNumber += displayNum;
-                                }
-                                UpdatePage();
-                                break;
+                        case ConsoleKey.RightArrow:
+                            if (namedTitles.Count() / (skipNumber + displayNum) > 0
+                                || skipNumber == 0)
+                            {
+                                skipNumber += displayNum;
+                            }
+                            UpdatePage();
+                            break;
 
                         case ConsoleKey.LeftArrow:
                             if (skipNumber + displayNum > displayNum)
@@ -113,7 +102,7 @@ namespace LP2_P1
                             break;
                     }
                 }
-
+                
             }
             Console.Clear();
         }
@@ -123,7 +112,7 @@ namespace LP2_P1
         {
             UserInterface.ResizeWindow();
 
-            UserInterface.ShowResultsMenu(originalSearchResults.SkipLast(originalSearchResults.Count()
+            UserInterface.ShowResultsMenu(namedTitles.SkipLast(namedTitles.Count()
                 - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
                 .ToList(), sortParameterString, listState);
         }
@@ -136,7 +125,7 @@ namespace LP2_P1
                 listState = listState == OrderState.Descending ?
                     OrderState.Ascending : OrderState.Descending;
 
-                originalSearchResults = originalSearchResults.Reverse();
+                namedTitles = namedTitles.Reverse();
             }
             // Updates the information displayed to the user
             UpdatePage();
@@ -144,17 +133,18 @@ namespace LP2_P1
 
         private void ResetTitles()
         {
-            originalSearchResults = orderedResults;
+            skipNumber = 0;
+            namedTitles = originalNamedTitles;
             sortParameterString = default;
-            listState = SortState.Unordered;
+            listState = OrderState.Unordered;
             UpdatePage();
         }
 
-        public void Sort(ref IEnumerable<(TitleBasics a, TitleRatings p)> namedTitles)
+        public void Sort(ref IEnumerable<(TitleBasics titles, TitleRatings ratings)> namedTitles)
         {
             UserInterface.ShowOrderMenu(namedTitles.SkipLast(namedTitles.Count()
                 - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
-                .ToList(), sortParameterString, listState);
+                .ToHashSet(), sortParameterString, listState);
 
 
             // Read user's input
@@ -162,7 +152,7 @@ namespace LP2_P1
             key = Console.ReadKey().Key;
 
             // Resets titles and jumps to first page
-            // every timethe user orders the list
+            // every time the user orders the list
             if (key != ConsoleKey.B)
             {
                 namedTitles = originalNamedTitles;
@@ -174,20 +164,20 @@ namespace LP2_P1
             {
                 // case nº1
                 case ConsoleKey.D1:
-                    // Orders the list by the type
+                    // Orders the list by the title
                     namedTitles = namedTitles
-                        .OrderBy(c => c.titles.Type)
+                        .OrderBy(c => c.titles.PrimaryTitle)
                         .Select(c => c).ToHashSet();
                     sortParameterString = "Title";
                     break;
 
                 // case nº2
                 case ConsoleKey.D2:
-                    // Orders the list by the title
+                    // Orders the list by the type
                     namedTitles = namedTitles
-                        .OrderBy(c => c.titles.PrimaryTitle)
+                        .OrderBy(c => c.titles.Type)
                         .Select(c => c).ToHashSet();
-                    sortParameterString = "Type"; 
+                    sortParameterString = "Type";
                     break;
 
                 // case nº3
@@ -228,6 +218,7 @@ namespace LP2_P1
                     namedTitles = namedTitles
                         .OrderBy(c => c.ratings.AverageRating)
                         .Select(c => c).ToHashSet();
+                    sortParameterString = "Ratings";
                     break;
 
                 // case the 'B' key is pressed

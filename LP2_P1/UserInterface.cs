@@ -74,7 +74,7 @@ namespace LP2_P1
         // Search Results UI
         // -------------------------------------------------------------------
         public static void PrintResults(
-            IEnumerable<TitleBasics> titlesToDisplay,
+            IEnumerable<(TitleBasics a, TitleRatings p)> titlesToDisplay,
             string sortParameterString, OrderState listState)
         {
             Console.Clear();
@@ -121,52 +121,54 @@ namespace LP2_P1
             {
 
                 pTitle = $"{i + 1}: " +
-                    $"{titlesToDisplay.ElementAt(i).PrimaryTitle}";
+                    $"{titlesToDisplay.ElementAt(i).a.PrimaryTitle}";
 
                 pTitleDisplay = $"  " +
                  $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}" +
-                 (titlesToDisplay.ElementAt(i).PrimaryTitle.Length > maxLenght
+                 (titlesToDisplay.ElementAt(i).a.PrimaryTitle.Length > maxLenght
                  ? $"... " : "");
 
                 switch (sortParameterString)
                 {
                     case "Type":
                         sortParameterDisplay = "|" +
-                            titlesToDisplay.ElementAt(i).Type.ToString();
+                            titlesToDisplay.ElementAt(i).a.Type.ToString();
                         break;
                     case "Age Restriction":
                         sortParameterDisplay = "|" +
-                            (titlesToDisplay.ElementAt(i).IsAdult ?
-                            "Adults Only" : "For Everyone");
-                        break;
+                            (titlesToDisplay.ElementAt(i).a.IsAdult ?
+                            "Adults Only" : "For Everyone"); break;
                     case "Start Year":
                         sortParameterDisplay = "|" +
-                            (titlesToDisplay.ElementAt(i).StartYear.HasValue ?
-                            titlesToDisplay.ElementAt(i).StartYear.ToString()
-                            : @"\N");
-                        break;
+                           (titlesToDisplay.ElementAt(i).a.StartYear.HasValue ?
+                            titlesToDisplay.ElementAt(i).a.StartYear.ToString()
+                            : @"\N"); break;
                     case "End Year":
                         sortParameterDisplay = "|" +
-                            (titlesToDisplay.ElementAt(i).EndYear.HasValue ?
-                            titlesToDisplay.ElementAt(i).EndYear.ToString()
+                            (titlesToDisplay.ElementAt(i).a.EndYear.HasValue ?
+                            titlesToDisplay.ElementAt(i).a.EndYear.ToString()
                             : @"\N"); break;
                     case "Genres":
                         sortParameterDisplay = "|" +
-                           ((titlesToDisplay.ElementAt(i).Genres[0].HasValue ?
-                           titlesToDisplay.ElementAt(i).Genres[0].ToString()
+                          ((titlesToDisplay.ElementAt(i).a.Genres[0].HasValue ?
+                           titlesToDisplay.ElementAt(i).a.Genres[0].ToString()
                            : @"\N") + ", ").PadRight(14) +
-                           ((titlesToDisplay.ElementAt(i).Genres[1].HasValue ?
-                           titlesToDisplay.ElementAt(i).Genres[1].ToString()
+                          ((titlesToDisplay.ElementAt(i).a.Genres[1].HasValue ?
+                           titlesToDisplay.ElementAt(i).a.Genres[1].ToString()
                            : @"\N") + ", ").PadRight(14) +
-                           (titlesToDisplay.ElementAt(i).Genres[2].HasValue ?
-                           titlesToDisplay.ElementAt(i).Genres[2].ToString()
-                           : @"\N");
-                        break;
-
+                           (titlesToDisplay.ElementAt(i).a.Genres[2].HasValue ?
+                           titlesToDisplay.ElementAt(i).a.Genres[2].ToString()
+                           : @"\N"); break;
+                    case "Ratings":
+                        sortParameterDisplay = "|" +
+                            (titlesToDisplay.ElementAt(i).p.AverageRating.HasValue ?
+                            titlesToDisplay.ElementAt(i).p.AverageRating.ToString()
+                            : "No ratings"); break;
                     default:
                         break;
                 }
-                Console.WriteLine(pTitleDisplay.PadRight(59) + sortParameterDisplay);
+                Console.WriteLine(pTitleDisplay.PadRight(59) +
+                    sortParameterDisplay);
             }
 
 
@@ -175,7 +177,7 @@ namespace LP2_P1
         // --------------------------------------------------------------------
 
         public static void ShowResultsMenu(
-            IEnumerable<TitleBasics> titlesToDisplay,
+            IEnumerable<(TitleBasics titles, TitleRatings ratings)> titlesToDisplay,
             string sortParameterString, OrderState listState)
         {
             PrintResults(titlesToDisplay, sortParameterString, listState);
@@ -190,7 +192,7 @@ namespace LP2_P1
         }
 
         public static void ShowOrderMenu(
-            IEnumerable<TitleBasics> titlesToDisplay,
+            IEnumerable<(TitleBasics titles, TitleRatings ratings)> titlesToDisplay,
             string sortParameterString, OrderState listState)
         {
             Console.Clear();
