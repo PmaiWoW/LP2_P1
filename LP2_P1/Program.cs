@@ -21,7 +21,7 @@ namespace LP2_P1
             // Gives a title to the console window
             Console.Title = "MyIMDBSearcher";
             Console.CursorVisible = false;
-            
+
             // Starts the Main menu loop on SearchMenu class
             searchMenu.MenuLoop();
         }
