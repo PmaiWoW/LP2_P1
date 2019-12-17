@@ -12,12 +12,7 @@ namespace LP2_P1
 
             while (key != ConsoleKey.B)
             {
-                Console.Clear();
-                Console.WriteLine(title);
-
-                Console.CursorLeft = 1;
-                Console.WriteLine("\nPress 'B' to to back to previous menu");
-
+                UserInterface.ShowTitleDetails(title);
                 key = Console.ReadKey().Key;
             }
         }

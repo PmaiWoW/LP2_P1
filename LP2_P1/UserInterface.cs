@@ -111,7 +111,7 @@ namespace LP2_P1
             for (int i = 0; i < titlesToDisplay.Count(); i++)
             {
 
-                pTitle = $"{i + 1}:" +
+                pTitle = $"{i + 1}: " +
                     $"{titlesToDisplay.ElementAt(i).PrimaryTitle}";
 
                 pTitleDisplay = $"  " +
@@ -165,7 +165,7 @@ namespace LP2_P1
         // Menu UI
         // --------------------------------------------------------------------
 
-        public static void ResultsMenu(
+        public static void ShowResultsMenu(
             IEnumerable<TitleBasics> titlesToDisplay,
             string sortParameterString, TitleSearch.SortState listState)
         {
@@ -180,7 +180,7 @@ namespace LP2_P1
                 "\n  'B' to go back to previous menu");
         }
 
-        public static void OrderMenu(
+        public static void ShowOrderMenu(
             IEnumerable<TitleBasics> titlesToDisplay,
             string sortParameterString, TitleSearch.SortState listState)
         {
@@ -197,6 +197,13 @@ namespace LP2_P1
                 "\n  '6' to order by genre" +
                 "\n  '7' to order by rating" +
                 "\n  'B' to go back \n");
+        }
+
+        public static void ShowTitleDetails(TitleBasics title)
+        {
+            Console.Clear();
+            Console.WriteLine(title);
+            Console.WriteLine("\n  Press 'B' to to back to previous menu");
         }
 
         // Messages

@@ -6,8 +6,8 @@ namespace LP2_P1
 {
     public class TitleSearch
     {
-        private List<TitleBasics> namedTitles;
-        private IEnumerable<TitleBasics> originalNamedTitles;
+        private IEnumerable<TitleBasics> originalSearchResults;
+        private IEnumerable<TitleBasics> orderedResults;        
         private SortState listState = SortState.Unordered;
         private int skipNumber = 0;
         private const int displayNum = 9;
@@ -15,16 +15,16 @@ namespace LP2_P1
 
         public void SearchTitle(IEnumerable<TitleBasics> wantedTitle)
         {
-            namedTitles = wantedTitle.ToList();
+            orderedResults = wantedTitle.ToHashSet();
 
             SearchMenu();
         }
 
         private void SearchMenu()
         {
-            originalNamedTitles = namedTitles;
+            originalSearchResults = orderedResults;
 
-            if (!originalNamedTitles.Any())
+            if (!originalSearchResults.Any())
             {
                 UserInterface.NoResults();
                 return;
@@ -43,7 +43,7 @@ namespace LP2_P1
                     if (int.TryParse(key.ToString()[1].ToString(),
                         out int keyInt) && keyInt != 0)
                     {
-                        TitleDetails.Menu(originalNamedTitles.ElementAt(keyInt - 1 +
+                        TitleDetails.Menu(originalSearchResults.ElementAt(keyInt - 1 +
                             skipNumber));
                     }
                     UpdatePage();
@@ -53,7 +53,7 @@ namespace LP2_P1
                     switch (key)
                     {
                         case ConsoleKey.RightArrow:
-                            if (originalNamedTitles.Count()/(skipNumber + displayNum)>0
+                            if (originalSearchResults.Count()/(skipNumber + displayNum)>0
                                 || skipNumber == 0)
                                     skipNumber += displayNum;
                             UpdatePage();
@@ -66,7 +66,7 @@ namespace LP2_P1
                             break;
 
                         case ConsoleKey.O:
-                            Sort(ref originalNamedTitles);
+                            Sort(ref originalSearchResults);
                             break;
 
                         case ConsoleKey.R:
@@ -92,7 +92,7 @@ namespace LP2_P1
         {
             UserInterface.ResizeWindow();
 
-            UserInterface.ResultsMenu(originalNamedTitles.SkipLast(originalNamedTitles.Count()
+            UserInterface.ShowResultsMenu(originalSearchResults.SkipLast(originalSearchResults.Count()
                 - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
                 .ToList(), sortParameterString, listState);
         }
@@ -105,7 +105,7 @@ namespace LP2_P1
                 listState = listState == SortState.Descending ?
                     SortState.Ascending : SortState.Descending;
 
-                originalNamedTitles = originalNamedTitles.Reverse();
+                originalSearchResults = originalSearchResults.Reverse();
             }
 
             UpdatePage();
@@ -113,15 +113,15 @@ namespace LP2_P1
 
         private void ResetTitles()
         {
-            originalNamedTitles = namedTitles;
+            originalSearchResults = orderedResults;
             sortParameterString = default;
             listState = SortState.Unordered;
             UpdatePage();
         }
 
-        public void Sort(ref IEnumerable<TitleBasics> namedTitles)
+        public void Sort(ref IEnumerable<TitleBasics> orderedResults)
         {
-            UserInterface.OrderMenu(originalNamedTitles.SkipLast(originalNamedTitles.Count()
+            UserInterface.ShowOrderMenu(originalSearchResults.SkipLast(originalSearchResults.Count()
                 - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
                 .ToList(), sortParameterString, listState);
 
@@ -134,7 +134,7 @@ namespace LP2_P1
             // every timethe user orders the list
             if (key != ConsoleKey.B)
             {
-                namedTitles = this.namedTitles;
+                orderedResults = this.orderedResults;
                 listState = SortState.Ascending;
                 skipNumber = 0;
             }
@@ -143,32 +143,32 @@ namespace LP2_P1
             {
                 case ConsoleKey.D1:
                     sortParameterString = "Title";
-                    namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
+                    orderedResults = orderedResults.OrderBy(c => c.PrimaryTitle);
                     break;
 
                 case ConsoleKey.D2:
                     sortParameterString = "Type"; 
-                    namedTitles = namedTitles.OrderBy(c => c.Type);
+                    orderedResults = orderedResults.OrderBy(c => c.Type);
                     break;
 
                 case ConsoleKey.D3:
                     sortParameterString = "Age Restriction";
-                    namedTitles = namedTitles.OrderBy(c => c.IsAdult);
+                    orderedResults = orderedResults.OrderBy(c => c.IsAdult);
                     break;
 
                 case ConsoleKey.D4:
                     sortParameterString = "Start Year";
-                    namedTitles = namedTitles.OrderBy(c => c.StartYear);
+                    orderedResults = orderedResults.OrderBy(c => c.StartYear);
                     break;
 
                 case ConsoleKey.D5:
                     sortParameterString = "End Year";
-                    namedTitles = namedTitles.OrderBy(c => c.EndYear);
+                    orderedResults = orderedResults.OrderBy(c => c.EndYear);
                     break;
 
                 case ConsoleKey.D6:
                     sortParameterString = "Genres";
-                    namedTitles = namedTitles.OrderBy(c => c.Genres[0]);
+                    orderedResults = orderedResults.OrderBy(c => c.Genres[0]);
                     break;
 
                 case ConsoleKey.B:

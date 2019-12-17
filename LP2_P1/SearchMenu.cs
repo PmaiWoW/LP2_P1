@@ -9,6 +9,8 @@ namespace LP2_P1
         public static IEnumerable<TitleBasics> originalNamedTitles =
             FileLoader.LoadTitleBasics();
 
+        public static IEnumerable<TitleBasics> searchResults;
+
         private static string wantedTitle;
         private static ICollection<TitleType> types = new List<TitleType>();
         private static ICollection<TitleGenre?> genres = 
@@ -55,31 +57,33 @@ namespace LP2_P1
             bool? adult, int? startDate, int? endDate,
             TitleGenre?[] genres)
         {
+            searchResults = originalNamedTitles;
+
             if (wantedTitle != null)
-                originalNamedTitles = originalNamedTitles.Where
+                searchResults = searchResults.Where
                     (c => c.PrimaryTitle.ToLower().Contains
                     (wantedTitle.Trim().ToLower()));
             if (startDate.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                searchResults = searchResults.Where
                     (c => c.StartYear >= startDate);
             if (endDate.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                searchResults = searchResults.Where
                     (c => c.EndYear <= endDate);
             if (type.Length > 0)
-                originalNamedTitles = originalNamedTitles.Where
+                searchResults = searchResults.Where
                     (c => type.Any(a => a == c.Type));
             if (adult.HasValue)
-                originalNamedTitles = originalNamedTitles.Where
+                searchResults = searchResults.Where
                     (c => c.IsAdult == adult);
             for (int i = 0; i < genres.Length - 1; i++)
-                originalNamedTitles =
-                    from title in originalNamedTitles
+                searchResults =
+                    from title in searchResults
                     where title.Genres.Contains(genres[i])
                     select title;
 
             TitleSearch searcher = new TitleSearch();
 
-            searcher.SearchTitle(originalNamedTitles);
+            searcher.SearchTitle(searchResults);
         }
 
         private static void TitleSearch()
