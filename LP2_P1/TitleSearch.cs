@@ -23,27 +23,12 @@ namespace LP2_P1
         // Creates OrderState variable that stores the state of the order
         private OrderState listState = OrderState.Unordered;
     
-<<<<<<< HEAD
         // Integer for the number of titles it should skip
         private int skipNumber = 0;
-
-        // Sets how many titles are shown at once
+        // Integer for the number of titles it should display
         private const int displayNum = 9;
-
-        // Sets string that tells what property is being ordered
+        // Which parameter should the collection be ordered by.
         string orderParameterString = default;
-
-        /// <summary>
-        /// Sets 'originalNamedTitles' as the default list for the searched titles
-        /// </summary>
-        /// <param name="wantedTitles">search results list</param>
-=======
-        // Integer for the number of titles it should skip
-        private int skipNumber = 0;
-        // Integer for the number of titles it shoudl display
-        private const int displayNum = 9;
-        // Which parameter should the collection be srted by.
-        string sortParameterString = default;
 
         /// <summary>
         /// Assigns this originalTitles the IEnumerable it received and goes
@@ -51,7 +36,6 @@ namespace LP2_P1
         /// </summary>
         /// <param name="wantedTitle"> IEnumerable with the titles with the 
         /// parameters the user chose </param>
->>>>>>> 317792027de90c371d3ae05048968b774dd41de9
         public void SearchTitle(IEnumerable<(TitleBasics, TitleRatings)> 
             wantedTitles)
         {
@@ -63,18 +47,14 @@ namespace LP2_P1
             SearchMenu();
         }
         /// <summary>
-<<<<<<< HEAD
         /// Reads user input on what to do in the menu
-=======
         /// The main loop of the menu
->>>>>>> 317792027de90c371d3ae05048968b774dd41de9
         /// </summary>
         private void SearchMenu()
         {
             // Copies the value of 'originalNamedTitles' to 'namedTitles'
             namedTitles = originalNamedTitles;
 
-<<<<<<< HEAD
             // Checks if 'namedTitles' has any values
             if (!namedTitles.Any())
             {
@@ -82,14 +62,6 @@ namespace LP2_P1
                 UserInterface.NoResults();
 
                 // Returns to previous method
-=======
-            // Checks if there's titles on the list
-            if (!namedTitles.Any())
-            {
-                // Displays a message to the user
-                UserInterface.NoResults();
-                // Returns to the searchmenu
->>>>>>> 317792027de90c371d3ae05048968b774dd41de9
                 return;
             }
 
@@ -102,11 +74,7 @@ namespace LP2_P1
             // A while loop until the user presses 'B'
             while (key != ConsoleKey.B)
             {
-<<<<<<< HEAD
                 // Updates the information displayed to the user
-=======
-                // Updates the page info
->>>>>>> 317792027de90c371d3ae05048968b774dd41de9
                 UpdatePage();
 
                 // Assigns to the value of key, the key the user pressed
@@ -118,7 +86,7 @@ namespace LP2_P1
                 {
                     // Tries to parse the second char of that
                     // key as int, gets 'keyInt' as value and
-                    // checks if 'keyInt' is differnt than 0
+                    // checks if 'keyInt' is different than 0
                     if (int.TryParse(key.ToString()[1].ToString(),
                         out int keyInt) && keyInt != 0)
                     {   
