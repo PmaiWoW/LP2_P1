@@ -5,7 +5,7 @@ using System.Linq;
 namespace LP2_P1
 {
     /// <summary>
-    /// The main look of the program where the the titles are displayed and
+    /// The main loop of the program where the the titles are displayed and
     /// the user can interect with them
     /// </summary>
     public class TitleSearch

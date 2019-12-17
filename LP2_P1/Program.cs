@@ -2,6 +2,9 @@
 
 namespace LP2_P1
 {
+    /// <summary>
+    /// Responsible for running the program
+    /// </summary>
     public class Program
     {
         // Holds the desired height and width of the console

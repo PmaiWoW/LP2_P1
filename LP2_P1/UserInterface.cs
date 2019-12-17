@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace LP2_P1
 {
+    /// <summary>
+    /// Responsible for the UI elements of the program
+    /// </summary>
     public static class UserInterface
     {
         /// <summary>
