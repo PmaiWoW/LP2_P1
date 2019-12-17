@@ -161,9 +161,16 @@ namespace LP2_P1
 
                             if (elements[0] != "tconst")
                             {
-                                float.TryParse(elements[1], 
-                                    out float averageRating);
-                                int.TryParse(elements[2], out int numVotes);
+                                float? averageRatingNul;
+                                int? numVotesNul;
+
+                                if (float.TryParse(elements[1],
+                                    out float averageRating))
+                                    averageRatingNul = averageRating;
+                                else averageRatingNul = null;
+                                if (int.TryParse(elements[2], out int numVotes))
+                                    numVotesNul = numVotes;
+                                else numVotesNul = null;
 
                                 yield return new TitleRatings(elements[0],
                                     averageRating, numVotes);
