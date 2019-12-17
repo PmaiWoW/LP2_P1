@@ -10,6 +10,7 @@ namespace LP2_P1
 
         private static void Main(string[] args)
         {
+            SearchMenu searchMenu = new SearchMenu();
             // Sets the console hight and width to the amount specified
             Console.SetWindowSize(WindowWidth, WindowHeight);
             // Positions the console
@@ -20,7 +21,7 @@ namespace LP2_P1
             Console.CursorVisible = false;
 
             // Starts the Main menu loop on SearchMenu class
-            SearchMenu.MenuLoop();
+            searchMenu.MenuLoop();
         }
     }
 }

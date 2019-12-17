@@ -7,7 +7,7 @@ namespace LP2_P1
     /// <summary>
     /// Responsible for providing and assigning the choices of the user
     /// </summary>
-    public static class SearchMenu
+    public class SearchMenu
     {
         // Creates a IEnumerable of all the titles
         private static IEnumerable<TitleBasics> titleBasicsEnum =
@@ -29,10 +29,12 @@ namespace LP2_P1
         // Creates a nullable bool acessible in all class
         private static bool? isAdult;
 
+        // Creates an instance of the TitleSearch class
+        private static TitleSearch searcher= new TitleSearch();
         /// <summary>
         /// The start menu where the user can choose what to search for
         /// </summary>
-        public static void MenuLoop()
+        public  void MenuLoop()
         {
             // Variable for input key
             ConsoleKey key;
@@ -92,7 +94,7 @@ namespace LP2_P1
         private static void Titles(string wantedTitle, TitleType[] type,
             bool? adult, int? startDate, int? endDate,
             TitleGenre?[] genres, int? runtime1, int? runtime2,
-            int? rating1, int? rating2)
+            float? rating1, float? rating2)
         {
             // Checks if the method received a title to search for
             if (wantedTitle != null)
@@ -146,36 +148,32 @@ namespace LP2_P1
                     where title.Genres.Contains(genres[i])
                     select title;
 
-            // Groups the two IEnumerables together
+            // Creates new IEnumerable 'mixedList' with TitleBasics and
+            // Titleratings info and checks what values correspond
+            // to search parameters
             IEnumerable<(TitleBasics, TitleRatings)> mixedList =
                 titleBasicsEnum.GroupJoin(titleRatingsEnum.Where(c => true),
                 title2 => title2.TConst, rating2 => rating2.Tconst, (t, r) =>
-                new
-                {
-                    Title = t,
-                    Rating = r.Where(y => y.Tconst.Contains(t.
-   TConst))
-                }).Select(x => (x.Title, x.Rating.FirstOrDefault()));
+                new { Title = t, Rating = r.
+                Where(y => y.Tconst.Contains(t.TConst)) }).
+                Select(x => (x.Title, x.Rating.FirstOrDefault()));
 
             // Checks if the method received a lowest rating
             if (rating1.HasValue)
                 // Gets all the titles and ratings where the average rating is
                 // equal or higher than the value given
-                mixedList = mixedList.Where(c => c.Item2.AverageRating >=
-                rating1);
+                mixedList = mixedList.Where(c =>
+                    c.Item2.AverageRating >= rating1);
 
             // Checks if the method received a highest rating
             if (rating2.HasValue)
                 // Gets all the titles and ratings where the average rating is
                 // equal or lower than the value given
-                mixedList = mixedList.Where(c => c.Item2.AverageRating <=
-                rating2);
+                mixedList = mixedList.Where(c =>
+                    c.Item2.AverageRating <= rating2);
 
-            // Creates an instance of the TitleSearch class
-            TitleSearch searcher = new TitleSearch();
-
-            // Goes to the SearchTitle method passing the list of titles and
-            // ratings
+            // Goes to the SearchTitle method passing
+            // the 'mixedList' of titles and ratings
             searcher.SearchTitle(mixedList);
         }
 
@@ -183,16 +181,16 @@ namespace LP2_P1
         /// Provides a menu for the user to choose the parameters he wants to
         /// search for
         /// </summary>
-        private static void TitleSearch()
+        private void TitleSearch()
         {
-            // Creates the variables to be passed as arguments to the 'Titles'
-            // method
+            // Creates the variables to be passed as
+            // arguments to the 'Titles' method
             int? start = null;
             int? end = null;
             int? runtime1 = null;
             int? runtime2 = null;
-            int? ratingLow = null;
-            int? ratingHigh = null;
+            float? ratingLow = null;
+            float? ratingHigh = null;
 
             // Cleans the console
             Console.Clear();
@@ -373,18 +371,18 @@ namespace LP2_P1
 
                         // Checks if the first string is valid
                         if (rating.Length >= 1 && rating[0].Length > 0 &&
-                            int.Parse(rating[0]) != 0)
+                            float.Parse(rating[0]) != 0)
                             // Sets the value of start to the parsed string
-                            ratingLow = int.Parse(rating[0]);
+                            ratingLow = float.Parse(rating[0]);
                         else
                             // Resets the string back to null
                             ratingLow = null;
 
                         // Checks if the second string is valid
                         if (rating.Length == 2 && rating[1].Length > 0 &&
-                            int.Parse(rating[1]) != 0)
+                            float.Parse(rating[1]) != 0)
                             // Sets the value of start to the parsed string
-                            ratingHigh = int.Parse(rating[1]);
+                            ratingHigh = float.Parse(rating[1]);
                         else
                             // Resets the string back to null
                             ratingHigh = null;
@@ -397,8 +395,8 @@ namespace LP2_P1
                     {
                         // Resets the windows and buffer size of the console
                         UserInterface.ResizeWindow();
-                        // Creates a variable for the index of the current
-                        // genre the user is currently at
+                        // Creates a variable for the index of the current genre
+                        // the user is currently at
                         int indexes = Console.CursorTop - 24;
                         // Checks if the types list contains the selected type
                         if (genres.Contains((TitleGenre)indexes))

@@ -1,7 +1,7 @@
 ﻿namespace LP2_P1
 {
     /// <summary>
-    /// The possible states the TitleSearch list order
+    /// Enumerator that holds every possible value to the order's state
     /// </summary>
     public enum OrderState
     {
