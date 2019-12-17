@@ -24,9 +24,9 @@ namespace LP2_P1
             do
             {
                 Console.Clear();
-                Console.WriteLine("1. Search Title\n" +
-                                  "2. Search People\n" +
-                                  "Q. Quit\n");
+                Console.WriteLine("\n  1. Search Title\n" +
+                                  "  2. Search People\n" +
+                                  "  Q. Quit\n");
 
                 key = Console.ReadKey().Key;
 

@@ -45,8 +45,8 @@ namespace LP2_P1
                     {
                         TitleDetails.Menu(originalNamedTitles.ElementAt(keyInt - 1 +
                             skipNumber));
-                        UpdatePage();
                     }
+                    UpdatePage();
                 }
                 else
                 {
@@ -90,10 +90,9 @@ namespace LP2_P1
         // Sorts searched items by Type
         private void UpdatePage()
         {
-            Console.Clear();
             UserInterface.ResizeWindow();
 
-            UserInterface.PrintResults(originalNamedTitles.SkipLast(originalNamedTitles.Count()
+            UserInterface.ResultsMenu(originalNamedTitles.SkipLast(originalNamedTitles.Count()
                 - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
                 .ToList(), sortParameterString, listState);
         }
@@ -122,43 +121,48 @@ namespace LP2_P1
 
         public void Sort(ref IEnumerable<TitleBasics> namedTitles)
         {
-            ConsoleKey key;
+            UserInterface.OrderMenu(originalNamedTitles.SkipLast(originalNamedTitles.Count()
+                - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
+                .ToList(), sortParameterString, listState);
 
-            UserInterface.OrderMenu();
 
             // Read user's input
+            ConsoleKey key;
             key = Console.ReadKey().Key;
 
-            // Resets titles every time the user orders the list
+            // Resets titles and jumps to first page
+            // every timethe user orders the list
             if (key != ConsoleKey.B)
             {
                 namedTitles = this.namedTitles;
                 listState = SortState.Ascending;
+                skipNumber = 0;
             }
             // Switch case between the possible options selected
             switch (key)
             {
                 case ConsoleKey.D1:
+                    sortParameterString = "Title";
+                    namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
+                    break;
+
+                case ConsoleKey.D2:
                     sortParameterString = "Type"; 
                     namedTitles = namedTitles.OrderBy(c => c.Type);
                     break;
 
-                case ConsoleKey.D2:
-                    namedTitles = namedTitles.OrderBy(c => c.PrimaryTitle);
-                    break;
-
                 case ConsoleKey.D3:
-                    sortParameterString = "IsAdult";
+                    sortParameterString = "Age Restriction";
                     namedTitles = namedTitles.OrderBy(c => c.IsAdult);
                     break;
 
                 case ConsoleKey.D4:
-                    sortParameterString = "StartYear";
+                    sortParameterString = "Start Year";
                     namedTitles = namedTitles.OrderBy(c => c.StartYear);
                     break;
 
                 case ConsoleKey.D5:
-                    sortParameterString = "EndYear";
+                    sortParameterString = "End Year";
                     namedTitles = namedTitles.OrderBy(c => c.EndYear);
                     break;
 

@@ -68,36 +68,56 @@ namespace LP2_P1
             IEnumerable<TitleBasics> titlesToDisplay,
             string sortParameterString, TitleSearch.SortState listState)
         {
-            UserInterface.ColorSetup(backgroundColor: ConsoleColor.Gray);
+            Console.Clear();
+            // Sets color for first line
+            ColorSetup(backgroundColor: ConsoleColor.Gray);
 
-            for (int i = 0; i < Console.WindowWidth; i++)
-                Console.Write(" ");
+            // Assigns value to 'sortParameterString' to prevent errors
+            if (sortParameterString == null) sortParameterString = "";
 
-            Console.SetBufferSize(Program.WindowWidth, Program.WindowHeight);
+            // Initializes null strings that track how many space there are
+            // until the end of that specific line, for printing purposes
+            string fillAllLine = default;
+            string fillPartialLine = default;
 
-            Console.Write("    Name");
-            Console.CursorLeft = 100;
-            Console.Write(sortParameterString);
-            Console.CursorLeft = 150;
-            if (listState != TitleSearch.SortState.Unordered)
-                Console.Write($"State : {listState}");
+            // Supporting variable to get 'fillPartialLine' value
+            int extraFill = listState.ToString().Length +
+                sortParameterString.Length;
+
+            // Checks how many spaces are between the last print and the end
+            // of the console width, and add those blank spaces to variables
+            for (int i = 7; i < Program.WindowWidth; i++) fillAllLine += " ";
+            for (int i = 64 + extraFill; i < Program.WindowWidth; i++)
+                fillPartialLine += " ";
+
+            // Prints first line, checking if the list has been sorted to
+            // add aditional information to the first line
+            Console.WriteLine($"Name".PadLeft(6) +
+                ((listState != TitleSearch.SortState.Unordered &&
+                sortParameterString != "Title") ? ($"Sorting by: ".PadLeft(54) +
+                sortParameterString) + $" ({listState})" +
+                fillPartialLine : $"{fillAllLine}"));
 
             Console.ResetColor();
 
-            Console.WriteLine("");
-
+            // Supporting variables for optimized printing
             string pTitle;
+            string pTitleDisplay;
             string sortParameterDisplay = default;
-            int maxLenght = 90;
+            int maxLenght = 50;
 
+            // Loops through each title to display,
+            // and prints required information
             for (int i = 0; i < titlesToDisplay.Count(); i++)
             {
-                pTitle = $"{i + 1}: {titlesToDisplay.ElementAt(i).PrimaryTitle}";
-                Console.CursorLeft = 0;
-                Console.Write($"   " +
-                 $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}");
 
-                Console.CursorLeft = 100;
+                pTitle = $"{i + 1}:" +
+                    $"{titlesToDisplay.ElementAt(i).PrimaryTitle}";
+
+                pTitleDisplay = $"  " +
+                 $"{pTitle.Substring(0, Math.Min(pTitle.Length, maxLenght))}" +
+                 (titlesToDisplay.ElementAt(i).PrimaryTitle.Length > maxLenght
+                 ? $"... " : "");
 
                 switch (sortParameterString)
                 {
@@ -105,57 +125,78 @@ namespace LP2_P1
                         sortParameterDisplay = "|" +
                             titlesToDisplay.ElementAt(i).Type.ToString();
                         break;
-                    case "IsAdult":
+                    case "Age Restriction":
                         sortParameterDisplay = "|" +
-                            titlesToDisplay.ElementAt(i).IsAdult.ToString();
+                            (titlesToDisplay.ElementAt(i).IsAdult ?
+                            "Adults Only" : "For Everyone");
                         break;
-                    case "StartYear":
+                    case "Start Year":
                         sortParameterDisplay = "|" +
-                            titlesToDisplay.ElementAt(i).StartYear.ToString();
+                            (titlesToDisplay.ElementAt(i).StartYear.HasValue ?
+                            titlesToDisplay.ElementAt(i).StartYear.ToString()
+                            : @"\N");
                         break;
-                    case "EndYear":
+                    case "End Year":
                         sortParameterDisplay = "|" +
-                            titlesToDisplay.ElementAt(i).EndYear.ToString();
-                        break;
+                            (titlesToDisplay.ElementAt(i).EndYear.HasValue ?
+                            titlesToDisplay.ElementAt(i).EndYear.ToString()
+                            : @"\N"); break;
                     case "Genres":
                         sortParameterDisplay = "|" +
-                            titlesToDisplay.ElementAt(i).Genres[0].ToString() +
-                            titlesToDisplay.ElementAt(i).Genres[1].ToString() +
-                            titlesToDisplay.ElementAt(i).Genres[2].ToString();
+                           ((titlesToDisplay.ElementAt(i).Genres[0].HasValue ?
+                           titlesToDisplay.ElementAt(i).Genres[0].ToString()
+                           : @"\N") + ", ").PadRight(14) +
+                           ((titlesToDisplay.ElementAt(i).Genres[1].HasValue ?
+                           titlesToDisplay.ElementAt(i).Genres[1].ToString()
+                           : @"\N") + ", ").PadRight(14) +
+                           (titlesToDisplay.ElementAt(i).Genres[2].HasValue ?
+                           titlesToDisplay.ElementAt(i).Genres[2].ToString()
+                           : @"\N");
                         break;
 
                     default:
                         break;
                 }
-                Console.WriteLine(sortParameterDisplay);
+                Console.WriteLine(pTitleDisplay.PadRight(59) + sortParameterDisplay);
             }
 
-            Console.WriteLine("\n '->' for next page" +
-                "\n '<-' for previous page" +
-                "\n '1-9' to select title" +
-                "\n 'O' to order" +
-                "\n 'R' to reverse the order" +
-                "\n 'T' to reset the order" +
-                "\n 'B' to go back to previous menu");
 
-            Console.CursorTop = 1;
         }
-        // OrderMenu UI
+        // Menu UI
         // --------------------------------------------------------------------
 
-        public static void OrderMenu()
+        public static void ResultsMenu(
+            IEnumerable<TitleBasics> titlesToDisplay,
+            string sortParameterString, TitleSearch.SortState listState)
+        {
+            PrintResults(titlesToDisplay, sortParameterString, listState);
+
+            Console.WriteLine("\n  '1-9' to select title" +
+                "\n  '->' for next page" +
+                "\n  '<-' for previous page" +
+                "\n  'O' to order" +
+                "\n  'R' to reverse the order" +
+                "\n  'T' to reset the order" +
+                "\n  'B' to go back to previous menu");
+        }
+
+        public static void OrderMenu(
+            IEnumerable<TitleBasics> titlesToDisplay,
+            string sortParameterString, TitleSearch.SortState listState)
         {
             Console.Clear();
 
+            PrintResults(titlesToDisplay, sortParameterString, listState);
+
             // Display Order Options
-            Console.WriteLine("\n '1' to order by type" +
-                "\n '2' to order by title" +
-                "\n '3' to order by adult rating" +
-                "\n '4' to order by year of release" +
-                "\n '5' to order by year of end" +
-                "\n '6' to order by genre" +
-                "\n '7' to order by rating" +
-                "\n 'B' to go back \n");
+            Console.WriteLine("\n  '1' to order by title" +
+                "\n  '2' to order by type" +
+                "\n  '3' to order by adult rating" +
+                "\n  '4' to order by year of release" +
+                "\n  '5' to order by year of end" +
+                "\n  '6' to order by genre" +
+                "\n  '7' to order by rating" +
+                "\n  'B' to go back \n");
         }
 
         // Messages
