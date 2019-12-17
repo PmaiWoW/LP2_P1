@@ -205,8 +205,16 @@ namespace LP2_P1
                         .Select(c => c).ToHashSet();
                     sortParameterString = "End Year";
                     break;
-                // case nº6
+                
                 case ConsoleKey.D6:
+                    // Orders the list by the year of end
+                    namedTitles = namedTitles
+                        .OrderBy(c => c.titles.RuntimeMinutes)
+                        .Select(c => c).ToHashSet();
+                    sortParameterString = "Runtime";
+                    break;
+                // case nº6
+                case ConsoleKey.D7:
                     namedTitles = namedTitles
                         .OrderBy(c => c.titles.Genres[0])
                         .Select(c => c).ToHashSet();
@@ -214,7 +222,7 @@ namespace LP2_P1
                     break;
 
                 // case nº7
-                case ConsoleKey.D7:
+                case ConsoleKey.D8:
                     namedTitles = namedTitles
                         .OrderBy(c => c.ratings.AverageRating)
                         .Select(c => c).ToHashSet();

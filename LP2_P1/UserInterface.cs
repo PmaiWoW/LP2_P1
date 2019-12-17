@@ -148,6 +148,11 @@ namespace LP2_P1
                             (titlesToDisplay.ElementAt(i).a.EndYear.HasValue ?
                             titlesToDisplay.ElementAt(i).a.EndYear.ToString()
                             : @"\N"); break;
+                    case "Runtime":
+                      sortParameterDisplay = "|" +
+                      (titlesToDisplay.ElementAt(i).a.RuntimeMinutes.HasValue ?
+                      titlesToDisplay.ElementAt(i).a.RuntimeMinutes.ToString().
+                      PadRight(5) + "minutes" : @"\N"); break;
                     case "Genres":
                         sortParameterDisplay = "|" +
                           ((titlesToDisplay.ElementAt(i).a.Genres[0].HasValue ?
@@ -205,8 +210,9 @@ namespace LP2_P1
                 "\n  '3' to order by adult rating" +
                 "\n  '4' to order by year of release" +
                 "\n  '5' to order by year of end" +
-                "\n  '6' to order by genre" +
-                "\n  '7' to order by rating" +
+                "\n  '6' to order by runtime" +
+                "\n  '7' to order by genre" +
+                "\n  '8' to order by rating" +
                 "\n  'B' to go back \n");
         }
 
