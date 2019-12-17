@@ -53,16 +53,15 @@ namespace LP2_P1
                 // Assigns the value of key the key the user pressed
                 key = Console.ReadKey().Key;
 
-
                 if (key.ToString().Length == 2 && key.ToString()[0]=='D'
                     && char.IsDigit(key.ToString()[1]))
                 {
                     if (int.TryParse(key.ToString()[1].ToString(),
                         out int keyInt) && keyInt != 0)
                     {   
-                        TitleDetails.Menu(namedTitles.ElementAt(keyInt - 1 +
-                            skipNumber).titles, namedTitles.ElementAt(keyInt - 1 +
-                            skipNumber).ratings);
+                        UserInterface.Menu(namedTitles.ElementAt(keyInt - 1 +
+                            skipNumber).titles, namedTitles.ElementAt(keyInt 
+                            - 1 + skipNumber).ratings);
                     }
                     UpdatePage();
                 }
@@ -71,8 +70,8 @@ namespace LP2_P1
                     switch (key)
                     {
                         case ConsoleKey.RightArrow:
-                            if (namedTitles.Count() / (skipNumber + displayNum) > 0
-                                || skipNumber == 0)
+                            if (namedTitles.Count() / (skipNumber + 
+                                displayNum) > 0 || skipNumber == 0)
                             {
                                 skipNumber += displayNum;
                             }
@@ -112,9 +111,9 @@ namespace LP2_P1
         {
             UserInterface.ResizeWindow();
 
-            UserInterface.ShowResultsMenu(namedTitles.SkipLast(namedTitles.Count()
-                - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
-                .ToList(), sortParameterString, listState);
+            UserInterface.ShowResultsMenu(namedTitles.SkipLast(namedTitles.
+                Count() - skipNumber - displayNum).Skip(skipNumber).
+                Select(c => c).ToList(), sortParameterString, listState);
         }
 
         private void ReverseOrder()
@@ -140,11 +139,12 @@ namespace LP2_P1
             UpdatePage();
         }
 
-        public void Sort(ref IEnumerable<(TitleBasics titles, TitleRatings ratings)> namedTitles)
+        public void Sort(ref IEnumerable<(TitleBasics titles, TitleRatings 
+            ratings)> namedTitles)
         {
-            UserInterface.ShowOrderMenu(namedTitles.SkipLast(namedTitles.Count()
-                - skipNumber - displayNum).Skip(skipNumber).Select(c => c)
-                .ToHashSet(), sortParameterString, listState);
+            UserInterface.ShowOrderMenu(namedTitles.SkipLast(namedTitles.
+                Count()- skipNumber - displayNum).Skip(skipNumber).
+                Select(c => c).ToHashSet(), sortParameterString, listState);
 
 
             // Read user's input
