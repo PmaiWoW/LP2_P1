@@ -102,10 +102,9 @@ namespace LP2_P1
             // Prints first line, checking if the list has been sorted to
             // add aditional information to the first line
             Console.WriteLine($"Name".PadLeft(6) +
-                ((listState != OrderState.Unordered &&
-                sortParameterString != "Title") ? ($"Sorting by: ".PadLeft(54) +
-                sortParameterString) + $" ({listState})" +
-                fillPartialLine : $"{fillAllLine}"));
+                ((listState != OrderState.Unordered && sortParameterString !=
+                "Title") ? ($"Sorting by: ".PadLeft(54) + sortParameterString) 
+                + $" ({listState})" + fillPartialLine : $"{fillAllLine}"));
 
             Console.ResetColor();
 
@@ -161,9 +160,10 @@ namespace LP2_P1
                            : @"\N"); break;
                     case "Ratings":
                         sortParameterDisplay = "|" +
-                            (titlesToDisplay.ElementAt(i).p.AverageRating.HasValue ?
-                            titlesToDisplay.ElementAt(i).p.AverageRating.ToString()
-                            : "No ratings"); break;
+                            (titlesToDisplay.ElementAt(i).p.AverageRating.
+                            HasValue ?
+                            titlesToDisplay.ElementAt(i).p.AverageRating.
+                            ToString() : "No ratings"); break;
                     default:
                         break;
                 }
@@ -177,8 +177,8 @@ namespace LP2_P1
         // --------------------------------------------------------------------
 
         public static void ShowResultsMenu(
-            IEnumerable<(TitleBasics titles, TitleRatings ratings)> titlesToDisplay,
-            string sortParameterString, OrderState listState)
+            IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
+            titlesToDisplay, string sortParameterString, OrderState listState)
         {
             PrintResults(titlesToDisplay, sortParameterString, listState);
 
@@ -192,8 +192,8 @@ namespace LP2_P1
         }
 
         public static void ShowOrderMenu(
-            IEnumerable<(TitleBasics titles, TitleRatings ratings)> titlesToDisplay,
-            string sortParameterString, OrderState listState)
+            IEnumerable<(TitleBasics titles, TitleRatings ratings)> 
+            titlesToDisplay, string sortParameterString, OrderState listState)
         {
             Console.Clear();
 

@@ -232,7 +232,8 @@ namespace LP2_P1
                         int index = Console.CursorTop - 5;
                         // Checks if the types list contains the selected type
                         if (types.Contains((TitleType)index))
-                            // If it's already there it removes it from the list
+                            // If it's already there it removes it from the 
+                            // list
                             types.Remove((TitleType)index);
                         // If it's not in the list it adds it
                         else
@@ -240,7 +241,8 @@ namespace LP2_P1
 
                         // Uses the UserInterface class to display the choosen
                         // options
-                        UserInterface.PrintTypeSelection(types, genres, isAdult);
+                        UserInterface.PrintTypeSelection(types, genres, 
+                            isAdult);
                         // Resets the cursor position to the index plus 5
                         Console.CursorTop = index + 5;
                     }
@@ -255,7 +257,8 @@ namespace LP2_P1
                         else if (isAdult == false) isAdult = null;
 
                         // Displays to the user the decisions
-                        UserInterface.PrintTypeSelection(types, genres, isAdult);
+                        UserInterface.PrintTypeSelection(types, genres, 
+                            isAdult);
                         // Resets the cursor position back to 16
                         Console.CursorTop = 16;
                     }
@@ -362,8 +365,8 @@ namespace LP2_P1
                     {
                         // Resets the windows and buffer size of the console
                         UserInterface.ResizeWindow();
-                        // Creates a variable for the index of the current genre
-                        // the user is currently at
+                        // Creates a variable for the index of the current
+                        // genre the user is currently at
                         int indexes = Console.CursorTop - 24;
                         // Checks if the types list contains the selected type
                         if (genres.Contains((TitleGenre)indexes))
@@ -375,7 +378,8 @@ namespace LP2_P1
 
                         // Uses the UserInterface class to display the choosen
                         // options
-                        UserInterface.PrintTypeSelection(types, genres, isAdult);
+                        UserInterface.PrintTypeSelection(types, genres, 
+                            isAdult);
                         // Resets the cursor position to the index plus 24
                         Console.CursorTop = indexes + 24;
                     }
@@ -399,7 +403,8 @@ namespace LP2_P1
 
         public static void Quit()
         {
-            // Uses the UserInterface to display a message to the user while quitting
+            // Uses the UserInterface to display a message to the user while 
+            // quitting
             UserInterface.QuitMessage();
             // Checks for any input from the user
             Console.ReadKey(true);
