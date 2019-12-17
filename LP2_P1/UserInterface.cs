@@ -31,7 +31,12 @@ namespace LP2_P1
         }
 
 
-        // Displays the SearchFiltersMenu
+        /// <summary>
+        /// Displays the type selection menu for the user to see and interact
+        /// </summary>
+        /// <param name="types"></param>
+        /// <param name="genres"></param>
+        /// <param name="isAdult"></param>
         public static void PrintTypeSelection(ICollection<TitleType> types,
             ICollection<TitleGenre?> genres, bool? isAdult)
         {
