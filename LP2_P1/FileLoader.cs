@@ -20,12 +20,15 @@ namespace LP2_P1
         // Name of file with data of TitleRatings
         private const string fileTitleRatings = "title.ratings.tsv.gz";
         // Full path to folder with data files
-        private static string folderWithFiles = 
+        private static string folderWithFiles =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.
                 LocalApplicationData), appName);
 
-        // Parse full title.basics.tsv.gz data file into an IEnumerable of 
-        // TitleBasics, which is later used to search the database
+        /// <summary>
+        /// Parse full title.basics.tsv.gz data file into an IEnumerable of
+        /// TitleBasics, which is later used to search the database
+        /// </summary>
+        /// <returns> An IEnumerable of TitleBasics </returns>
         public static IEnumerable<TitleBasics> LoadTitleBasics()
         {
             // Full path to data files
@@ -48,7 +51,8 @@ namespace LP2_P1
             try
             {
                 CheckForFile(fileTitleBasicsFull);
-            } catch (Exception missingFile)
+            }
+            catch (Exception missingFile)
             {
                 Console.WriteLine($"The following error ocurred:\n" +
                     $"{missingFile.Message}");
@@ -74,11 +78,13 @@ namespace LP2_P1
 
                         // Declare non-nullable variables
                         string[] genres;
-                        TitleGenre[] genresFinal = new TitleGenre[3];
                         bool isAdult;
                         string finalString;
                         string[] elements;
+                        // Declare an array of genres with the size of 3
+                        TitleGenre[] genresFinal = new TitleGenre[3];
 
+                        // Displays an empty bar with a loading message
                         CreateLoadingBar();
 
                         // Beggining of parsing loop (only runs while line's
@@ -89,10 +95,14 @@ namespace LP2_P1
                             finalString = "";
                             // Split full line into various elements by tabs
                             elements = line.Split("\t");
-
+                            // Sets an int progess to the amount of objects 
+                            // devided by the total lines on the file and 
+                            // devides it by 100 to get a percentage
                             int progress = (currentObject++ / (6350607 / 100));
 
+                            // Checks if the progress has increased
                             if (progress != previous)
+                                // Fills the bar with a white empty space
                                 FillLoadingBar();
 
                             // Check if first element is an ID, to see if 
@@ -134,14 +144,22 @@ namespace LP2_P1
                                 // then assigned to current iteration's index 
                                 // in the array
                                 genres = elements[8].Split(",");
-                                for(int i = 0; i < genres.Length; i++)
+                                for (int i = 0; i < genres.Length; i++)
                                 {
+                                    // Checks if the current genres contains a
+                                    // hyfen
                                     if (genres[i].Contains("-"))
                                     {
+                                        // creates a string array where it 
+                                        // saves the splited genres by hyfen
                                         string[] hyfenGenres =
                                             genres[i].Split("-");
-                                        foreach (string hyfenS in hyfenGenres)
-                                            finalString += hyfenS;
+                                        // Adds all the splitted strings into 
+                                        // one
+                                        for (int b = 0; b < hyfenGenres.Length;
+                                            b++) finalString += hyfenGenres[b];
+                                        // Sets the current position of the 
+                                        // genres array to the merged string
                                         genres[i] = finalString;
                                     }
                                 }
@@ -162,11 +180,12 @@ namespace LP2_P1
                                 yield return new TitleBasics(elements[0],
                                     typeNul, elements[2], elements[3],
                                     isAdult, genresFinal, startYearNul,
-                                    endYearNul,  runtimeMinsNul);
+                                    endYearNul, runtimeMinsNul);
                             }
+                            // If it created a object it assigns the previous
+                            // to the current progress
                             previous = progress;
                         }
-                        Console.CursorVisible = true;
                     }
                 }
             }
@@ -240,7 +259,7 @@ namespace LP2_P1
                                 // TryParse 3rd element, if it returns true
                                 // assign out variable's value to 
                                 // numVotesNul, otherwise it is null
-                                if (int.TryParse(elements[2], out int 
+                                if (int.TryParse(elements[2], out int
                                     numVotes))
                                     numVotesNul = numVotes;
                                 else numVotesNul = null;
@@ -269,7 +288,7 @@ namespace LP2_P1
             }
         }
 
-    private static void CreateLoadingBar()
+        private static void CreateLoadingBar()
         {
             Console.WriteLine("\n\n\nLoading...");
             Console.BackgroundColor = ConsoleColor.DarkRed;
